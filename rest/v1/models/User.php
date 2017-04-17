@@ -104,7 +104,7 @@ $app->put("/user/:id",function($id) use($app) {
 $app->delete('/user/:id',function($id) use($app) {
 	try {
 		$conex = getConex();
-		$result = $conex->prepare("DELETE user WHERE id='$id'");
+		$result = $conex->prepare("DELETE FROM user WHERE id=$id;");
 
 		$result->execute();
 		$conex = null;
@@ -124,7 +124,7 @@ $app->post("/login/",function() use($app) {
 
 	$correo = $objDatos->email;
 	$contra = $objDatos->pwd;
-	sleep(3);
+	sleep(1);
 
 	try {
 		$conex = getConex();

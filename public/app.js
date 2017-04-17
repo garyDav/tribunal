@@ -13,7 +13,7 @@
 	app.config(['$routeProvider',function($routeProvider) {
 		$routeProvider.
 			when('/',{
-				templateUrl: 'public/give/views/list.view.html'
+				templateUrl: 'public/main/views/main.view.html'
 			}).
 			when('/404',{
 				templateUrl: 'public/main/views/404.view.html'
