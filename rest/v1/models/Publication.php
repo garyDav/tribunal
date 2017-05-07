@@ -17,7 +17,7 @@ $app->get('/user/:id',function($id) use($app) {
 	}catch(PDOException $e) {
 		echo 'Error: '.$e->getMessage();
 	}
-})->conditions(array('id'=>'[0-9]{1,11}'));
+});
 
 $app->post("/user/",function() use($app) {
 	try {
@@ -94,36 +94,3 @@ $app->delete('/user/:id',function($id) use($app) {
 	}
 })->conditions(array('id'=>'[0-9]{1,11}'));
 
-
-$app->post("/login/",function() use($app) {
-	$objDatos = json_decode(file_get_contents("php://input"));
-
-	$correo = $objDatos->email;
-	$contra = $objDatos->pwd;
-	//sleep(3);
-
-	try {
-		$conex = getConex();
-
-		$salt = '#/$02.06$/#_#/$25.10$/#';
-		$contra = md5($salt.$contra);
-		$contra = sha1($salt.$contra);
-
-		$result = $conex->prepare("CALL pSession('$correo','$contra');");
-
-		$result->execute();
-		$res = $result->fetchObject();
-		if($res->error == 'not'){
-			$_SESSION['uid'] = uniqid('ang_');
-		}
-
-		$conex = null;
-
-		$app->response->headers->set("Content-type","application/json");
-		$app->response->headers->set('Access-Control-Allow-Origin','*');
-		$app->response->status(200);
-		$app->response->body(json_encode($res));
-	}catch(PDOException $e) {
-		echo "Error: ".$e->getMessage();
-	}
-});
