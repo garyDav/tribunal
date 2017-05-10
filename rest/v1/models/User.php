@@ -8,7 +8,7 @@ $app->get('/user/:id',function($id) use($app) {
 		}else{
 			$pag = 1;
 		}
-		$res = get_todo_paginado( 'user', $pag );
+		$res = get_paginado_user( $pag );
 
 		$app->response->headers->set('Content-type','application/json');
 		$app->response->headers->set('Access-Control-Allow-Origin','*');
@@ -27,13 +27,17 @@ $app->post("/user/",function() use($app) {
 		$request = (array) $request;
 		$conex = getConex();
 		$res = array( 'err'=>'yes','msj'=>'Puta no se pudo hacer nada, revisa mierda' );
+		
+		$salt = '#/$02.06$/#_#/$25.10$/#';
+		$pwd = md5($salt.$request['pwd']);
+		$pwd = sha1($salt.$pwd);
 
 		if( isset( $request['id'] )  ){  // ACTUALIZAR
 
 			$sql = "UPDATE user 
 						SET
 							email  		  = '". $request['email'] ."',
-							pwd 	   	  = '". $request['pwd'] ."',
+							pwd 	   	  = '". $pwd ."',
 							type          = '". $request['type'] ."',
 							cellphone     = '". $request['cellphone'] ."'
 					WHERE id=" . $request['id'].";";
@@ -46,19 +50,16 @@ $app->post("/user/",function() use($app) {
 
 		}else{  // INSERT
 
-			$salt = '#/$02.06$/#_#/$25.10$/#';
-			$pwd = md5($salt.$request['pwd']);
-			$pwd = sha1($salt.$pwd);
-
 			$sql = "CALL pInsertUser(
 						'". $request['id_person'] . "',
+						'". $request['id_jagroambiental'] . "',
 						'". $request['email'] . "',
 						'". $pwd . "',
 						'". $request['type'] . "',
 						'". $request['cellphone'] . "',
 						'". $request['cod_dep'] . "',
 						'". $request['cod_ja'] . "',
-						'". $request['cod_all'] . "' );";
+						'". 'T-0000' . "' );";
 
 			$hecho = $conex->prepare( $sql );
 			$hecho->execute();
@@ -115,6 +116,8 @@ $app->post("/login/",function() use($app) {
 		$res = $result->fetchObject();
 		if($res->error == 'not'){
 			$_SESSION['uid'] = uniqid('ang_');
+			$_SESSION['userID'] = $res->id;
+			$_SESSION['userTYPE'] = $res->type;
 		}
 
 		$conex = null;

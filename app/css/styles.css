@@ -1,59 +1,99 @@
-/*-------------------------- Materialize ---------------------------*/
-/*
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-
-td,
-th {
-  padding: 0;
-}
-table, th, td {
-  border: none;
-}
-
-table {
+.filtros {
+  /*background: red;*/
+  height: 50px;
   width: 100%;
-  display: table;
 }
 
-table.bordered > thead > tr,
-table.bordered > tbody > tr {
-  border-bottom: 1px solid #d0d0d0;
+.linea {
+  display: inline-block;
+}
+.filtros .b-largo {
+  width: 100%;
+}
+.filtros .b-corto {
+  width: 70%;
 }
 
-table.striped > tbody > tr:nth-child(odd) {
-  background-color: #f2f2f2;
+.filtros .busqueda {
+  content: close-quote;
+  background: white;
+  border-radius: 15px;
+  padding: 4px 15px;
+  /*box-shadow: inset 0 -1px 6px 0.5px #898989;*/
+}
+.filtros .busqueda:hover {
+  border-radius: 3px;
+  border: 1px solid #c3c3c3;
 }
 
-table.striped > tbody > tr > td {
-  border-radius: 0;
+.filtros .busqueda i {
+  margin-right: 15px;
+  color: #3c3c3c;
 }
 
-table.highlight > tbody > tr {
-  transition: background-color .25s ease;
+.filtros .ordenar {
+  /*background: yellow;*/
+  width: 28%;
 }
 
-table.highlight > tbody > tr:hover {
-  background-color: #f2f2f2;
+.filtros .ordenar select {
+  background: #F5F5F5;
+  width: 100%;
+  height: 42px;
+  padding: 2px;
+  border-radius: 5px;
+  /*box-shadow: inset 0 -1px 6px 0.5px #898989;*/
+  font-size: 14px;
 }
 
-table.centered thead tr th, table.centered tbody tr td {
+
+.filtros .busqueda input{
+  width: 80%;
+  border: 0px;
+  font-size: 20px;
+}
+
+.filtros .busqueda input:focus {
+  outline: 0px;
+}
+
+
+.mano {
+  cursor: pointer;
+}
+
+.margin-padding {
+  padding: 0 15px;
+  margin: 0;
+}
+
+.btn-agregar {
+  border: 3px solid #1a237e;
+  text-align: center;
+  background: #fafafa;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 0px;
+  right: 20px;
+  height: 60px;
+  width: 60px;
+}
+
+.i-agregar {
+  color: #1a237e;
+  margin-top: 17px;
+}
+
+.cargando {
+  font: oblique bold 120% cursive;
+  font-size: 25px;
   text-align: center;
 }
 
-thead {
-  border-bottom: 1px solid #d0d0d0;
-}
 
-td, th {
-  padding: 15px 5px;
-  display: table-cell;
-  text-align: left;
-  vertical-align: middle;
-  border-radius: 2px;
-}*/
+
+/*-------------------------- Materialize ---------------------------*/
+
 @media only screen and (max-width: 992px) {
   table.responsive-table {
     width: 100%;
@@ -125,6 +165,81 @@ td, th {
     border: 0;
   }
   table.responsive-table.bordered tbody tr {
+    border-right: 1px solid #d0d0d0;
+  }
+}
+
+@media only screen and (max-width: 1500px) {
+  table.responsive-table-large {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    display: block;
+    position: relative;
+    /* sort out borders */
+  }
+  table.responsive-table-large td:empty:before {
+    content: '\00a0';
+  }
+  table.responsive-table-large th,
+  table.responsive-table-large td {
+    margin: 0;
+    vertical-align: top;
+  }
+  table.responsive-table-large th {
+    text-align: left;
+  }
+  table.responsive-table-large thead {
+    display: block;
+    float: left;
+  }
+  table.responsive-table-large thead tr {
+    display: block;
+    padding: 0 10px 0 0;
+  }
+  table.responsive-table-large thead tr th::before {
+    content: "\00a0";
+  }
+  table.responsive-table-large tbody {
+    display: block;
+    width: auto;
+    position: relative;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  table.responsive-table-large tbody tr {
+    display: inline-block;
+    vertical-align: top;
+  }
+  table.responsive-table-large th {
+    display: block;
+    text-align: right;
+  }
+  table.responsive-table-large td {
+    display: block;
+    min-height: 1.25em;
+    text-align: left;
+  }
+  table.responsive-table-large tr {
+    padding: 0 10px;
+  }
+  table.responsive-table-large thead {
+    border: 0;
+    border-right: 1px solid #d0d0d0;
+  }
+  table.responsive-table-large.bordered th {
+    border-bottom: 0;
+    border-left: 0;
+  }
+  table.responsive-table-large.bordered td {
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 0;
+  }
+  table.responsive-table-large.bordered tr {
+    border: 0;
+  }
+  table.responsive-table-large.bordered tbody tr {
     border-right: 1px solid #d0d0d0;
   }
 }

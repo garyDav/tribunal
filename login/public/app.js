@@ -47,9 +47,7 @@
 				$http.post('../rest/v1/login/', datos)
 					 .success(function( data ){
 
-					 	console.log( data );
 					 	d.resolve( data );
-
 
 					 });
 				return d.promise;
@@ -59,10 +57,11 @@
 	}]);
 
 	app.controller('mainCtrl', ['$scope','loginService', function($scope,loginService){
-		console.log('enter function mainCtrl');
+		//console.log('enter function mainCtrl');
 		$scope.invalid = false;
 		$scope.load = false;
 		$scope.message = '';
+		$scope.messageEspera = '';
 
 		$scope.data = {};
 		$scope.$watch( 'data.email',function() {
@@ -80,15 +79,24 @@
 
 			loginService.login( data ).then(
 				function( data ) {
-					console.log(data);
-					if( data.error.length > 1 ) {
+					//console.log(data);
+					if( data.error == 'yes' ) {
 						$scope.invalid = true;
 						$scope.load = false;
-						$scope.message = data.error;
+						$scope.message = data.msj;
 						$('#load').modal('hide');
 					} else {
-						console.log( data );
-						window.location = '../';
+						if( data.error == 'not' ) {
+							$scope.messageEspera = data.msj;
+							/*localStorage.setItem('userID',data.id);
+							localStorage.setItem('userTYPE',data.type);*/
+							setTimeout('window.location = "../"',1000);
+						} else {
+							$scope.invalid = true;
+							$scope.load = false;
+							$scope.message = 'Error del servidor: '+data;
+							$('#load').modal('hide');
+						}
 					}
 				});
 

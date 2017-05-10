@@ -4,7 +4,7 @@
 	angular.module('userModule')
 	.config(['$routeProvider',function($routeProvider) {
 		$routeProvider.
-			when('/users',{
+			when('/users/:pag',{
 				templateUrl: 'public/user/views/list.view.html',
 				controller: 'userCtrl'
 			});

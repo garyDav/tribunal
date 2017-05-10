@@ -1,14 +1,16 @@
 <?php if(!defined('SPECIALCONSTANT')) die(json_encode([array('id'=>'0','error'=>'Acceso Denegado')]));
 
-$app->get('/user/:id',function($id) use($app) {
+$app->get('/comment/:id',function($id) use($app) {
 	try {
-		//sleep(1);
-		if( isset( $id ) ){
-			$pag = $id;
-		}else{
-			$pag = 1;
-		}
-		$res = get_todo_paginado( 'user', $pag );
+		$conex = getConex();
+
+		$sql = "SELECT c.description,c.fec,per.name,per.last_name FROM comment c,user u,person per WHERE c.id_user=u.id AND u.id_person=per.id AND c.id_publication='$id';";
+		$result = $conex->prepare( $sql );
+
+		$result->execute();
+		$conex = null;
+
+		$res = $result->fetchAll(PDO::FETCH_OBJ);
 
 		$app->response->headers->set('Content-type','application/json');
 		$app->response->headers->set('Access-Control-Allow-Origin','*');
@@ -17,9 +19,9 @@ $app->get('/user/:id',function($id) use($app) {
 	}catch(PDOException $e) {
 		echo 'Error: '.$e->getMessage();
 	}
-});
+})->conditions(array('id'=>'[0-9]{1,11}'));
 
-$app->post("/user/",function() use($app) {
+$app->post("/comment/",function() use($app) {
 	try {
 		$postdata = file_get_contents("php://input");
 
@@ -30,12 +32,11 @@ $app->post("/user/",function() use($app) {
 
 		if( isset( $request['id'] )  ){  // ACTUALIZAR
 
-			$sql = "UPDATE user 
+			$sql = "UPDATE comment 
 						SET
-							email  		  = '". $request['email'] ."',
-							pwd 	   	  = '". $request['pwd'] ."',
-							type          = '". $request['type'] ."',
-							cellphone     = '". $request['cellphone'] ."'
+							id_publication = '". $request['id_publication'] ."',
+							id_user 	   = '". $request['id_user'] ."',
+							description    = '". $request['description'] ."'
 					WHERE id=" . $request['id'].";";
 
 			$hecho = $conex->prepare( $sql );
@@ -46,19 +47,10 @@ $app->post("/user/",function() use($app) {
 
 		}else{  // INSERT
 
-			$salt = '#/$02.06$/#_#/$25.10$/#';
-			$pwd = md5($salt.$request['pwd']);
-			$pwd = sha1($salt.$pwd);
-
-			$sql = "CALL pInsertUser(
-						'". $request['id_person'] . "',
-						'". $request['email'] . "',
-						'". $pwd . "',
-						'". $request['type'] . "',
-						'". $request['cellphone'] . "',
-						'". $request['cod_dep'] . "',
-						'". $request['cod_ja'] . "',
-						'". $request['cod_all'] . "' );";
+			$sql = "CALL pInsertComment(
+						'". $request['id_publication'] . "',
+						'". $request['id_user'] . "',
+						'". $request['description'] . "' );";
 
 			$hecho = $conex->prepare( $sql );
 			$hecho->execute();
@@ -77,10 +69,10 @@ $app->post("/user/",function() use($app) {
 	}
 });
 
-$app->delete('/user/:id',function($id) use($app) {
+$app->delete('/comment/:id',function($id) use($app) {
 	try {
 		$conex = getConex();
-		$result = $conex->prepare("DELETE FROM user WHERE id='$id'");
+		$result = $conex->prepare("DELETE FROM comment WHERE id='$id'");
 
 		$result->execute();
 		$conex = null;

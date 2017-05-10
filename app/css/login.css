@@ -10,8 +10,10 @@ body {
 }
 
 .pre-loader {
-	width: 25%;
-	margin: 50% 37.5%;
+	/*width: 25%;
+	margin: 50% 37.5%;*/
+	text-align: center;
+	margin-top: 40%;
 }
 
 

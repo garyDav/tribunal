@@ -29,6 +29,7 @@ if( !isset( $_SESSION['uid'] ) ){
 	<link rel="stylesheet" href="app/css/AdminLTE.css">
 	<link rel="stylesheet" href="app/css/_all-skinsAdminLTE.css">
 	<link rel="stylesheet" href="app/css/animate.css">
+	<link rel="stylesheet" href="app/css/sweetalert.css">
 
 	<!-- iCheck
     <link rel="stylesheet" href="plugins/iCheck/flat/blue.css">
@@ -52,7 +53,7 @@ if( !isset( $_SESSION['uid'] ) ){
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue sidebar-mini" ng-controller="mainCtrl" ng-init="init();">
 
 	<div class="wrapper">
 
@@ -60,11 +61,11 @@ if( !isset( $_SESSION['uid'] ) ){
 	  <header class="main-header">
 
 	    <!-- Logo -->
-	    <a href="index2.html" class="logo">
+	    <a ng-href="/tribunal" class="logo">
 	      <!-- mini logo for sidebar mini 50x50 pixels -->
-	      <span class="logo-mini"><b>T</b>AG</span>
+	      <span class="logo-mini"><b>{{ config.iniciales[0] }}</b>{{ config.iniciales | quitarletra }}</span>
 	      <!-- logo for regular state and mobile devices -->
-	      <span class="logo-lg"><b>Tribu</b>nal</span>
+	      <span class="logo-lg"><b> {{ config.aplicativo }} </b>{{ config.iniciales }}</span>
 	    </a>
 
 	    <!-- Header Navbar -->
@@ -103,8 +104,8 @@ if( !isset( $_SESSION['uid'] ) ){
 
 
 	          <!-- Control Sidebar Toggle Button -->
-	          <li>
-	            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+	          <li ng-hide=" userTYPE == 'user' ">
+	            <a data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
 	          </li>
 	        </ul>
 	      </div>
@@ -120,8 +121,8 @@ if( !isset( $_SESSION['uid'] ) ){
 	    <!-- Content Header (Page header) -->
 	    <section class="content-header">
 	      <h1>
-	        Tribunal Agroambiental
-	        <small>Optional description</small>
+	        <span>{{titulo}}</span>  
+            <small>{{ subtitulo }}</small>
 	      </h1>
 	    </section>
 
@@ -138,55 +139,122 @@ if( !isset( $_SESSION['uid'] ) ){
 	  <footer class="main-footer">
 	    <!-- To the right -->
 	    <div class="pull-right hidden-xs">
-	      Por: ...
+	      <b>Version</b> {{ config.version }}
 	    </div>
 	    <!-- Default to the left -->
-	    <strong>Copyright &copy; 2017 <a href="#">Tribunal Agroambiental</a>.</strong> Todos los derechos reservados.
+	    <strong>Copyright &copy; {{ config.anio }} 
+            <a href="{{ config.web }}" target="blank">{{ config.empresa }}</a>.
+        </strong> Por: {{ config.autor }}
 	  </footer>
 
 	  <!-- Control Sidebar -->
 	  <aside class="control-sidebar control-sidebar-dark">
 	    <!-- Create the tabs -->
 	    <ul class="nav nav-tabs nav-justified control-sidebar-tabs" style="margin:0;">
-	      <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
-	      <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+	      <li class="active" ng-hide=" userTYPE != 'supad' ">
+	      	<a ng-click="sidebar('#control-sidebar-stats-tab','#control-sidebar-settings-tab','#control-sidebar-home-tab')" data-toggle="tab"><i class="fa fa-users"></i></a>
+	      </li>
+	      <li class="active" ng-hide=" userTYPE == 'supad' ">
+	      	<a ng-click="sidebar('#control-sidebar-home-tab','#control-sidebar-settings-tab','#control-sidebar-stats-tab')" data-toggle="tab"><i class="fa fa-registered"></i></a>
+	      </li>
+	      <li ng-hide=" userTYPE == 'supad' ">
+	      	<a ng-click="sidebar('#control-sidebar-settings-tab','#control-sidebar-home-tab','#control-sidebar-stats-tab')" data-toggle="tab"><i class="fa fa-cog"></i></a>
+	      </li>
 	    </ul>
 	    <!-- Tab panes -->
 	    <div class="tab-content">
+	      <!-- Stats tab content -->
+	      <div class="tab-pane active" ng-hide=" userTYPE != 'supad' " id="control-sidebar-stats-tab">
+	      	<ul class="control-sidebar-menu">
+              <li>
+                <a href="/tribunal/users">
+                  <i class="menu-icon fa fa-user-plus bg-black"></i>
+                  <div class="menu-info">
+                    <h4 class="control-sidebar-subheading">Usuario</h4>
+                    <p>Registra usuarios.</p>
+                  </div>
+                </a>
+              </li>
+            </ul>
+	      </div>
+	      <!-- /.tab-pane -->
 	      <!-- Home tab content -->
-	      <div class="tab-pane active" id="control-sidebar-home-tab">
-	        <h3 class="control-sidebar-heading">Registrar</h3>
-	        <ul class="sidebar-menu">
-	          <li data-toggle="modal" data-target="#noticias"><a href="#"><i class="fa fa-link"></i> <span>Noticias</span></a></li>
-	          <li data-toggle="modal" data-target="#cumple"><a href="#"><i class="fa fa-link"></i> <span>Cumpleaños</span></a></li>
-	          <li data-toggle="modal" data-target="#efemerides"><a href="#"><i class="fa fa-link"></i> <span>Efemerides</span></a></li>
-	          <li data-toggle="modal" data-target="#avisos"><a href="#"><i class="fa fa-link"></i> <span>Avisos</span></a></li>
-	          <li data-toggle="modal" data-target="#fotos"><a href="#"><i class="fa fa-link"></i> <span>Fotos</span></a></li>
-	        </ul>
+	      <div class="tab-pane active" ng-hide=" userTYPE == 'supad' " id="control-sidebar-home-tab">
+	        <h3 class="control-sidebar-heading">Publicar</h3>
+	        <ul class="control-sidebar-menu">
+              <li>
+                <a href="">
+                  <i class="menu-icon fa fa-th-list bg-red"></i>
+                  <div class="menu-info">
+                    <h4 class="control-sidebar-subheading">Noticias</h4>
+                    <p>Ingresa nuevas noticias.</p>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="">
+                  <i class="menu-icon fa fa-list-alt bg-yellow"></i>
+                  <div class="menu-info">
+                    <h4 class="control-sidebar-subheading">Efemerides</h4>
+                    <p>Ingresa nuevas efemerides.</p>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="">
+                  <i class="menu-icon fa fa-newspaper-o bg-green"></i>
+                  <div class="menu-info">
+                    <h4 class="control-sidebar-subheading">Avisos</h4>
+                    <p>Ingresa nuevos avisos</p>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="">
+                  <i class="menu-icon fa fa-newspaper-o bg-green"></i>
+                  <div class="menu-info">
+                    <h4 class="control-sidebar-subheading">Reglamentos</h4>
+                    <p>Ingresa nuevos reglamentos</p>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="">
+                  <i class="menu-icon fa fa-newspaper-o bg-green"></i>
+                  <div class="menu-info">
+                    <h4 class="control-sidebar-subheading">Normativas</h4>
+                    <p>Ingresa nuevas normativas</p>
+                  </div>
+                </a>
+              </li>
+            </ul>
 	        <!-- /.control-sidebar-menu -->
 
 	      </div>
 	      <!-- /.tab-pane -->
-	      <!-- Stats tab content -->
-	      <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
-	      <!-- /.tab-pane -->
 	      <!-- Settings tab content -->
-	      <div class="tab-pane" id="control-sidebar-settings-tab">
-	        <form method="post">
-	          <h3 class="control-sidebar-heading">General Settings</h3>
-
-	          <div class="form-group">
-	            <label class="control-sidebar-subheading">
-	              Report panel usage
-	              <input type="checkbox" class="pull-right" checked>
-	            </label>
-
-	            <p>
-	              Some information about this general settings option
-	            </p>
-	          </div>
-	          <!-- /.form-group -->
-	        </form>
+	      <div class="tab-pane" ng-hide=" userTYPE == 'supad' " id="control-sidebar-settings-tab">
+	        <h3 class="control-sidebar-heading">Registrar</h3>
+	        <ul class="control-sidebar-menu">
+              <li>
+                <a href="">
+                  <i class="menu-icon fa fa-birthday-cake bg-orange"></i>
+                  <div class="menu-info">
+                    <h4 class="control-sidebar-subheading">Cumpleaños</h4>
+                    <p>Proximo en cumplir años.</p>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="">
+                  <i class="menu-icon fa fa-picture-o bg-light-blue"></i>
+                  <div class="menu-info">
+                    <h4 class="control-sidebar-subheading">Fotos</h4>
+                    <p>Guarda nuevas fotos.</p>
+                  </div>
+                </a>
+              </li>
+            </ul>
 	      </div>
 	      <!-- /.tab-pane -->
 	    </div>
@@ -216,6 +284,7 @@ if( !isset( $_SESSION['uid'] ) ){
 	<script src="app/lib/jcs-auto-validate.js"></script>
 	<script src="app/lib/bootstrap.min.js"></script>
 	<script src="app/lib/AdminLTE.js"></script>
+	<script src="app/lib/sweetalert.min.js"></script>
 	<!--<script src="app/lib/dashboard.js"></script>-->
 	<!--<script src="app/lib/demoAdminLTE.js"></script>-->
 	<!--<script src="js/ie10-viewport-bug-workaround.js"></script>-->
@@ -229,8 +298,15 @@ if( !isset( $_SESSION['uid'] ) ){
 	<script src="public/user/route.js"></script>
 	<!-- Fin Route -->
 
+	<!-- Service -->
+	<script src="public/user/service.js"></script>
+	<!-- Fin Service -->
+	
+	<!-- Controllers -->
+	<script src="public/user/controller.js"></script>
+	<!-- Fin Controllers -->
+
 	<script src="public/app.js"></script>
 
-	<script src="public/give/module.js"></script>
 </body>
 </html>
