@@ -151,10 +151,10 @@ if( !isset( $_SESSION['uid'] ) ){
 	  <aside class="control-sidebar control-sidebar-dark">
 	    <!-- Create the tabs -->
 	    <ul class="nav nav-tabs nav-justified control-sidebar-tabs" style="margin:0;">
-	      <li class="active" ng-hide=" userTYPE != 'supad' ">
+	      <li class="active" ng-show=" userTYPE == 'adrh' || userTYPE == 'supad' ">
 	      	<a ng-click="sidebar('#control-sidebar-stats-tab','#control-sidebar-settings-tab','#control-sidebar-home-tab')" data-toggle="tab"><i class="fa fa-users"></i></a>
 	      </li>
-	      <li class="active" ng-hide=" userTYPE == 'supad' ">
+	      <li ng-hide=" userTYPE == 'supad' ">
 	      	<a ng-click="sidebar('#control-sidebar-home-tab','#control-sidebar-settings-tab','#control-sidebar-stats-tab')" data-toggle="tab"><i class="fa fa-registered"></i></a>
 	      </li>
 	      <li ng-hide=" userTYPE == 'supad' ">
@@ -164,9 +164,9 @@ if( !isset( $_SESSION['uid'] ) ){
 	    <!-- Tab panes -->
 	    <div class="tab-content">
 	      <!-- Stats tab content -->
-	      <div class="tab-pane active" ng-hide=" userTYPE != 'supad' " id="control-sidebar-stats-tab">
+	      <div class="tab-pane active" ng-show=" userTYPE == 'adrh' || userTYPE == 'supad' " id="control-sidebar-stats-tab">
 	      	<ul class="control-sidebar-menu">
-              <li>
+              <li ng-show=" userTYPE == 'adrh' ">
                 <a href="/tribunal/users">
                   <i class="menu-icon fa fa-user-plus bg-black"></i>
                   <div class="menu-info">
@@ -175,25 +175,34 @@ if( !isset( $_SESSION['uid'] ) ){
                   </div>
                 </a>
               </li>
+              <li ng-show=" userTYPE == 'supad' ">
+                <a href="/tribunal/users">
+                  <i class="menu-icon fa fa-key bg-black"></i>
+                  <div class="menu-info">
+                    <h4 class="control-sidebar-subheading">Permisos</h4>
+                    <p>Dar permisos a usuarios.</p>
+                  </div>
+                </a>
+              </li>
             </ul>
 	      </div>
 	      <!-- /.tab-pane -->
 	      <!-- Home tab content -->
-	      <div class="tab-pane active" ng-hide=" userTYPE == 'supad' " id="control-sidebar-home-tab">
+	      <div class="tab-pane" ng-hide=" userTYPE == 'supad' " id="control-sidebar-home-tab">
 	        <h3 class="control-sidebar-heading">Publicar</h3>
 	        <ul class="control-sidebar-menu">
-              <li>
+              <li ng-hide=" userTYPE == 'adrh' || userTYPE == 'adsg' ">
                 <a href="">
-                  <i class="menu-icon fa fa-th-list bg-red"></i>
+                  <i class="menu-icon fa fa-th-list bg-navy"></i>
                   <div class="menu-info">
                     <h4 class="control-sidebar-subheading">Noticias</h4>
                     <p>Ingresa nuevas noticias.</p>
                   </div>
                 </a>
               </li>
-              <li>
+              <li ng-hide=" userTYPE == 'adrh' || userTYPE == 'adsg' ">
                 <a href="">
-                  <i class="menu-icon fa fa-list-alt bg-yellow"></i>
+                  <i class="menu-icon fa fa-list-alt bg-blue"></i>
                   <div class="menu-info">
                     <h4 class="control-sidebar-subheading">Efemerides</h4>
                     <p>Ingresa nuevas efemerides.</p>
@@ -202,25 +211,25 @@ if( !isset( $_SESSION['uid'] ) ){
               </li>
               <li>
                 <a href="">
-                  <i class="menu-icon fa fa-newspaper-o bg-green"></i>
+                  <i class="menu-icon fa fa-newspaper-o bg-aqua"></i>
                   <div class="menu-info">
                     <h4 class="control-sidebar-subheading">Avisos</h4>
                     <p>Ingresa nuevos avisos</p>
                   </div>
                 </a>
               </li>
-              <li>
+              <li ng-hide=" userTYPE == 'adrp' ">
                 <a href="">
-                  <i class="menu-icon fa fa-newspaper-o bg-green"></i>
+                  <i class="menu-icon fa fa-book bg-maroon"></i>
                   <div class="menu-info">
                     <h4 class="control-sidebar-subheading">Reglamentos</h4>
                     <p>Ingresa nuevos reglamentos</p>
                   </div>
                 </a>
               </li>
-              <li>
+              <li ng-hide=" userTYPE == 'adrp' ">
                 <a href="">
-                  <i class="menu-icon fa fa-newspaper-o bg-green"></i>
+                  <i class="menu-icon fa fa-book bg-purple"></i>
                   <div class="menu-info">
                     <h4 class="control-sidebar-subheading">Normativas</h4>
                     <p>Ingresa nuevas normativas</p>

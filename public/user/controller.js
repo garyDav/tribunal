@@ -6,6 +6,7 @@ angular.module('userModule').controller('userCtrl', ['$scope', 'userService', fu
 	$scope.activar('mUsers','','Usuarios','lista de usuarios');
 	$scope.users   = {};
 	$scope.userSel = {};
+	$scope.viewJA = false;
 	$scope.load = true;
 
 	//Edad Minima

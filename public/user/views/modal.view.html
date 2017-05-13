@@ -50,6 +50,7 @@
             <label>Sexo</label>
             <select type="text" class="form-control" placeholder="Sexo"
                 ng-model="userSel.sex">
+                <option value="" disabled selected>Sexo </option>
                 <option value="Masculino">Masculino</option>
                 <option value="Femenino">Femenino</option>
             </select>
@@ -68,9 +69,16 @@
           </div>
 
           <div class="form-group">
+            <label>Celular</label>
+            <input type="number" class="form-control"
+                ng-model="userSel.cellphone" required>
+          </div>
+
+          <div class="form-group">
             <label>Nivel</label>
             <select type="text" class="form-control" placeholder="Nivel de usuario"
                 ng-model="userSel.type" required>
+                <option value="" disabled selected>Nivel de usuario </option>
                 <option value="user">Usuario</option>
                 <option value="admin">Administrador</option>
                 <option value="supad">Super Administrador</option>
@@ -78,9 +86,53 @@
           </div>
 
           <div class="form-group">
-            <label>Celular</label>
-            <input type="number" class="form-control"
-                ng-model="userSel.cellphone" required>
+            <label class="mano" ng-click="viewJA = !viewJA;">Juzgado Agroambiental</label>
+            <div class="animated fadeIn" ng-show="viewJA">
+              <!-- /.filtros -->
+              <div class="filtros">
+              <div class="busqueda linea b-largo">
+                <label for="busqueda"><i class="fa fa-search mano" aria-hidden="true"></i></label>
+                <input id="busqueda" type="text" placeholder="Busque aqui..." ng-model="busqueda">
+              </div>
+              </div>
+              <!-- /.Fin filtros -->
+              <table class="table table-bordered responsive-table">
+                <thead>
+                  <tr>
+                    <th><a class="mano" ng-click="columna='id'; reverse = !reverse;">#</a></th>
+                    <th><a class="mano" ng-click="columna='name'; reverse = !reverse;">Nombre</a></th>
+                    <th>Acción</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="user in users.users | filter:busqueda | orderBy:columna:reverse">
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>
+                      <a ng-click="mostrarModal( user )" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+                    </td>
+                  </tr>
+                </tbody>
+
+              </table>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Departamento</label>
+            <select type="text" class="form-control" placeholder="departamento"
+                ng-model="userSel.cod_dep" required>
+                <option value="" disabled selected>Departamento </option>
+                <option value="D-0001">Beni</option>
+                <option value="D-0002">Chuquisaca</option>
+                <option value="D-0003">Cochabamba</option>
+                <option value="D-0004">La Paz</option>
+                <option value="D-0005">Oruro</option>
+                <option value="D-0006">Pando</option>
+                <option value="D-0007">Potosí</option>
+                <option value="D-0008">Santa Cruz</option>
+                <option value="D-0009">Tarija</option>
+            </select>
           </div>
 
         </div>
