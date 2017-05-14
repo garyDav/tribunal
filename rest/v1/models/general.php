@@ -68,7 +68,7 @@ function get_todo_paginado( $tabla, $pagina = 1, $por_pagina = 10 ){
 
 }
 
-function get_paginado_user( $pagina = 1, $por_pagina = 10 ){
+function get_paginado_user( $pagina = 1, $por_pagina = 20 ){
 
 	$conex = getConex();
 

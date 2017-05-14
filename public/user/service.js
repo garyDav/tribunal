@@ -12,40 +12,79 @@ angular.module('userModule').factory('userService', ['$http', '$q', function($ht
 		'total_paginas' : 1,
 		'paginas'	    : [],
 
+		formatDate: function( date ) {
+			var d = new Date(date);
+			var month = '' + (d.getMonth() + 1);
+			var day = '' + d.getDate();
+			var year = d.getFullYear();
+
+			if (month.length < 2) month = '0' + month;
+			if (day.length < 2) day = '0' + day;
+
+			return [year, month, day].join('-');
+		},
+
 
 		guardar: function( user ){
 
 			var d = $q.defer();
-
-			$http.post('rest/v1/user/' , user )
+			var us = JSON.parse( JSON.stringify( user ) );
+			us.fec_nac = self.formatDate(us.fec_nac);
+			console.log(us);
+			$http.post('rest/v1/person/' , us )
 				.success(function( respuesta ){
 
 					if ( respuesta.error == 'not' ) {
-						self.cargarPagina( self.pag_actual  );
-						d.resolve();
-						swal("CORRECTO", "¡"+respuesta.mensaje+"!", "success");
+						us.id_person = respuesta.id;
+						console.log(respuesta);
+						console.log(us);
+						$http.post('rest/v1/user/' , us )
+							.success(function( respuesta ){
+
+								if ( respuesta.error == 'not' ) {
+									self.cargarPagina( self.pag_actual  );
+									d.resolve();
+									swal("CORRECTO", "¡"+respuesta.msj+"!", "success");
+								} else 
+								if ( respuesta.error == 'yes' )
+									swal("ERROR", "¡"+respuesta.msj+"!", "error");
+								else 
+									swal("ERROR SERVER", "¡"+respuesta+"!", "error");
+							});
 					} else 
 					if ( respuesta.error == 'yes' )
-						swal("ERROR", "¡"+respuesta.mensaje+"!", "error");
+						swal("ERROR", "¡"+respuesta.msj+"!", "error");
 					else 
-						swal("ERROR SERVER", "¡"+respuesta+"!", "error");;
+						swal("ERROR SERVER", "¡"+respuesta+"!", "error");
 				});
 
 			return d.promise;
 
 		},
 
-		eliminar: function( id ){
+		eliminar: function( id_person,id ){
 
 			var d = $q.defer();
 
 			$http.delete('rest/v1/user/' + id )
 				.success(function( respuesta ){
 
-					self.cargarPagina( self.pag_actual  );
-					d.resolve();
+					if ( respuesta.error == 'not' ) {
+						$http.delete('rest/v1/person/' + id_person )
+							.success(function( respuesta ){
+
+								if ( respuesta.error == 'not' ) {
+									self.cargarPagina( self.pag_actual  );
+									d.resolve(respuesta);
+								} else 
+									swal("ERROR SERVER", "¡"+respuesta+"!", "error");
+							});
+					} else 
+						swal("ERROR SERVER", "¡"+respuesta+"!", "error");
+						
 
 				});
+
 
 			return d.promise;
 
@@ -79,6 +118,14 @@ angular.module('userModule').factory('userService', ['$http', '$q', function($ht
 				.success(function( data ){
 
 					if(data) {
+						data.user.forEach(function(element,index,array) {
+							element.pwd = '';
+							var values = element.fec_nac.split("-");
+							var dia = values[2];
+							var mes = values[1];
+							var ano = values[0];
+							element.fec_nac = new Date(ano, mes, dia);
+						});
 
 						self.err           = data.err;
 						self.conteo        = data.conteo;

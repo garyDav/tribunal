@@ -21,15 +21,22 @@ angular.module('userModule').controller('userCtrl', ['$scope', 'userService', fu
 	me.setFullYear(me.getFullYear()-18);
 	$scope.edadMaxima = ""+me.getFullYear()+"-01-01";
 
+	userService.cargarJAgro().then(function(data) {
+		$scope.jabro = data;
+	});
+	userService.cargarDep().then(function( data ) {
+		$scope.department = data;
+	});
+
 
 	$scope.moverA = function( pag ){
 		$scope.load = true;
 
 		userService.cargarPagina( pag ).then( function(){
 			$scope.users = userService;
+			console.log($scope.users);
 			$scope.load = false;
 		});
-
 	};
 
 	$scope.moverA(1);
@@ -39,34 +46,23 @@ angular.module('userModule').controller('userCtrl', ['$scope', 'userService', fu
 	// ================================================
 	$scope.mostrarModal = function( user ){
 
-		//console.log( user );
-		//angular.copy( user, $scope.userSel );
-		userService.cargarJAgro().then(
-			function(data) {
-				$scope.jabro = data;
-			}
-		);
-		userService.cargarDep().then(function( data ) {
-			$scope.department = data;
-		});
+		user.cellphone = parseInt(user.cellphone);
+		angular.copy( user, $scope.userSel );
 		$("#modal_user").modal();
-
 	}
 
-	$scope.llenar_jagroambiental= function( user,id,cod_ja,frmUser ) {
+	$scope.llenar_jagroambiental= function( user,id,cod_ja ) {
 		user.id_jagroambiental = id;
 		user.cod_ja = cod_ja;
-		$scope.viewJA = false;
-		console.log(id+' - '+cod_ja+' - '+$scope.viewJA);
+		//console.log(id+' - '+cod_ja+' - '+$scope.viewJA);
 	}
 
 	// ================================================
 	//   Funcion para guardar
 	// ================================================
 	$scope.guardar = function( user, frmUser){
-		console.log(user);
 
-		/*userService.guardar( user ).then(function(){
+		userService.guardar( user ).then(function(){
 
 			// codigo cuando se actualizo
 			$("#modal_user").modal('hide');
@@ -74,14 +70,14 @@ angular.module('userModule').controller('userCtrl', ['$scope', 'userService', fu
 
 			frmUser.autoValidateFormOptions.resetForm();
 
-		});*/
+		});
 
 
 	}
 	// ================================================
 	//   Funcion para eliminar
 	// ================================================
-	$scope.eliminar = function( id ){
+	$scope.eliminar = function( id_person,id ){
 
 		swal({
 			title: "¿Esta seguro de eliminar?",
@@ -93,8 +89,9 @@ angular.module('userModule').controller('userCtrl', ['$scope', 'userService', fu
 			closeOnConfirm: false
 		},
 		function(){
-			userService.eliminar( id ).then(function(){
-				swal("Eliminado!", "Registro eliminado correctamente.", "success");
+			userService.eliminar( id_person,id ).then(function(data){
+				if( data.error == 'not')
+					swal("Eliminado!", "ID: "+data.id+" "+data.msj, "success");
 			});
 		});
 

@@ -28,7 +28,7 @@ $app->post("/person/",function() use($app) {
 		$conex = getConex();
 		$res = array( 'err'=>'yes','msj'=>'Puta no se pudo hacer nada, revisa mierda' );
 
-		if( isset( $request['id'] )  ){  // ACTUALIZAR
+		if( isset( $request['id_person'] )  ){  // ACTUALIZAR
 
 			$sql = "UPDATE person 
 						SET
@@ -38,7 +38,7 @@ $app->post("/person/",function() use($app) {
 							last_name     = '". $request['last_name'] ."',
 							fec_nac     = '". $request['fec_nac'] ."',
 							sex     = '". $request['sex'] ."'
-					WHERE id=" . $request['id'].";";
+					WHERE id=" . $request['id_person'].";";
 
 			$hecho = $conex->prepare( $sql );
 			$hecho->execute();

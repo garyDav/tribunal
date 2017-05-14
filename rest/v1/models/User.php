@@ -59,7 +59,6 @@ $app->post("/user/",function() use($app) {
 						SET
 							email  		  = '". $request['email'] ."',
 							pwd 	   	  = '". $pwd ."',
-							type          = '". $request['type'] ."',
 							cellphone     = '". $request['cellphone'] ."'
 					WHERE id=" . $request['id'].";";
 
@@ -67,7 +66,7 @@ $app->post("/user/",function() use($app) {
 			$hecho->execute();
 			$conex = null;
 			
-			$res = array( 'id'=>$request['id'], 'error'=>'not', 'msj'=>'Registro actualizado' );
+			$res = array( 'id'=>$request['id'], 'error'=>'not', 'msj'=>'Usuario actualizado' );
 
 		}else{  // INSERT
 
