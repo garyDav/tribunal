@@ -92,24 +92,25 @@
               <div class="filtros">
               <div class="busqueda linea b-largo">
                 <label for="busqueda"><i class="fa fa-search mano" aria-hidden="true"></i></label>
-                <input id="busqueda" type="text" placeholder="Busque aqui..." ng-model="busqueda">
+                <input id="busqueda" type="text" placeholder="Busque aqui..." ng-model="jagroModel">
               </div>
               </div>
-              <!-- /.Fin filtros -->
+              <input type="hidden" ng-model="userSel.id_jagroambiental">
+              <input type="hidden" ng-model="userSel.cod_ja">
               <table class="table table-bordered responsive-table">
                 <thead>
                   <tr>
-                    <th><a class="mano" ng-click="columna='id'; reverse = !reverse;">#</a></th>
-                    <th><a class="mano" ng-click="columna='name'; reverse = !reverse;">Nombre</a></th>
-                    <th>Acción</th>
+                    <th><a class="mano" ng-click="coldep='id'; reversedep = !reversedep;">#</a></th>
+                    <th><a class="mano" ng-click="coldep='name'; reversedep = !reversedep;">Juzgados</a></th>
+                    <th>Seleccione uno</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr ng-repeat="user in users.users | filter:busqueda | orderBy:columna:reverse">
-                    <td>{{ user.id }}</td>
-                    <td>{{ user.name }}</td>
+                  <tr ng-repeat="j in jabro | filter:jagroModel | orderBy:coldep:reversedep">
+                    <td>{{ j.id }}</td>
+                    <td>{{ j.name }}</td>
                     <td>
-                      <a ng-click="mostrarModal( user )" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+                      <a ng-click="llenar_jagroambiental( userSel,j.id,j.cod_ja )" class="btn btn-primary"><i class="fa fa-hand-o-up"></i></a>
                     </td>
                   </tr>
                 </tbody>
@@ -123,15 +124,7 @@
             <select type="text" class="form-control" placeholder="departamento"
                 ng-model="userSel.cod_dep" required>
                 <option value="" disabled selected>Departamento </option>
-                <option value="D-0001">Beni</option>
-                <option value="D-0002">Chuquisaca</option>
-                <option value="D-0003">Cochabamba</option>
-                <option value="D-0004">La Paz</option>
-                <option value="D-0005">Oruro</option>
-                <option value="D-0006">Pando</option>
-                <option value="D-0007">Potosí</option>
-                <option value="D-0008">Santa Cruz</option>
-                <option value="D-0009">Tarija</option>
+                <option ng-repeat="dep in department" ng-value="dep.cod_dep">{{dep.name}} </option>
             </select>
           </div>
 

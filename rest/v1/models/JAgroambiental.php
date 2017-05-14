@@ -1,5 +1,27 @@
 <?php if(!defined('SPECIALCONSTANT')) die(json_encode([array('id'=>'0','error'=>'Acceso Denegado')]));
 
+$app->get('/j_agroambiental/',function() use($app) {
+	try {
+		
+		$conex = getConex();
+
+		$sql = "SELECT * FROM j_agroambiental;";
+		$result = $conex->prepare( $sql );
+
+		$result->execute();
+		$conex = null;
+
+		$res = $result->fetchAll(PDO::FETCH_OBJ);
+
+		$app->response->headers->set('Content-type','application/json');
+		$app->response->headers->set('Access-Control-Allow-Origin','*');
+		$app->response->status(200);
+		$app->response->body(json_encode($res));
+	}catch(PDOException $e) {
+		echo 'Error: '.$e->getMessage();
+	}
+})->conditions(array('id'=>'[0-9]{1,11}'));
+
 $app->get('/j_agroambiental/:id',function($id) use($app) {
 	try {
 		//sleep(1);

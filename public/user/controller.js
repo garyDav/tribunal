@@ -8,6 +8,8 @@ angular.module('userModule').controller('userCtrl', ['$scope', 'userService', fu
 	$scope.userSel = {};
 	$scope.viewJA = false;
 	$scope.load = true;
+	$scope.jabro = [];
+	$scope.department = [];
 
 	//Edad Minima
 	var em = new Date();
@@ -37,18 +39,34 @@ angular.module('userModule').controller('userCtrl', ['$scope', 'userService', fu
 	// ================================================
 	$scope.mostrarModal = function( user ){
 
-		// console.log( user );
-		angular.copy( user, $scope.userSel );
+		//console.log( user );
+		//angular.copy( user, $scope.userSel );
+		userService.cargarJAgro().then(
+			function(data) {
+				$scope.jabro = data;
+			}
+		);
+		userService.cargarDep().then(function( data ) {
+			$scope.department = data;
+		});
 		$("#modal_user").modal();
 
+	}
+
+	$scope.llenar_jagroambiental= function( user,id,cod_ja,frmUser ) {
+		user.id_jagroambiental = id;
+		user.cod_ja = cod_ja;
+		$scope.viewJA = false;
+		console.log(id+' - '+cod_ja+' - '+$scope.viewJA);
 	}
 
 	// ================================================
 	//   Funcion para guardar
 	// ================================================
 	$scope.guardar = function( user, frmUser){
+		console.log(user);
 
-		userService.guardar( user ).then(function(){
+		/*userService.guardar( user ).then(function(){
 
 			// codigo cuando se actualizo
 			$("#modal_user").modal('hide');
@@ -56,7 +74,7 @@ angular.module('userModule').controller('userCtrl', ['$scope', 'userService', fu
 
 			frmUser.autoValidateFormOptions.resetForm();
 
-		});
+		});*/
 
 
 	}

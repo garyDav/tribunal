@@ -51,6 +51,25 @@ angular.module('userModule').factory('userService', ['$http', '$q', function($ht
 
 		},
 
+		cargarJAgro: function() {
+			var d = $q.defer();
+
+			$http.get('rest/v1/j_agroambiental/').success(function( data ) {
+				d.resolve(data);
+			});
+
+			return d.promise;
+		},
+
+		cargarDep: function() {
+			var d = $q.defer();
+
+			$http.get('rest/v1/department').success(function( data ) {
+				d.resolve(data);
+			});
+
+			return d.promise;
+		},
 
 		cargarPagina: function( pag ){
 
@@ -58,7 +77,7 @@ angular.module('userModule').factory('userService', ['$http', '$q', function($ht
 
 			$http.get('rest/v1/user/' + pag )
 				.success(function( data ){
-					console.log( data );
+
 					if(data) {
 
 						self.err           = data.err;
