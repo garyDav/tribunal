@@ -205,6 +205,7 @@
 			mainService.data().then( function(){
 				mainService.mainUser($rootScope.userID).then(function( data ) {
 					$scope.mainUser = data;
+					console.log($scope.mainUser);
 				});
 				
 			});

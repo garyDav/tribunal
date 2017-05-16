@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 14-05-2017 a las 18:28:19
+-- Tiempo de generación: 16-05-2017 a las 05:36:01
 -- Versión del servidor: 10.1.13-MariaDB
 -- Versión de PHP: 7.0.8
 
@@ -134,17 +134,6 @@ CREATE TABLE `communicate` (
   `fec` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
---
--- Volcado de datos para la tabla `communicate`
---
-
-INSERT INTO `communicate` (`id`, `id_use`, `id_usr`, `message`, `fec`) VALUES
-(1, 2, 5, 'hola como estas', '2017-05-11 09:41:44'),
-(2, 5, 2, 'bien y tu', '2017-05-11 09:42:32'),
-(3, 1, 2, 'que problema hay', '2017-05-11 09:43:04'),
-(4, 1, 5, 'parangaricutirimicuaro', '2017-05-11 09:43:30'),
-(5, 5, 3, 'esta es el dato que necesitabamos', '2017-05-11 09:44:00');
-
 -- --------------------------------------------------------
 
 --
@@ -255,24 +244,6 @@ CREATE TABLE `person` (
   `sex` varchar(10) COLLATE utf8_spanish2_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
---
--- Volcado de datos para la tabla `person`
---
-
-INSERT INTO `person` (`id`, `ci`, `ex`, `name`, `last_name`, `fec_nac`, `sex`) VALUES
-(1, 20152126, 'Or', 'Juan', 'Perez', '1992-05-05', 'Masculino'),
-(2, 7476460, 'chu', 'nelson', 'mamani burgos', '1988-11-14', 'masculino'),
-(3, 111222, 'coc', 'roberto', 'molina', '1990-10-12', 'masculino'),
-(4, 111333, 'la ', 'claudia', 'zambrana', '1991-08-02', 'femenino'),
-(5, 111444, 'ben', 'sandra', 'aparicio', '1987-03-05', 'femenino'),
-(6, 222333, 'tar', 'pedro', 'montes', '1985-12-10', 'masculino'),
-(7, 222444, 'san', 'samuel', 'limon', '1995-09-25', 'masculino'),
-(8, 444555, 'pot', 'patricia', 'aguilar', '1992-02-20', 'femenino'),
-(9, 15987452, 'Pt', 'Angel', 'Cornejo', '1990-12-12', 'masculino'),
-(10, 48521598, 'SC', 'Adolfo', 'Sandoval', '1989-10-16', 'masculino'),
-(12, 45678925, 'Cbj', 'Jorge', 'Medrano', '2000-01-02', 'masculino'),
-(13, 15948625, 'Cbb', 'Daniela', 'Mazano', '0000-00-00', 'femenino');
-
 -- --------------------------------------------------------
 
 --
@@ -317,18 +288,6 @@ CREATE TABLE `publication` (
   `cod` varchar(7) COLLATE utf8_spanish2_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
---
--- Volcado de datos para la tabla `publication`
---
-
-INSERT INTO `publication` (`id`, `id_user`, `title`, `description`, `fec`, `img`, `doc`, `cod`) VALUES
-(1, 5, 'La Jurisdiccion Agroambiental', 'Siguiendo la tendencia de algunos países latinoamericanos como Argentina, Brasil, Chile, Costa Rica, Ecuador, México y Perú, que poseen dentro de su ordenamiento jurídico, la jurisdicción agraria y ambiental; Bolivia a través de la Nueva Constitución Política del Estado', '2017-05-11 10:05:25', '', NULL, 'JA-0004'),
-(2, 3, 'la equidad de genero en la JA', 'El Programa Equidad de Género Familia y Justicia, viene participando en reuniones i encuentros convocadas por el Viceministerio de Igualdad de Oportunidades dependiente de Ministerio de Justicia y fortaleciendo a las Organizaciones Económicas Campesinas Indígenas y Originarias de Bolivia. Se realizaron dos cumbres de mujeres a Nivel Nacional, la primera el año 2008 (1ra. Cumbre), donde se toco principalmente el tema de la discriminación, En la 2da. Cumbre, se conformo La Alianza de Organizaciones de Mujeres por la Revolución Democrática Cultural y la Unidad en la cual participan 16 organizaciones de diferentes lugares del país', '2017-05-12 18:31:38', '', NULL, 'D-0004'),
-(3, 5, 'Nueva justicia en Bolivia. ', 'Con el reto de acabar con la retardación, la corrupción y hacer que la justicia sea más justa para los bolivianos, desde el martes el país contará con un nuevo Órgano Judicial conformado por 56 magistrados electos por el voto popular del pueblo en una histórica elección realizada el 16 de octubre de 2011. Por primera vez, la equidad de género prevalecerá en el nuevo Órgano, toda vez que de la totalidad de autoridades electas para el Tribunal Supremo de Justicia, el Consejo de la Magistratura, el Tribunal Constitucional Plurinacional y el Tribunal Agroambiental son 28 mujeres y 28 varones.', '2017-05-12 18:40:16', '', NULL, 'JA-0002'),
-(4, 6, 'Ministro Justicia de Bolivia va a Chile a analizar defensa de 9 funcionarios', '"Vamos a participar en diversas reuniones con el equipo jurídico que defiende a nuestros compatriotas, a los nueve bolivianos injustamente detenidos, retenidos en el Estado chileno", afirmó el ministro, que cuenta con el visado para el viaje a ese país', '2017-05-12 18:43:31', '', NULL, 'D-0002'),
-(5, 7, '  Ministro de Justicia boliviano: Dichos del canciller Muñoz son “delirantes”', 'Arce lamentó "profundamente" que las autoridades chilenas hayan negado el visado a los presidentes del Senado boliviano, José Alberto Gonzales, y de la Cámara de Diputados, Gabriela Montaño, quienes tenían la intención de visitar a los nueve detenidos.', '2017-05-12 18:45:01', '', NULL, 'T-0000'),
-(6, 3, 'MINISTERIO DE JUSTICIA ENVÍA A LA CÁRCEL A FUNCIONARIO QUE FALSIFICÓ DOCUMENTO UNIVERSITARIO PARA ACCEDER A CARGO PÚBLICO', ' La Paz, 11 de mayo (MJyTI).- El Juez Quinto de Instrucción Cautelar de La Paz determinó la detención preventiva, en la cárcel de San Pedro, del señor Cesar Luis Catunta Alanoca, quien fraguó un documento universitario para ser contratado en el Ministerio de Justicia. Como parte de la política…', '2017-05-12 18:46:30', '', NULL, 'JA-0005');
-
 -- --------------------------------------------------------
 
 --
@@ -350,19 +309,6 @@ CREATE TABLE `user` (
   `cod_ja` varchar(7) COLLATE utf8_spanish2_ci DEFAULT NULL,
   `cod_all` varchar(7) COLLATE utf8_spanish2_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
-
---
--- Volcado de datos para la tabla `user`
---
-
-INSERT INTO `user` (`id`, `id_person`, `id_jagroambiental`, `email`, `pwd`, `type`, `cellphone`, `src`, `last_connection`, `registered`, `cod_dep`, `cod_ja`, `cod_all`) VALUES
-(1, 1, NULL, 'juan@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'supad', 88888888, NULL, '2017-05-07 00:38:31', '2017-05-07', 'D-0001', 'JA-0005', 'T-0000'),
-(2, 2, NULL, 'leo@hotmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 72869852, NULL, '2017-05-11 09:17:28', '2017-05-11', 'D-0009', 'JA-0009', 'T-0000'),
-(3, 8, NULL, 'jt@hotmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 11111111, NULL, '2017-05-11 09:27:34', '2017-05-11', 'D-0002', 'JA-0004', 'T-0000'),
-(5, 6, NULL, 'adrh@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'adrh', 74895632, NULL, '2017-05-11 09:31:56', '2017-05-11', 'D-0004', 'JA-0005', 'T-0000'),
-(6, 7, NULL, 'adrp@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'adrp', 74859632, NULL, '2017-05-11 09:54:26', '2017-05-11', 'D-0006', 'JA-0003', 'T-0000'),
-(7, 13, NULL, 'adsg@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'adsg', 74965823, NULL, '2017-05-11 09:56:08', '2017-05-11', 'D-0002', 'JA-0004', 'T-0000'),
-(8, 3, NULL, 'lp@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 4579562, NULL, '2017-05-12 11:46:42', '2017-05-12', 'D-0003', 'JA-0001', 'T-0000');
 
 --
 -- Índices para tablas volcadas
@@ -451,7 +397,7 @@ ALTER TABLE `comment`
 -- AUTO_INCREMENT de la tabla `communicate`
 --
 ALTER TABLE `communicate`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `department`
 --
@@ -476,7 +422,7 @@ ALTER TABLE `municipality`
 -- AUTO_INCREMENT de la tabla `person`
 --
 ALTER TABLE `person`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `province`
 --
@@ -486,12 +432,12 @@ ALTER TABLE `province`
 -- AUTO_INCREMENT de la tabla `publication`
 --
 ALTER TABLE `publication`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Restricciones para tablas volcadas
 --

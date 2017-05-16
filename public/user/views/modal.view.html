@@ -85,7 +85,7 @@
                 ng-model="userSel.cellphone" required>
           </div>
 
-          <div ng-hide="userSel.id">
+          <div ng-hide="userSel.id || userTYPE != 'supad' ">
             <div class="form-group">
               <label>Nivel</label>
               <select type="text" class="form-control" placeholder="Nivel de usuario"

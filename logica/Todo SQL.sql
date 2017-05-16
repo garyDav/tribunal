@@ -1,3 +1,4 @@
+--585f7f3723df82f91fffd25a5c6900597cd4d1c1
 CREATE DATABASE tribunal;
 use tribunal;
 
@@ -282,3 +283,73 @@ BEGIN
 	END IF;
 END //
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+INSERT INTO `department` (`id`, `name`, `cod_dep`) VALUES
+(1, 'La Paz', 'D-0001'),
+(2, 'Oruro', 'D-0002'),
+(3, 'Potosi', 'D-0003'),
+(4, 'Cochabamba', 'D-0004'),
+(5, 'Chuquisaca', 'D-0005'),
+(6, 'Tarija', 'D-0006'),
+(7, 'Pando', 'D-0007'),
+(8, 'Beni', 'D-0008'),
+(9, 'Santa Cruz', 'D-0009');
+
+INSERT INTO `j_agroambiental` (`id`, `id_municipality`, `name`, `cod_ja`) VALUES
+(1, 1, 'JA La Paz', 'JA-0001'),
+(2, 2, 'JA Oruro', 'JA-0002'),
+(3, 3, 'JA Potosi', 'JA-0003'),
+(4, 4, 'JA Cochabamba', 'JA-0004'),
+(5, 5, 'JA Sucre', 'JA-0005'),
+(6, 6, 'JA Tarija', 'JA-0006'),
+(7, 7, 'JA Cobija', 'JA-0007'),
+(8, 8, 'JA Trinidad', 'JA-0009');
+
+
+INSERT INTO `municipality` (`id`, `id_province`, `name`) VALUES
+(1, 1, 'La Paz'),
+(2, 2, 'Oruro'),
+(3, 3, 'Potosi'),
+(4, 4, 'Cochabamba'),
+(5, 5, 'Sucre'),
+(6, 6, 'Tarija'),
+(7, 7, 'Cobija'),
+(8, 8, 'Trinidad'),
+(9, 9, 'Santa Cruz de la Sierra');
+
+INSERT INTO `province` (`id`, `id_department`, `name`) VALUES
+(1, 1, 'Murillo'),
+(2, 2, 'Cercado'),
+(3, 3, 'Tomas Frias'),
+(4, 4, 'Cercado'),
+(5, 5, 'Oropeza'),
+(6, 6, 'Cercado'),
+(7, 7, 'Nicolas Suarez'),
+(8, 8, 'Cercado'),
+(9, 9, 'Andres de Ibañez');
+
+INSERT INTO `publication` (`id`, `id_user`, `title`, `description`, `fec`, `img`, `doc`, `cod`) VALUES
+(1, 1, 'La Jurisdiccion Agroambiental', 'Siguiendo la tendencia de algunos países latinoamericanos como Argentina, Brasil, Chile, Costa Rica, Ecuador, México y Perú, que poseen dentro de su ordenamiento jurídico, la jurisdicción agraria y ambiental; Bolivia a través de la Nueva Constitución Política del Estado', '2017-05-11 10:05:25', '', NULL, 'JA-0004'),
+(2, 2, 'la equidad de genero en la JA', 'El Programa Equidad de Género Familia y Justicia, viene participando en reuniones i encuentros convocadas por el Viceministerio de Igualdad de Oportunidades dependiente de Ministerio de Justicia y fortaleciendo a las Organizaciones Económicas Campesinas Indígenas y Originarias de Bolivia. Se realizaron dos cumbres de mujeres a Nivel Nacional, la primera el año 2008 (1ra. Cumbre), donde se toco principalmente el tema de la discriminación, En la 2da. Cumbre, se conformo La Alianza de Organizaciones de Mujeres por la Revolución Democrática Cultural y la Unidad en la cual participan 16 organizaciones de diferentes lugares del país', '2017-05-12 18:31:38', '', NULL, 'D-0004'),
+(3, 3, 'Nueva justicia en Bolivia. ', 'Con el reto de acabar con la retardación, la corrupción y hacer que la justicia sea más justa para los bolivianos, desde el martes el país contará con un nuevo Órgano Judicial conformado por 56 magistrados electos por el voto popular del pueblo en una histórica elección realizada el 16 de octubre de 2011. Por primera vez, la equidad de género prevalecerá en el nuevo Órgano, toda vez que de la totalidad de autoridades electas para el Tribunal Supremo de Justicia, el Consejo de la Magistratura, el Tribunal Constitucional Plurinacional y el Tribunal Agroambiental son 28 mujeres y 28 varones.', '2017-05-12 18:40:16', '', NULL, 'JA-0002'),
+(4, 4, 'Ministro Justicia de Bolivia va a Chile a analizar defensa de 9 funcionarios', '"Vamos a participar en diversas reuniones con el equipo jurídico que defiende a nuestros compatriotas, a los nueve bolivianos injustamente detenidos, retenidos en el Estado chileno", afirmó el ministro, que cuenta con el visado para el viaje a ese país', '2017-05-12 18:43:31', '', NULL, 'D-0002'),
+(5, 5, '  Ministro de Justicia boliviano: Dichos del canciller Muñoz son “delirantes”', 'Arce lamentó "profundamente" que las autoridades chilenas hayan negado el visado a los presidentes del Senado boliviano, José Alberto Gonzales, y de la Cámara de Diputados, Gabriela Montaño, quienes tenían la intención de visitar a los nueve detenidos.', '2017-05-12 18:45:01', '', NULL, 'T-0000'),
+(6, 6, 'MINISTERIO DE JUSTICIA ENVÍA A LA CÁRCEL A FUNCIONARIO QUE FALSIFICÓ DOCUMENTO UNIVERSITARIO PARA ACCEDER A CARGO PÚBLICO', ' La Paz, 11 de mayo (MJyTI).- El Juez Quinto de Instrucción Cautelar de La Paz determinó la detención preventiva, en la cárcel de San Pedro, del señor Cesar Luis Catunta Alanoca, quien fraguó un documento universitario para ser contratado en el Ministerio de Justicia. Como parte de la política…', '2017-05-12 18:46:30', '', NULL, 'JA-0005');
+
+*/

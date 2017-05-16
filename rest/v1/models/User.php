@@ -97,7 +97,7 @@ $app->post("/user/",function() use($app) {
 						'". $request['id_jagroambiental'] . "',
 						'". $request['email'] . "',
 						'". $pwd . "',
-						'". $request['type'] . "',
+						'". 'user' . "',
 						'". $request['cellphone'] . "',
 						'". $request['cod_dep'] . "',
 						'". $request['cod_ja'] . "',
