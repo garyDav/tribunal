@@ -34,7 +34,6 @@ angular.module('userModule').controller('userCtrl', ['$scope', 'userService', fu
 
 		userService.cargarPagina( pag ).then( function(){
 			$scope.users = userService;
-			console.log($scope.users);
 			$scope.load = false;
 		});
 	};
@@ -61,6 +60,7 @@ angular.module('userModule').controller('userCtrl', ['$scope', 'userService', fu
 	//   Funcion para guardar
 	// ================================================
 	$scope.guardar = function( user, frmUser){
+		console.log('jodeeeer');
 
 		userService.guardar( user ).then(function(){
 
@@ -71,7 +71,6 @@ angular.module('userModule').controller('userCtrl', ['$scope', 'userService', fu
 			frmUser.autoValidateFormOptions.resetForm();
 
 		});
-
 
 	}
 	// ================================================

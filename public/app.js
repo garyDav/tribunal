@@ -194,7 +194,7 @@
 		return self;
 	}]);
 
-	app.controller('mainCtrl', ['$scope', 'mainService','$rootScope', function($scope,mainService,$rootScope){
+	app.controller('mainCtrl', ['$scope', 'mainService','$rootScope','upload', function($scope,mainService,$rootScope,upload){
 		$scope.config = {};
 		$scope.titulo    = "";
 		$scope.subtitulo = "";
@@ -205,7 +205,6 @@
 			mainService.data().then( function(){
 				mainService.mainUser($rootScope.userID).then(function( data ) {
 					$scope.mainUser = data;
-					console.log($scope.mainUser);
 				});
 				
 			});
@@ -222,6 +221,15 @@
 
 		$scope.editarUserMain = function(user,frmUser) {
 			console.log(user);
+			var src = '';
+			var msj = '';
+			upload.saveImg(user.src).then(function( data ) {
+				console.log(data);
+				/*if(data) {
+					src = data.src;
+					msj = data.msj;
+				}*/
+			});
 		};
 
 		// ================================================
@@ -275,6 +283,28 @@
 			}
 		}
 	});
+
+	// ================================================
+	//   Servicio para cargar archivos
+	// ================================================
+	app.service('upload',['$http','$q',function($http,$q) {
+		var self = {
+			saveImg : function(img) {
+				var d = $q.defer();
+				var formData = new FormData();
+				formData.append('src',img);
+				$http.post('php/server.php',formData,{
+					headers: { 'Content-Type': undefined }
+				}).success(function( data ) {
+					d.resolve( data );
+				}).error(function(msj, code) {
+					d.reject( msj );
+				});
+				return d.promise;
+			}
+		};
+		return self;
+	}]);
 
 
 })(window.angular);

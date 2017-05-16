@@ -257,15 +257,6 @@ BEGIN
 	SELECT @@identity AS id, 'not' AS error,'Registro registrado correctamente.' AS msj;
 END //
 
-
-
-
-
-
-
-
-
-
 DROP PROCEDURE IF EXISTS pReporte;
 CREATE PROCEDURE pReporte (
     IN v_fecha date
@@ -282,20 +273,6 @@ BEGIN
 		SELECT 'No se encontraron ventas en esa fecha' error;
 	END IF;
 END //
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
