@@ -1,31 +1,30 @@
 <!-- Menu Toggle Button -->
 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
   <!-- The user image in the navbar-->
-  <img src="app/img/avatar.png" class="user-image" alt="User Image">
+  <img ng-hide=" (mainUser.src == null || mainUser.src == '') && mainUser.sex == 'Masculino' " src="app/img/avatarF.png" class="user-image" alt="User Image">
+  <img ng-hide=" (mainUser.src == null || mainUser.src == '') && mainUser.sex == 'Femenino' " src="app/img/avatarM.png" class="user-image" alt="User Image">
   <!-- hidden-xs hides the username on small devices so only the image appears. -->
-  <span class="hidden-xs">Alexander Pierce</span>
+  <span class="hidden-xs">{{mainUser.name}} {{mainUser.last_name}} </span>
 </a>
 <ul class="dropdown-menu">
   <!-- The user image in the menu -->
   <li class="user-header">
-    <img src="app/img/avatar.png" class="img-circle" alt="User Image">
+    <img ng-hide=" (mainUser.src == null || mainUser.src == '') && mainUser.sex == 'Masculino' " src="app/img/avatarF.png" class="img-circle" alt="User Image">
+    <img ng-hide=" (mainUser.src == null || mainUser.src == '') && mainUser.sex == 'Femenino' " src="app/img/avatarM.png" class="img-circle" alt="User Image">
 
     <p>
-      Alexander Pierce - Web Developer
-      <small>Member since Nov. 2012</small>
+      {{mainUser.name}} - {{userTYPE}}
+      <small>{{mainUser.registered | date:"fullDate"}} </small>
     </p>
   </li>
   <!-- Menu Body -->
   <li class="user-body">
     <div class="row">
-      <div class="col-xs-4 text-center">
-        <a href="#">Followers</a>
+      <div class="col-xs-6 text-center">
+        <span>{{mainUser.email}} </span>
       </div>
-      <div class="col-xs-4 text-center">
-        <a href="#">Sales</a>
-      </div>
-      <div class="col-xs-4 text-center">
-        <a href="#">Friends</a>
+      <div class="col-xs-6 text-center">
+        <span>{{mainUser.cellphone}} </span>
       </div>
     </div>
     <!-- /.row -->
@@ -33,10 +32,10 @@
   <!-- Menu Footer-->
   <li class="user-footer">
     <div class="pull-left">
-      <a href="#" class="btn btn-default btn-flat">Profile</a>
+      <a ng-click="mostrarUserModal();" class="btn btn-default btn-flat">Editar</a>
     </div>
     <div class="pull-right">
-      <a ng-click="salir();" class="btn btn-default btn-flat">Sign out</a>
+      <a ng-click="salir();" class="btn btn-default btn-flat">Salir</a>
     </div>
   </li>
 </ul>

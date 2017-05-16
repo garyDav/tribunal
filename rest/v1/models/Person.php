@@ -28,6 +28,9 @@ $app->post("/person/",function() use($app) {
 		$conex = getConex();
 		$res = array( 'err'=>'yes','msj'=>'Puta no se pudo hacer nada, revisa mierda' );
 
+		$request['name'] = ucwords($request['name']);
+		$request['last_name'] = ucwords($request['last_name']);
+
 		if( isset( $request['id_person'] )  ){  // ACTUALIZAR
 
 			$sql = "UPDATE person 

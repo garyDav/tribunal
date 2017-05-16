@@ -272,6 +272,8 @@ if( !isset( $_SESSION['uid'] ) ){
 	  <!-- Add the sidebar's background. This div must be placed
 	       immediately after the control sidebar -->
 	  <div class="control-sidebar-bg"></div>
+	  <div ng-include="'public/main/views/userModal.view.html'"></div>
+
 	</div>
 	<!-- ./wrapper -->
 

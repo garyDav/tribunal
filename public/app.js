@@ -181,22 +181,47 @@
 					});
 
 				return d.promise;
+			},
+			mainUser: function(id) {
+				var d = $q.defer();
+				$http.get('rest/v1/user/view/'+id)
+					.success(function( data ) {
+						d.resolve(data);
+					});
+				return d.promise;
 			}
 		};
 		return self;
 	}]);
 
 	app.controller('mainCtrl', ['$scope', 'mainService','$rootScope', function($scope,mainService,$rootScope){
-		$scope.init = function() {
-			mainService.data().then( function(){});
-		};
 		$scope.config = {};
 		$scope.titulo    = "";
 		$scope.subtitulo = "";
+		$scope.mainUser = {};
+		$scope.userSelMain = {};
+
+		$scope.init = function() {
+			mainService.data().then( function(){
+				mainService.mainUser($rootScope.userID).then(function( data ) {
+					$scope.mainUser = data;
+				});
+				
+			});
+		};
+
+		$scope.mostrarUserModal = function(){
+			$("#modal_userMain").modal();
+		};
+
 		mainService.cargar().then( function(){
 			$scope.config = mainService.config;
 			//console.log($scope.config);
 		});
+
+		$scope.editarUserMain = function(user,frmUser) {
+			console.log(user);
+		};
 
 		// ================================================
 		//   Funciones Globales del Scope

@@ -1,0 +1,50 @@
+<div class="modal fade" id="modal_userMain">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <h4 class="modal-title">Edita tus datos: </h4>
+      </div>
+
+
+      <form name="frmUser"
+            ng-submit="editarUserMain( userSelMain, frmUser )"
+            novalidate="novalidate">
+
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label>Correo</label>
+            <input type="email" class="form-control" placeholder="ejemplo@algo.algo"
+                ng-model="userSelMain.email" required>
+          </div>
+
+          <div class="form-group">
+            <label>Celular</label>
+            <input type="number" class="form-control" placeholder="757#####"
+                ng-model="userSelMain.cellphone" required>
+          </div>
+
+          <div class="form-group">
+            <label>Cambiar imagen</label>
+            <input type="file" class="form-control"
+                ng-model="userSelMain.src">
+          </div>
+
+        </div>
+
+
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Guardar</button>
+        </div>
+
+      </form>
+
+
+
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>

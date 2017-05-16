@@ -40,6 +40,27 @@ $app->get('/user/:id',function($id) use($app) {
 	}
 })->conditions(array('id'=>'[0-9]{1,11}'));
 
+$app->get('/user/view/:id',function($id) use($app) {
+	try {
+		$conex = getConex();
+
+		$sql = "SELECT per.ci,per.ex,per.name,per.last_name,per.fec_nac,per.sex,u.id,u.id_person,u.id_jagroambiental,u.email,u.cellphone,u.src,u.registered,u.cod_dep,u.cod_ja,u.cod_all FROM user u,person per WHERE u.id_person=per.id AND u.id='$id';";
+		$result = $conex->prepare( $sql );
+
+		$result->execute();
+		$conex = null;
+
+		$res = $result->fetchObject();
+
+		$app->response->headers->set('Content-type','application/json');
+		$app->response->headers->set('Access-Control-Allow-Origin','*');
+		$app->response->status(200);
+		$app->response->body(json_encode($res));
+	}catch(PDOException $e) {
+		echo 'Error: '.$e->getMessage();
+	}
+})->conditions(array('id'=>'[0-9]{1,11}'));
+
 $app->post("/user/",function() use($app) {
 	try {
 		$postdata = file_get_contents("php://input");
@@ -59,6 +80,7 @@ $app->post("/user/",function() use($app) {
 						SET
 							email  		  = '". $request['email'] ."',
 							pwd 	   	  = '". $pwd ."',
+							type  		  = '". $request['type'] ."',
 							cellphone     = '". $request['cellphone'] ."'
 					WHERE id=" . $request['id'].";";
 
