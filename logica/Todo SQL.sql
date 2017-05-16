@@ -311,16 +311,17 @@ INSERT INTO `department` (`id`, `name`, `cod_dep`) VALUES
 (8, 'Beni', 'D-0008'),
 (9, 'Santa Cruz', 'D-0009');
 
-INSERT INTO `j_agroambiental` (`id`, `id_municipality`, `name`, `cod_ja`) VALUES
-(1, 1, 'JA La Paz', 'JA-0001'),
-(2, 2, 'JA Oruro', 'JA-0002'),
-(3, 3, 'JA Potosi', 'JA-0003'),
-(4, 4, 'JA Cochabamba', 'JA-0004'),
-(5, 5, 'JA Sucre', 'JA-0005'),
-(6, 6, 'JA Tarija', 'JA-0006'),
-(7, 7, 'JA Cobija', 'JA-0007'),
-(8, 8, 'JA Trinidad', 'JA-0009');
 
+INSERT INTO `province` (`id`, `id_department`, `name`) VALUES
+(1, 1, 'Murillo'),
+(2, 2, 'Cercado'),
+(3, 3, 'Tomas Frias'),
+(4, 4, 'Cercado'),
+(5, 5, 'Oropeza'),
+(6, 6, 'Cercado'),
+(7, 7, 'Nicolas Suarez'),
+(8, 8, 'Cercado'),
+(9, 9, 'Andres de Ibañez');
 
 INSERT INTO `municipality` (`id`, `id_province`, `name`) VALUES
 (1, 1, 'La Paz'),
@@ -333,16 +334,16 @@ INSERT INTO `municipality` (`id`, `id_province`, `name`) VALUES
 (8, 8, 'Trinidad'),
 (9, 9, 'Santa Cruz de la Sierra');
 
-INSERT INTO `province` (`id`, `id_department`, `name`) VALUES
-(1, 1, 'Murillo'),
-(2, 2, 'Cercado'),
-(3, 3, 'Tomas Frias'),
-(4, 4, 'Cercado'),
-(5, 5, 'Oropeza'),
-(6, 6, 'Cercado'),
-(7, 7, 'Nicolas Suarez'),
-(8, 8, 'Cercado'),
-(9, 9, 'Andres de Ibañez');
+INSERT INTO `j_agroambiental` (`id`, `id_municipality`, `name`, `cod_ja`) VALUES
+(1, 1, 'JA La Paz', 'JA-0001'),
+(2, 2, 'JA Oruro', 'JA-0002'),
+(3, 3, 'JA Potosi', 'JA-0003'),
+(4, 4, 'JA Cochabamba', 'JA-0004'),
+(5, 5, 'JA Sucre', 'JA-0005'),
+(6, 6, 'JA Tarija', 'JA-0006'),
+(7, 7, 'JA Cobija', 'JA-0007'),
+(8, 8, 'JA Trinidad', 'JA-0009');
+
 
 INSERT INTO `publication` (`id`, `id_user`, `title`, `description`, `fec`, `img`, `doc`, `cod`) VALUES
 (1, 1, 'La Jurisdiccion Agroambiental', 'Siguiendo la tendencia de algunos países latinoamericanos como Argentina, Brasil, Chile, Costa Rica, Ecuador, México y Perú, que poseen dentro de su ordenamiento jurídico, la jurisdicción agraria y ambiental; Bolivia a través de la Nueva Constitución Política del Estado', '2017-05-11 10:05:25', '', NULL, 'JA-0004'),
