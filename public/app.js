@@ -159,13 +159,19 @@
 
 				return d.promise;
 			},
+			editarUser: function() {
+				var d = $q.defer();
+
+				$http.
+
+				return d.$promise;
+			},
 			data: function() {
 				var d = $q.defer();
 
 				$http.get('php/data.php' )
 					.success(function( data ){
 						if(data) {
-							//console.log(data);
 							if( data.error == 'yes' ) {
 								$http.post('php/destroy_session.php');
 								window.location="login/";
@@ -200,17 +206,21 @@
 		$scope.subtitulo = "";
 		$scope.mainUser = {};
 		$scope.userSelMain = {};
+		$scope.nameImg = "";
 
 		$scope.init = function() {
 			mainService.data().then( function(){
 				mainService.mainUser($rootScope.userID).then(function( data ) {
 					$scope.mainUser = data;
+					console.log($scope.mainUser);
 				});
 				
 			});
 		};
 
 		$scope.mostrarUserModal = function(){
+			$scope.mainUser.cellphone = parseInt($scope.mainUser.cellphone);
+			$scope.userSelMain = $scope.mainUser;
 			$("#modal_userMain").modal();
 		};
 
@@ -221,15 +231,17 @@
 
 		$scope.editarUserMain = function(user,frmUser) {
 			console.log(user);
-			var src = '';
-			var msj = '';
-			upload.saveImg(user.src).then(function( data ) {
-				console.log(data);
-				/*if(data) {
-					src = data.src;
-					msj = data.msj;
-				}*/
-			});
+
+			if(user.src)
+				upload.saveImg(user.src).then(function( data ) {
+					if ( data.error == 'not' ) {
+						swal("CORRECTO", "¡"+data.msj+"!", "success");
+					} else 
+					if ( data.error == 'yes' )
+						swal("ERROR", "¡"+data.msj+"!", "error");
+					else 
+						swal("ERROR SERVER", "¡"+data+"!", "error");
+				});
 		};
 
 		// ================================================
@@ -285,6 +297,21 @@
 	});
 
 	// ================================================
+	//   Directiva para archivos
+	// ================================================
+	app.directive('fileModel',['$parse',function($parse) {
+		return {
+			restrict: 'A',
+			link: function(scope, iElement, iAttrs) {
+				iElement.on('change',function(e) {
+					$parse(iAttrs.fileModel).assign(scope,iElement[0].files[0]);
+				});
+			}
+		};
+	}]);
+
+
+	// ================================================
 	//   Servicio para cargar archivos
 	// ================================================
 	app.service('upload',['$http','$q',function($http,$q) {
@@ -292,7 +319,7 @@
 			saveImg : function(img) {
 				var d = $q.defer();
 				var formData = new FormData();
-				formData.append('src',img);
+				formData.append('img',img);
 				$http.post('php/server.php',formData,{
 					headers: { 'Content-Type': undefined }
 				}).success(function( data ) {

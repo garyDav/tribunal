@@ -400,3 +400,11 @@
   font-size: 2rem;
   transition: .3s color;
 }
+
+/* File Input
+   ========================================================================== */
+
+input[type=file] {
+  font-size: 20px;
+  cursor: pointer;
+}

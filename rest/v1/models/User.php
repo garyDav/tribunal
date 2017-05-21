@@ -120,6 +120,37 @@ $app->post("/user/",function() use($app) {
 	}
 });
 
+$app->put("/user/:id",function($id) use($app) {
+	$jsonmessage = \Slim\Slim::getInstance()->request();
+  	$objDatos = json_decode($jsonmessage->getBody());
+
+	$email = $objDatos->email;
+	$cellphone = $objDatos->cellphone;
+	$pwdA = $objDatos->pwdA;
+	$pwdN = $objDatos->pwdN;
+	$pwdR = $objDatos->pwdR;
+	$src = $objDatos->src;
+
+	if($pwdA != '') {
+		
+	}
+
+	try {
+		$conex = getConex();
+		$result = $conex->prepare("UPDATE user SET foto='$foto',nombre='$nombre',apellido='$apellido',empresa='$empresa',contra='$contra',telefono='$telefono',celular='$celular' WHERE id='$id'");
+
+		$result->execute();
+		$conex = null;
+
+		$app->response->headers->set('Content-type','application/json');
+		$app->response->status(200);
+		$app->response->body(json_encode(array('id'=>$id,'error'=>'')));
+
+	}catch(PDOException $e) {
+		echo "Error: ".$e->getMessage();
+	}
+})->conditions(array('id'=>'[0-9]{1,11}'));
+
 $app->delete('/user/:id',function($id) use($app) {
 	try {
 		$conex = getConex();
