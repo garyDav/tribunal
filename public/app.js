@@ -104,7 +104,11 @@
 		  "id": "es-es",
 		  "pluralCat": function (n) {  if (n == 1) {   return PLURAL_CATEGORY.ONE;  }  return PLURAL_CATEGORY.OTHER;}
 		});
-		}]);
+		}]).run([
+        'bootstrap3ElementModifier',
+        function (bootstrap3ElementModifier) {
+              bootstrap3ElementModifier.enableValidationStateIcons(true);
+       }]);
 
 	angular.module('jcs-autoValidate')
 	.run([
@@ -113,8 +117,38 @@
 	        // To change the root resource file path
 	        defaultErrorMessageResolver.setI18nFileRootPath('app/lib');
 	        defaultErrorMessageResolver.setCulture('es-co');
+
+	        defaultErrorMessageResolver.getErrorMessages().then(function (errorMessages) {
+	          errorMessages['coincide'] = 'Su contraseña no coincide';
+	          errorMessages['parse'] = 'Debe ingresar la nueva contraseña';
+	        });
 	    }
 	]);
+	app.directive('coincide', [
+            function() {
+                return {
+                    restrict: 'A',
+                    require: 'ngModel',
+                    link: function(scope, elm, attrs, ctrl) {
+                        var validateFn = function (viewValue) {
+                        	if(attrs.coincide)
+	                            if (ctrl.$isEmpty(viewValue) || viewValue.indexOf(attrs.coincide) === -1) {
+	                                ctrl.$setValidity('coincide', false);
+	                                return undefined;
+	                            } else {
+	                                ctrl.$setValidity('coincide', true);
+	                                return viewValue;
+	                            }
+	                        else {
+	                        	ctrl.$setValidity('parse', false);
+	                        }
+                        };
+
+                        ctrl.$parsers.push(validateFn);
+                        ctrl.$formatters.push(validateFn);
+                    }
+                }
+            }]);
 
 	app.config(['$locationProvider',function($locationProvider) {
 		$locationProvider.html5Mode(true);
@@ -159,12 +193,8 @@
 
 				return d.promise;
 			},
-			editarUser: function() {
-				var d = $q.defer();
-
-				$http.
-
-				return d.$promise;
+			editarUser: function(user) {
+				return $http.put('rest/v1/user/'+user.id,user);
 			},
 			data: function() {
 				var d = $q.defer();
@@ -207,14 +237,21 @@
 		$scope.mainUser = {};
 		$scope.userSelMain = {};
 		$scope.nameImg = "";
+		$scope.editUser = {};
+
+		/*$scope.$watch('userSelMain.pwdR',function() {
+			if(!$scope.userSelMain.pwdN) {
+				$scope.frmUser.autoValidateFormOptions.resetForm();
+				console.log($rootScope.frmUser);
+			}else
+				console.log('joder');
+		});*/
 
 		$scope.init = function() {
 			mainService.data().then( function(){
 				mainService.mainUser($rootScope.userID).then(function( data ) {
 					$scope.mainUser = data;
-					console.log($scope.mainUser);
-				});
-				
+				});				
 			});
 		};
 
@@ -226,22 +263,49 @@
 
 		mainService.cargar().then( function(){
 			$scope.config = mainService.config;
-			//console.log($scope.config);
 		});
 
 		$scope.editarUserMain = function(user,frmUser) {
 			console.log(user);
-
+			
 			if(user.src)
 				upload.saveImg(user.src).then(function( data ) {
 					if ( data.error == 'not' ) {
-						swal("CORRECTO", "¡"+data.msj+"!", "success");
+						user.src = data.src;
+						mainService.editarUser(user).success(function(response){
+							$scope.editUser = response;
+							if( $scope.editUser.error == 'not' )
+								swal("CORRECTO", "¡"+data.msj+" - "+$scope.editUser.msj+"!", "success");
+							else
+								if ( $scope.editUser.error == 'yes' )
+								swal("ERROR", "¡"+$scope.editUser.msj+"!", "error");
+							else 
+								swal("ERROR SERVER", "¡"+$scope.editUser+"!", "error");
+						})
+						.error(function(response){
+							console.error(response);
+						});
 					} else 
 					if ( data.error == 'yes' )
 						swal("ERROR", "¡"+data.msj+"!", "error");
 					else 
 						swal("ERROR SERVER", "¡"+data+"!", "error");
 				});
+			else {
+				mainService.editarUser(user).success(function(response){
+					$scope.editUser = response;
+					if( $scope.editUser.error == 'not' )
+						swal("CORRECTO", "¡"+$scope.editUser.msj+"!", "success");
+					else
+						if ( $scope.editUser.error == 'yes' )
+						swal("ERROR", "¡"+$scope.editUser.msj+"!", "error");
+					else 
+						swal("ERROR SERVER", "¡"+$scope.editUser+"!", "error");
+				})
+				.error(function(response){
+					console.error(response);
+				});
+			}
 		};
 
 		// ================================================

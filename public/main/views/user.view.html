@@ -1,16 +1,18 @@
 <!-- Menu Toggle Button -->
 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
   <!-- The user image in the navbar-->
-  <img ng-hide=" (mainUser.src == null || mainUser.src == '') && mainUser.sex == 'Masculino' " src="app/img/avatarF.png" class="user-image" alt="User Image">
-  <img ng-hide=" (mainUser.src == null || mainUser.src == '') && mainUser.sex == 'Femenino' " src="app/img/avatarM.png" class="user-image" alt="User Image">
+  <img ng-show=" (mainUser.src == null || mainUser.src == '') && mainUser.sex == 'Masculino' " src="app/img/avatarM.png" class="user-image" alt="User Image">
+  <img ng-show=" (mainUser.src == null || mainUser.src == '') && mainUser.sex == 'Femenino' " src="app/img/avatarF.png" class="user-image" alt="User Image">
+  <img ng-hide=" (mainUser.src != null || mainUser.src != '') " src="app/img/{{mainUser.src}}" class="user-image" alt="User Image">
   <!-- hidden-xs hides the username on small devices so only the image appears. -->
   <span class="hidden-xs">{{mainUser.name}} {{mainUser.last_name}} </span>
 </a>
 <ul class="dropdown-menu">
   <!-- The user image in the menu -->
   <li class="user-header">
-    <img ng-hide=" (mainUser.src == null || mainUser.src == '') && mainUser.sex == 'Masculino' " src="app/img/avatarF.png" class="img-circle" alt="User Image">
-    <img ng-hide=" (mainUser.src == null || mainUser.src == '') && mainUser.sex == 'Femenino' " src="app/img/avatarM.png" class="img-circle" alt="User Image">
+    <img ng-show=" (mainUser.src == null || mainUser.src == '') && mainUser.sex == 'Masculino' " src="app/img/avatarM.png" class="img-circle" alt="User Image">
+    <img ng-show=" (mainUser.src == null || mainUser.src == '') && mainUser.sex == 'Femenino' " src="app/img/avatarF.png" class="img-circle" alt="User Image">
+    <img ng-hide=" (mainUser.src != null || mainUser.src != '') " src="app/img/{{mainUser.src}}" class="user-image" alt="User Image">
 
     <p>
       {{mainUser.name}} - {{userTYPE}}

@@ -44,7 +44,7 @@ $app->get('/user/view/:id',function($id) use($app) {
 	try {
 		$conex = getConex();
 
-		$sql = "SELECT per.ci,per.ex,per.name,per.last_name,per.fec_nac,per.sex,u.id,u.id_person,u.id_jagroambiental,u.email,u.cellphone,u.src,u.registered,u.cod_dep,u.cod_ja,u.cod_all FROM user u,person per WHERE u.id_person=per.id AND u.id='$id';";
+		$sql = "SELECT per.ci,per.ex,per.name,per.last_name,per.fec_nac,per.sex,u.id,u.id_person,u.id_jagroambiental,u.email,u.cellphone,u.src,u.registered,u.cod_dep,u.cod_ja,u.cod_all,'' pwdA,'' pwdN,'' pwdR FROM user u,person per WHERE u.id_person=per.id AND u.id='$id';";
 		$result = $conex->prepare( $sql );
 
 		$result->execute();
@@ -131,20 +131,22 @@ $app->put("/user/:id",function($id) use($app) {
 	$pwdR = $objDatos->pwdR;
 	$src = $objDatos->src;
 
-	if($pwdA != '') {
-		
-	}
+	if( $pwdA == null )
+		$pwdA = '';
+	if( $src == null )
+		$src = '';
 
 	try {
 		$conex = getConex();
-		$result = $conex->prepare("UPDATE user SET foto='$foto',nombre='$nombre',apellido='$apellido',empresa='$empresa',contra='$contra',telefono='$telefono',celular='$celular' WHERE id='$id'");
+		$result = $conex->prepare("CALL pUpdateUser('$id','$email','$cellphone','$pwdA','$pwdN','$pwdR','$src');");
 
 		$result->execute();
 		$conex = null;
+		$res = $result->fetchObject();
 
 		$app->response->headers->set('Content-type','application/json');
 		$app->response->status(200);
-		$app->response->body(json_encode(array('id'=>$id,'error'=>'')));
+		$app->response->body(json_encode($res));
 
 	}catch(PDOException $e) {
 		echo "Error: ".$e->getMessage();

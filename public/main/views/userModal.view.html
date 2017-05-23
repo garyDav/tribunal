@@ -9,7 +9,8 @@
       </div>
 
 
-      <form name="frmUser"
+      <form role="form"
+            name="frmUser"
             ng-submit="editarUserMain( userSelMain, frmUser )"
             novalidate="novalidate">
 
@@ -31,6 +32,7 @@
             <label>Contraseña antigua</label>
             <input type="password" class="form-control" 
                    placeholder="*****"
+                   disable-valid-styling="true"
                    ng-minlength="5"
                    ng-maxlength="15"
                    ng-model="userSelMain.pwdA">
@@ -40,19 +42,22 @@
             <label>Nueva contraseña</label>
             <input type="password" class="form-control"
                    placeholder="*****"
+                   disable-valid-styling="true"
+                   ng-model-options="{updateOn: 'blur'}"
                    ng-minlength="5"
                    ng-maxlength="15"
                    ng-model="userSelMain.pwdN">
           </div>
 
-          <div class="form-group">
+          <div class="form-group has-feedback">
             <label>Repita contraseña</label>
             <input type="password" class="form-control"
+                   name="pwdR"
                    placeholder="*****"
-                   ng-minlength="5"
-                   ng-maxlength="15"
-                   ng-model="userSelMain.pwdR">
+                   ng-model="userSelMain.pwdR"
+                   coincide="{{userSelMain.pwdN}}">
           </div>
+
 
           <div class="form-group">
             <label>Cambiar Imagen</label>
@@ -60,8 +65,6 @@
           </div>
 
         </div>
-
-
 
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Guardar</button>

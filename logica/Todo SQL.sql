@@ -257,6 +257,69 @@ BEGIN
 	SELECT @@identity AS id, 'not' AS error,'Registro registrado correctamente.' AS msj;
 END //
 
+DROP PROCEDURE IF EXISTS pUpdateUser;
+CREATE PROCEDURE pUpdateUser (
+	IN v_id int,
+	IN v_email varchar(100),
+	IN v_cellphone int,
+	IN v_pwdA varchar(100),
+	IN v_pwdN varchar(100),
+	IN v_pwdR varchar(100),
+	IN v_src varchar(255)
+)
+BEGIN
+	DECLARE us int(11);
+	SET us = (SELECT id FROM user WHERE pwd LIKE v_pwdA);
+
+	IF ( (v_pwdA NOT LIKE '') AND (v_src NOT LIKE '') ) THEN
+		
+		IF (us) THEN
+			IF (v_pwdN LIKE v_pwdR) THEN
+				UPDATE user SET email=v_email,cellphone=v_cellphone,pwd=v_pwdN,src=v_src WHERE id=v_id;
+				SELECT v_id AS id, 'not' AS error,'Perfil actualizado.' AS msj;
+			ELSE
+				SELECT v_id AS id, 'yes' AS error,'Las contraseñas no coinciden, repita bien la nueva contraseña.' AS msj;
+			END IF;
+		ELSE
+			SELECT v_id AS id, 'yes' AS error,'La contraseña antigua no es correcta.' AS msj, (v_pwdA NOT LIKE '') AS res;
+		END IF;
+
+	END IF;
+
+	IF ( (v_pwdA LIKE '') AND (v_src LIKE '') ) THEN
+		UPDATE user SET email=v_email,cellphone=v_cellphone WHERE id=v_id;
+		SELECT v_id AS id, 'not' AS error,'Perfil actualizado.' AS msj;
+	ELSE
+
+		IF ( (v_pwdA LIKE '') AND (v_src NOT LIKE '') ) THEN
+			UPDATE user SET email=v_email,cellphone=v_cellphone,src=v_src WHERE id=v_id;
+			SELECT v_id AS id, 'not' AS error,'Perfil actualizado.' AS msj;
+		ELSE
+			IF ( (v_src LIKE '') AND (v_pwdA NOT LIKE '') ) THEN
+				IF (us) THEN
+					IF (v_pwdN LIKE v_pwdR) THEN
+						UPDATE user SET email=v_email,cellphone=v_cellphone,pwd=v_pwdN WHERE id=v_id;
+						SELECT v_id AS id, 'not' AS error,'Perfil actualizado.' AS msj;
+					ELSE
+						SELECT v_id AS id, 'yes' AS error,'Las contraseñas no coinciden, repita bien la nueva contraseña.' AS msj;
+					END IF;
+				ELSE
+					SELECT v_id AS id, 'yes' AS error,'La contraseña antigua no es correcta.' AS msj;
+				END IF;
+			END IF;
+		END IF;
+
+	END IF;
+END //
+--CALL pUpdateUser('','','','','','','');//
+--CALL pUpdateUser('1','gary@gmail.com','75799666','','123456','123456','');//
+--CALL pUpdateUser('1','gary@gmail.com','75799666','12345','123456','123456','puta marta');//
+--CALL pUpdateUser('1','joder@gmail.com','75711666','585f7f3723df82f91fffd25a5c6900597cd4d1c1','123456','123456','re puta');//
+--CALL pUpdateUser('1','joder@gmail.com','75711666','','123456','123456','jjoooo');//
+--CALL pUpdateUser('1','joder@gmail.com','75711666','585f7f3723df82f91fffd25a5c6900597cd4d1c1','1234567','1234567','');//
+--CALL pUpdateUser('1','gary@gmail.com','75799666','','123456','123456','aqui va algo');//
+--CALL pUpdateUser('1','gary@gmail.com','75799666','585f7f3723df82f91fffd25a5c6900597cd4d1c1','123456','1234567','');//
+
 DROP PROCEDURE IF EXISTS pReporte;
 CREATE PROCEDURE pReporte (
     IN v_fecha date
@@ -273,7 +336,6 @@ BEGIN
 		SELECT 'No se encontraron ventas en esa fecha' error;
 	END IF;
 END //
-
 
 
 /*
