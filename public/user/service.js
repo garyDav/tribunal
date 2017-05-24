@@ -62,29 +62,17 @@ angular.module('userModule').factory('userService', ['$http', '$q', function($ht
 
 		},
 
-		eliminar: function( id_person,id ){
+		eliminar: function( id ){
 
 			var d = $q.defer();
 
 			$http.delete('rest/v1/user/' + id )
 				.success(function( respuesta ){
 
-					if ( respuesta.error == 'not' ) {
-						$http.delete('rest/v1/person/' + id_person )
-							.success(function( respuesta ){
-
-								if ( respuesta.error == 'not' ) {
-									self.cargarPagina( self.pag_actual  );
-									d.resolve(respuesta);
-								} else 
-									swal("ERROR SERVER", "¡"+respuesta+"!", "error");
-							});
-					} else 
-						swal("ERROR SERVER", "¡"+respuesta+"!", "error");
-						
+					self.cargarPagina( self.pag_actual  );
+					d.resolve(respuesta);
 
 				});
-
 
 			return d.promise;
 

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 24-05-2017 a las 15:59:58
+-- Tiempo de generación: 24-05-2017 a las 19:16:15
 -- Versión del servidor: 10.1.13-MariaDB
 -- Versión de PHP: 7.0.8
 
@@ -70,7 +70,7 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsertUser` (IN `v_id_person` INT, IN `v_id_jagroambiental` INT, IN `v_email` VARCHAR(100), IN `v_pwd` VARCHAR(100), IN `v_type` VARCHAR(5), IN `v_cellphone` INT, IN `v_cod_dep` VARCHAR(7), IN `v_cod_ja` VARCHAR(7), IN `v_cod_all` VARCHAR(7))  BEGIN
 IF NOT EXISTS(SELECT id FROM user WHERE email LIKE v_email) THEN
-INSERT INTO user VALUES(null,v_id_person,v_id_jagroambiental,v_email,v_pwd,v_type,v_cellphone,'',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,v_cod_dep,v_cod_ja,v_cod_all);
+INSERT INTO user VALUES(null,v_id_person,v_id_jagroambiental,v_email,v_pwd,v_type,v_cellphone,'',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,v_cod_dep,v_cod_ja,v_cod_all,'activo');
 SELECT @@identity AS id,v_type AS tipo,'not' AS error,'Usuario registrado correctamente.' AS msj;
 ELSE
 SELECT 'yes' error,'Error: Correo ya registrado.' msj;
@@ -95,7 +95,11 @@ DECLARE us int(11);
 SET us = (SELECT id FROM user WHERE email LIKE v_email);
 IF(us) THEN
 IF EXISTS(SELECT id FROM user WHERE id = us AND pwd LIKE v_pwd) THEN
+IF EXISTS(SELECT id FROM user WHERE id = us AND status LIKE 'activo') THEN
 SELECT id,type,'not' AS error,'Espere por favor...' AS msj FROM user WHERE id = us;
+ELSE
+SELECT 'yes' error,'Error: Su cuenta a sido desactivada, por favor contactese con el administrador para activar su cuenta.' msj;
+END IF;
 ELSE
 SELECT 'yes' error,'Error: Contraseña incorrecta.' msj;
 END IF;
@@ -294,7 +298,10 @@ CREATE TABLE `person` (
 --
 
 INSERT INTO `person` (`id`, `ci`, `ex`, `name`, `last_name`, `fec_nac`, `sex`) VALUES
-(1, 10524423, 'Lp', 'Juan', 'Perez', '1992-05-05', 'Masculino');
+(1, 10524423, 'Lp', 'Juan', 'Perez', '1992-05-05', 'Masculino'),
+(2, 201454654, 'Cb', 'Mirian', 'Lopez', '1997-11-10', 'Femenino'),
+(3, 789456132, 'Pt', 'Juana', 'Ortiz', '1968-06-03', 'Femenino'),
+(4, 63254112, 'Sc', 'Maria Elena', 'Garita Amurrio', '1992-11-08', 'Femenino');
 
 -- --------------------------------------------------------
 
@@ -359,15 +366,19 @@ CREATE TABLE `user` (
   `registered` date DEFAULT NULL,
   `cod_dep` varchar(7) COLLATE utf8_spanish2_ci DEFAULT NULL,
   `cod_ja` varchar(7) COLLATE utf8_spanish2_ci DEFAULT NULL,
-  `cod_all` varchar(7) COLLATE utf8_spanish2_ci DEFAULT NULL
+  `cod_all` varchar(7) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `status` varchar(6) COLLATE utf8_spanish2_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
 -- Volcado de datos para la tabla `user`
 --
 
-INSERT INTO `user` (`id`, `id_person`, `id_jagroambiental`, `email`, `pwd`, `type`, `cellphone`, `src`, `last_connection`, `registered`, `cod_dep`, `cod_ja`, `cod_all`) VALUES
-(1, 1, 1, 'adrh@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'adrh', 75799666, '1495634239.jpeg', '2017-05-22 08:26:36', '2017-05-22', 'D-0001', 'JA-0001', 'T-0000');
+INSERT INTO `user` (`id`, `id_person`, `id_jagroambiental`, `email`, `pwd`, `type`, `cellphone`, `src`, `last_connection`, `registered`, `cod_dep`, `cod_ja`, `cod_all`, `status`) VALUES
+(1, 1, 1, 'adrh@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'adrh', 75799666, '1495634239.jpeg', '2017-05-22 08:26:36', '2017-05-22', 'D-0001', 'JA-0001', 'T-0000', 'activo'),
+(2, 2, 4, 'adrp@gmail.com', '5047972cf53eea0173128db9541bf97dbf4d015d', 'adrp', 65263447, '', '2017-05-24 11:27:55', '2017-05-24', 'D-0004', 'JA-0004', 'T-0000', 'activo'),
+(3, 3, 3, 'adsg@gmail.com', '5047972cf53eea0173128db9541bf97dbf4d015d', 'adsg', 75723664, '1495643409.jpeg', '2017-05-24 11:35:48', '2017-05-24', 'D-0003', 'JA-0003', 'T-0000', 'activo'),
+(4, 4, 5, 'supad@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'supad', 75784521, '1495645998.jpeg', '2017-05-24 12:18:11', '2017-05-24', 'D-0005', 'JA-0005', 'T-0000', 'activo');
 
 --
 -- Índices para tablas volcadas
@@ -481,7 +492,7 @@ ALTER TABLE `municipality`
 -- AUTO_INCREMENT de la tabla `person`
 --
 ALTER TABLE `person`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `province`
 --
@@ -496,7 +507,7 @@ ALTER TABLE `publication`
 -- AUTO_INCREMENT de la tabla `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- Restricciones para tablas volcadas
 --

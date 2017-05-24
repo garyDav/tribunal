@@ -62,6 +62,7 @@ CREATE TABLE user (
 	cod_dep varchar(7),
 	cod_ja varchar(7),
 	cod_all varchar(7),
+	status varchar(6),
 
 	FOREIGN KEY (id_person) REFERENCES person(id),
 	FOREIGN KEY (id_jagroambiental) REFERENCES j_agroambiental(id)
@@ -131,7 +132,11 @@ BEGIN
 	SET us = (SELECT id FROM user WHERE email LIKE v_email);
 	IF(us) THEN
 		IF EXISTS(SELECT id FROM user WHERE id = us AND pwd LIKE v_pwd) THEN
-			SELECT id,type,'not' AS error,'Espere por favor...' AS msj FROM user WHERE id = us;
+			IF EXISTS(SELECT id FROM user WHERE id = us AND status LIKE 'activo') THEN
+				SELECT id,type,'not' AS error,'Espere por favor...' AS msj FROM user WHERE id = us;
+			ELSE
+				SELECT 'yes' error,'Error: Su cuenta a sido desactivada, por favor contactese con el administrador para activar su cuenta.' msj;
+			END IF;
 		ELSE
 			SELECT 'yes' error,'Error: Contraseña incorrecta.' msj;
 		END IF;
@@ -173,7 +178,7 @@ CREATE PROCEDURE pInsertUser (
 )
 BEGIN
 	IF NOT EXISTS(SELECT id FROM user WHERE email LIKE v_email) THEN
-		INSERT INTO user VALUES(null,v_id_person,v_id_jagroambiental,v_email,v_pwd,v_type,v_cellphone,'',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,v_cod_dep,v_cod_ja,v_cod_all);
+		INSERT INTO user VALUES(null,v_id_person,v_id_jagroambiental,v_email,v_pwd,v_type,v_cellphone,'',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,v_cod_dep,v_cod_ja,v_cod_all,'activo');
 		SELECT @@identity AS id,v_type AS tipo,'not' AS error,'Usuario registrado correctamente.' AS msj;
 	ELSE
 		SELECT 'yes' error,'Error: Correo ya registrado.' msj;

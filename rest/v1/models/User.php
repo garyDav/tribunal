@@ -81,7 +81,8 @@ $app->post("/user/",function() use($app) {
 							email  		  = '". $request['email'] ."',
 							pwd 	   	  = '". $pwd ."',
 							type  		  = '". $request['type'] ."',
-							cellphone     = '". $request['cellphone'] ."'
+							cellphone     = '". $request['cellphone'] ."',
+							status 		  = '". $request['status'] ."'
 					WHERE id=" . $request['id'].";";
 
 			$hecho = $conex->prepare( $sql );
@@ -168,14 +169,14 @@ $app->put("/user/:id",function($id) use($app) {
 $app->delete('/user/:id',function($id) use($app) {
 	try {
 		$conex = getConex();
-		$result = $conex->prepare("DELETE FROM user WHERE id='$id'");
+		$result = $conex->prepare("UPDATE user SET status='baja' WHERE id='$id'");
 
 		$result->execute();
 		$conex = null;
 
 		$app->response->headers->set('Content-type','application/json');
 		$app->response->status(200);
-		$app->response->body(json_encode(array('id'=>$id,'error'=>'not','msj'=>'Registro eliminado correctamente.')));
+		$app->response->body(json_encode(array('id'=>$id,'error'=>'not','msj'=>'Se dio de baja al usuario correctamente.')));
 
 	} catch(PDOException $e) {
 		echo 'Error: '.$e->getMessage();

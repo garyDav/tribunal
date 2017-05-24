@@ -17,13 +17,13 @@
 
           <div class="form-group">
             <label>CI</label>
-            <input type="text" class="form-control" placeholder="CI"
+            <input type="text" class="form-control supad" placeholder="CI"
                 ng-model="userSel.ci" required>
           </div>
 
           <div class="form-group">
             <label>Expedido</label>
-            <select type="text" class="form-control" placeholder="Expedido"
+            <select type="text" class="form-control supad" placeholder="Expedido"
                 ng-model="userSel.ex" required>
                 <option value="" disabled selected>Expedido </option>
                 <option value="Lp">La paz</option>
@@ -41,25 +41,25 @@
 
           <div class="form-group">
             <label>Nombre</label>
-            <input type="text" class="form-control" placeholder="Nombre"
+            <input type="text" class="form-control supad" placeholder="Nombre"
                 ng-model="userSel.name" required>
           </div>
 
           <div class="form-group">
             <label>Apellido</label>
-            <input type="text" class="form-control" placeholder="Apellido"
+            <input type="text" class="form-control supad" placeholder="Apellido"
                 ng-model="userSel.last_name" required>
           </div>
 
           <div class="form-group">
             <label>Fecha de Nacimiento</label>
-            <input type="date" class="form-control"
+            <input type="date" class="form-control supad"
                 ng-model="userSel.fec_nac" min="{{edadMinima}}" max="{{edadMaxima}}" required>
           </div>
 
           <div class="form-group">
             <label>Sexo</label>
-            <select type="text" class="form-control" placeholder="Sexo"
+            <select type="text" class="form-control supad" placeholder="Sexo"
                 ng-model="userSel.sex">
                 <option value="" disabled selected>Sexo </option>
                 <option value="Masculino">Masculino</option>
@@ -69,35 +69,48 @@
 
           <div class="form-group">
             <label>Correo</label>
-            <input type="email" class="form-control" placeholder="ejemplo@algo.algo"
+            <input type="email" class="form-control supad" placeholder="ejemplo@algo.algo"
                 ng-model="userSel.email" required>
           </div>
 
-          <div class="form-group">
-            <label>Contraseña</label>
-            <input type="password" class="form-control" placeholder="*****"
-                ng-model="userSel.pwd">
+          <div ng-hide=" userTYPE == 'supad' ">
+            <div class="form-group">
+              <label>Contraseña</label>
+              <input type="password" class="form-control" placeholder="*****"
+                  ng-model="userSel.pwd">
+            </div>
+
+            <div class="form-group">
+              <label>Celular</label>
+              <input type="number" class="form-control" placeholder="757#####"
+                  ng-model="userSel.cellphone" required>
+            </div>
+
+            <div ng-show="userSel.id" class="form-group">
+              <label>Estado de la cuenta</label>
+              <select type="text" class="form-control"
+                  ng-model="userSel.status">
+                  <option value="" disabled selected>Cuenta </option>
+                  <option value="activo">Activar cuenta</option>
+                  <option value="baja">Desactivar cuenta</option>
+              </select>
+            </div>
           </div>
 
-          <div class="form-group">
-            <label>Celular</label>
-            <input type="number" class="form-control" placeholder="757#####"
-                ng-model="userSel.cellphone" required>
+          <div ng-hide=" userTYPE != 'supad' " class="form-group">
+            <label>Nivel</label>
+            <select type="text" class="form-control" placeholder="Nivel de usuario"
+                ng-model="userSel.type">
+                <option value="" disabled selected>Nivel de usuario </option>
+                <option value="user">Usuario</option>
+                <option value="adrp">Relaciones públicas</option>
+                <option value="adrh">Recursos humanos</option>
+                <option value="adsg">Secretaria General</option>
+                <option value="supad">Super Administrador</option>
+            </select>
           </div>
 
           <div ng-hide="userSel.id">
-            <div ng-hide=" userTYPE != 'supad' " class="form-group">
-              <label>Nivel</label>
-              <select type="text" class="form-control" placeholder="Nivel de usuario"
-                  ng-model="userSel.type">
-                  <option value="" disabled selected>Nivel de usuario </option>
-                  <option value="user">Usuario</option>
-                  <option value="adrp">Relaciones públicas</option>
-                  <option value="adrh">Recursos humanos</option>
-                  <option value="adsg">Secretaria General</option>
-                  <option value="supad">Super Administrador</option>
-              </select>
-            </div>
 
             <div class="form-group">
               <input type="hidden" ng-model="userSel.id_person">
@@ -133,7 +146,7 @@
                       <td>{{ j.id }}</td>
                       <td>{{ j.name }}</td>
                       <td>
-                        <a ng-click="viewJA = !viewJA; llenar_jagroambiental( userSel,j.id,j.cod_ja );" class="btn btn-primary"><i class="fa fa-hand-o-up"></i></a>
+                        <a ng-click="viewJA = !viewJA; llenar_jagroambiental( userSel,j.id,j.cod_ja );" class="btn btn-default"><i class="fa fa-hand-o-up"></i></a>
                       </td>
                     </tr>
                   </tbody>

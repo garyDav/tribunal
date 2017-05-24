@@ -1,7 +1,7 @@
 // ================================================
 //   Controlador de usuarios
 // ================================================
-angular.module('userModule').controller('userCtrl', ['$scope', 'userService', function($scope, userService){
+angular.module('userModule').controller('userCtrl', ['$scope', '$rootScope', 'userService', function($scope, $rootScope, userService){
 
 	$scope.activar('mUsers','','Usuarios','lista de usuarios');
 	$scope.users   = {};
@@ -28,7 +28,6 @@ angular.module('userModule').controller('userCtrl', ['$scope', 'userService', fu
 		$scope.department = data;
 	});
 
-
 	$scope.moverA = function( pag ){
 		$scope.load = true;
 
@@ -47,6 +46,10 @@ angular.module('userModule').controller('userCtrl', ['$scope', 'userService', fu
 
 		user.cellphone = parseInt(user.cellphone);
 		angular.copy( user, $scope.userSel );
+		if($rootScope.userTYPE == 'supad') {
+			$(".supad").prop('disabled', true);
+			console.log('jodanse');
+		}
 		$("#modal_user").modal();
 	}
 
@@ -78,18 +81,20 @@ angular.module('userModule').controller('userCtrl', ['$scope', 'userService', fu
 	$scope.eliminar = function( id_person,id ){
 
 		swal({
-			title: "¿Esta seguro de eliminar?",
-			text: "¡Si confirma esta acción eliminará el registro!",
+			title: "¿Esta seguro de dar de baja al usuario?",
+			text: "¡Si confirma esta acción dara de baja al usuario!",
 			type: "warning",
 			showCancelButton: true,
 			confirmButtonColor: "#DD6B55",
-			confirmButtonText: "Si, Eliminar!",
+			confirmButtonText: "Si, Desactivar!",
 			closeOnConfirm: false
 		},
 		function(){
-			userService.eliminar( id_person,id ).then(function(data){
+			userService.eliminar( id ).then(function(data){
 				if( data.error == 'not')
-					swal("Eliminado!", "ID: "+data.id+" "+data.msj, "success");
+					swal("¡Correcto!", "ID: "+data.id+" "+data.msj, "success");
+				else 
+					swal("ERROR SERVER", "¡"+data+"!", "error");
 			});
 		});
 

@@ -19,7 +19,7 @@
 	    <div class="box-header with-border">
 	      <h3 class="box-title">Usuarios</h3>
 	
-			<div class="box-tools hidden-xs">
+			<div ng-hide=" userTYPE == 'supad' " class="box-tools hidden-xs">
 	            <div class="input-group">
 	              <a class="btn btn-primary"
 	              	ng-click="mostrarModal({})"><i class="fa fa-plus"></i> Agregar usuarios</a>
@@ -40,7 +40,7 @@
 					<th><a class="mano" ng-click="columna='last_name'; reverse = !reverse;">Apellido</a></th>
 					<th><a class="mano" ng-click="columna='civil_status'; reverse = !reverse;">Correo </a></th>
 					<th><a class="mano" ng-click="columna='civil_status'; reverse = !reverse;">Nivel </a></th>
-					<th><a class="mano" ng-click="columna='registered'; reverse = !reverse;">Registrado</a></th>
+					<th><a class="mano" ng-click="columna='registered'; reverse = !reverse;">Estado</a></th>
 					<th>Acción</th>
 				</tr>
 			</thead>
@@ -52,11 +52,11 @@
 					<td>{{ user.last_name }}</td>
 					<td>{{ user.email }}</td>
 					<td>{{ user.type }}</td>
-					<td>{{ user.registered | date:"fullDate" }}</td>
+					<td>{{ user.status }}</td>
 
 					<td>
 						<a ng-click="mostrarModal( user )" class="btn btn-warning"><i class="fa fa-edit"></i></a>
-						<a ng-click="eliminar( user.id_person,user.id )" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+						<a ng-hide=" userTYPE == 'supad' " ng-click="eliminar( user.id_person,user.id )" class="btn btn-danger"><i class="fa fa-trash"></i></a>
 					</td>
 				</tr>
 			</tbody>
@@ -100,6 +100,6 @@
 </div>
 
 
-<div class="btn-agregar visible-xs" ng-click="mostrarModal({})"><i class="fa fa-paper-plane-o i-agregar" ></i></div>
+<div ng-hide=" userTYPE == 'supad' " class="btn-agregar visible-xs" ng-click="mostrarModal({})"><i class="fa fa-paper-plane-o i-agregar" ></i></div>
 <div ng-include="'public/user/views/modal.view.html'"></div>
 
