@@ -91,6 +91,11 @@
 }
 
 
+.profile-heigth {
+  height: auto;
+  min-height: 45px;
+}
+
 
 /*-------------------------- Materialize ---------------------------*/
 

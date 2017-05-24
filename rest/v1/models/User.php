@@ -136,6 +136,18 @@ $app->put("/user/:id",function($id) use($app) {
 	if( $src == null )
 		$src = '';
 
+	if( $pwdA && $pwdN && $pwdR ) {
+		$salt = '#/$02.06$/#_#/$25.10$/#';
+		$pwdA = md5($salt.$pwdA);
+		$pwdA = sha1($salt.$pwdA);
+
+		$pwdN = md5($salt.$pwdN);
+		$pwdN = sha1($salt.$pwdN);
+
+		$pwdR = md5($salt.$pwdR);
+		$pwdR = sha1($salt.$pwdR);
+	}
+
 	try {
 		$conex = getConex();
 		$result = $conex->prepare("CALL pUpdateUser('$id','$email','$cellphone','$pwdA','$pwdN','$pwdR','$src');");

@@ -60,7 +60,6 @@ angular.module('userModule').controller('userCtrl', ['$scope', 'userService', fu
 	//   Funcion para guardar
 	// ================================================
 	$scope.guardar = function( user, frmUser){
-		console.log('jodeeeer');
 
 		userService.guardar( user ).then(function(){
 

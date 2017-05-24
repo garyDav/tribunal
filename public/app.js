@@ -130,8 +130,10 @@
                     restrict: 'A',
                     require: 'ngModel',
                     link: function(scope, elm, attrs, ctrl) {
+
                         var validateFn = function (viewValue) {
-                        	if(attrs.coincide)
+                        	console.log(attrs.coincide);
+                        	if(attrs.coincide != '')
 	                            if (ctrl.$isEmpty(viewValue) || viewValue.indexOf(attrs.coincide) === -1) {
 	                                ctrl.$setValidity('coincide', false);
 	                                return undefined;
@@ -139,9 +141,9 @@
 	                                ctrl.$setValidity('coincide', true);
 	                                return viewValue;
 	                            }
-	                        else {
+	                        /*else {
 	                        	ctrl.$setValidity('parse', false);
-	                        }
+	                        }*/
                         };
 
                         ctrl.$parsers.push(validateFn);
@@ -239,12 +241,9 @@
 		$scope.nameImg = "";
 		$scope.editUser = {};
 
-		/*$scope.$watch('userSelMain.pwdR',function() {
-			if(!$scope.userSelMain.pwdN) {
-				$scope.frmUser.autoValidateFormOptions.resetForm();
-				console.log($rootScope.frmUser);
-			}else
-				console.log('joder');
+		/*$scope.$watch('userSelMain.pwdN',function() {
+			if(!$scope.userSelMain.pwdA)
+				swal("ERROR", "¡Antes debe ingresar su contraseña atigua!", "error");
 		});*/
 
 		$scope.init = function() {
@@ -256,8 +255,12 @@
 		};
 
 		$scope.mostrarUserModal = function(){
+			$scope.init();
+			$scope.userSelMain = {};
+
 			$scope.mainUser.cellphone = parseInt($scope.mainUser.cellphone);
 			$scope.userSelMain = $scope.mainUser;
+			console.log($scope.mainUser);
 			$("#modal_userMain").modal();
 		};
 
@@ -265,13 +268,22 @@
 			$scope.config = mainService.config;
 		});
 
+		$scope.cancelarUserMain = function(frmUser) {
+			location.reload();
+		}
+
 		$scope.editarUserMain = function(user,frmUser) {
-			console.log(user);
-			
-			if(user.src)
+			if( (user.pwdN != '' || user.pwdR != '') && (user.pwdA == null || user.pwdA == '') ) {
+				swal("ERROR", "¡Antes debe ingresar su contraseña atigua!", "error");
+				console.log('entra cabron1');
+			}
+			else {
+			console.log('entra cabron2');
+			if(typeof user.src == 'object')
 				upload.saveImg(user.src).then(function( data ) {
 					if ( data.error == 'not' ) {
 						user.src = data.src;
+						$scope.mainUser.src = data.src;
 						mainService.editarUser(user).success(function(response){
 							$scope.editUser = response;
 							if( $scope.editUser.error == 'not' )
@@ -292,6 +304,7 @@
 						swal("ERROR SERVER", "¡"+data+"!", "error");
 				});
 			else {
+				console.log('entra cabron3');
 				mainService.editarUser(user).success(function(response){
 					$scope.editUser = response;
 					if( $scope.editUser.error == 'not' )
@@ -305,6 +318,11 @@
 				.error(function(response){
 					console.error(response);
 				});
+			}
+			$scope.userSelMain = {};
+
+			frmUser.autoValidateFormOptions.resetForm();
+			$("#modal_userMain").modal('hide');
 			}
 		};
 
