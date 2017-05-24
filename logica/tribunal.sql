@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 16-05-2017 a las 05:36:01
+-- Tiempo de generación: 24-05-2017 a las 15:59:58
 -- Versión del servidor: 10.1.13-MariaDB
 -- Versión de PHP: 7.0.8
 
@@ -101,6 +101,51 @@ SELECT 'yes' error,'Error: Contraseña incorrecta.' msj;
 END IF;
 ELSE
 SELECT 'yes' error,'Error: Correo no registrado.' msj;
+END IF;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pUpdateUser` (IN `v_id` INT, IN `v_email` VARCHAR(100), IN `v_cellphone` INT, IN `v_pwdA` VARCHAR(100), IN `v_pwdN` VARCHAR(100), IN `v_pwdR` VARCHAR(100), IN `v_src` VARCHAR(255))  BEGIN
+DECLARE us int(11);
+SET us = (SELECT id FROM user WHERE pwd LIKE v_pwdA);
+
+IF ( (v_pwdA NOT LIKE '') AND (v_src NOT LIKE '') ) THEN
+
+IF (us) THEN
+IF (v_pwdN LIKE v_pwdR) THEN
+UPDATE user SET email=v_email,cellphone=v_cellphone,pwd=v_pwdN,src=v_src WHERE id=v_id;
+SELECT v_id AS id, 'not' AS error,'Perfil actualizado.' AS msj;
+ELSE
+SELECT v_id AS id, 'yes' AS error,'Las contraseñas no coinciden, repita bien la nueva contraseña.' AS msj;
+END IF;
+ELSE
+SELECT v_id AS id, 'yes' AS error,'La contraseña antigua no es correcta.' AS msj, (v_pwdA NOT LIKE '') AS res;
+END IF;
+
+END IF;
+
+IF ( (v_pwdA LIKE '') AND (v_src LIKE '') ) THEN
+UPDATE user SET email=v_email,cellphone=v_cellphone WHERE id=v_id;
+SELECT v_id AS id, 'not' AS error,'Perfil actualizado.' AS msj;
+ELSE
+
+IF ( (v_pwdA LIKE '') AND (v_src NOT LIKE '') ) THEN
+UPDATE user SET email=v_email,cellphone=v_cellphone,src=v_src WHERE id=v_id;
+SELECT v_id AS id, 'not' AS error,'Perfil actualizado.' AS msj;
+ELSE
+IF ( (v_src LIKE '') AND (v_pwdA NOT LIKE '') ) THEN
+IF (us) THEN
+IF (v_pwdN LIKE v_pwdR) THEN
+UPDATE user SET email=v_email,cellphone=v_cellphone,pwd=v_pwdN WHERE id=v_id;
+SELECT v_id AS id, 'not' AS error,'Perfil actualizado.' AS msj;
+ELSE
+SELECT v_id AS id, 'yes' AS error,'Las contraseñas no coinciden, repita bien la nueva contraseña.' AS msj;
+END IF;
+ELSE
+SELECT v_id AS id, 'yes' AS error,'La contraseña antigua no es correcta.' AS msj;
+END IF;
+END IF;
+END IF;
+
 END IF;
 END$$
 
@@ -244,6 +289,13 @@ CREATE TABLE `person` (
   `sex` varchar(10) COLLATE utf8_spanish2_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
+--
+-- Volcado de datos para la tabla `person`
+--
+
+INSERT INTO `person` (`id`, `ci`, `ex`, `name`, `last_name`, `fec_nac`, `sex`) VALUES
+(1, 10524423, 'Lp', 'Juan', 'Perez', '1992-05-05', 'Masculino');
+
 -- --------------------------------------------------------
 
 --
@@ -309,6 +361,13 @@ CREATE TABLE `user` (
   `cod_ja` varchar(7) COLLATE utf8_spanish2_ci DEFAULT NULL,
   `cod_all` varchar(7) COLLATE utf8_spanish2_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `user`
+--
+
+INSERT INTO `user` (`id`, `id_person`, `id_jagroambiental`, `email`, `pwd`, `type`, `cellphone`, `src`, `last_connection`, `registered`, `cod_dep`, `cod_ja`, `cod_all`) VALUES
+(1, 1, 1, 'adrh@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'adrh', 75799666, '1495634239.jpeg', '2017-05-22 08:26:36', '2017-05-22', 'D-0001', 'JA-0001', 'T-0000');
 
 --
 -- Índices para tablas volcadas
@@ -422,7 +481,7 @@ ALTER TABLE `municipality`
 -- AUTO_INCREMENT de la tabla `person`
 --
 ALTER TABLE `person`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `province`
 --
@@ -437,7 +496,7 @@ ALTER TABLE `publication`
 -- AUTO_INCREMENT de la tabla `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- Restricciones para tablas volcadas
 --
