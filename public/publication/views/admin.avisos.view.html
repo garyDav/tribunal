@@ -1,0 +1,100 @@
+<ol class="breadcrumb animated fadeIn fast">
+    <li><a href="/tribunal"><i class="fa fa-dashboard"></i> Principal</a></li>
+    <li class="active">Avisos</li>
+</ol>
+<!-- /.filtros -->
+<div class="filtros">
+<div class="busqueda linea b-largo">
+  <label for="busqueda"><i class="fa fa-search mano" aria-hidden="true"></i></label>
+  <input id="busqueda" type="text" placeholder="Busque aqui..." ng-model="busqueda">
+</div>
+</div>
+<!-- /.Fin filtros -->
+
+<div class="row" ng-init="find('avisos')">
+
+	<div class="col-md-12">
+	  <div class="box">
+	    
+	    <div class="box-header with-border">
+	      <h3 class="box-title">Avisos</h3>
+	
+			<div class="box-tools hidden-xs">
+	            <div class="input-group">
+	              <a class="btn btn-primary"
+	              	ng-click="mostrarModal({})"><i class="fa fa-plus"></i> Agregar Avisos</a>
+	            </div>
+	        </div>
+
+	    </div>
+	    <!-- /.box-header -->
+	    
+	    <div class="box-body" ng-hide="load || !publication.pub.length">
+	      
+	      <table class="table table-bordered responsive-table">
+			<thead>
+				<tr>
+					<th><a class="mano" ng-click="columna='id'; reverse = !reverse;">#</a></th>
+					<th>Imagen </th>
+					<th><a class="mano" ng-click="columna='ci'; reverse = !reverse;">Title </a></th>
+					<th><a class="mano" ng-click="columna='name'; reverse = !reverse;">Descripción </a></th>
+					<th><a class="mano" ng-click="columna='civil_status'; reverse = !reverse;">Jurisdicción agroambintal </a></th>
+					<th>Acción</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="pub in publication.pub | filter:busqueda | orderBy:columna:reverse">
+					<td>{{ pub.id }}</td>
+					<td><img ng-src="pub.img" width="110px"></td>
+					<td>{{ pub.title }}</td>
+					<td>{{ pub.description }}</td>
+					<td>{{ pub.ja_name }}</td>
+
+					<td>
+						<a ng-click="mostrarModal( user )" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+					</td>
+				</tr>
+			</tbody>
+
+	      </table>
+
+	
+		</div>
+		<div class="box-body" ng-show="load">
+			<div class="cargando">
+				<i class="fa fa-spinner fa-pulse fa-2x fa-fw" aria-hidden="true"></i>
+				Cargando...
+			</div>
+		</div>
+		<div class="box-body" ng-show="!load && !publication.pub.length">
+			<div class="cargando">
+				Ingrese nuevos registros.
+			</div>
+		</div>
+
+		<div class="box-footer clearfix" ng-show="publication.total_paginas > 1">
+          <ul class="pagination pagination-sm no-margin pull-right">
+            <li><a class="mano" ng-click="moverA(1)">«</a></li>
+
+			<li ng-repeat="pag in publication.paginas"
+				ng-class="{
+					'active': publication.pag_actual === pag
+				}">
+				<a class="mano" ng-click="moverA(pag)">{{ pag }}</a>
+			</li>
+
+            <li><a class="mano" ng-click="moverA( publication.total_paginas )" >»</a></li>
+          </ul>
+        </div>
+
+
+
+		</div>
+	</div>
+
+</div>
+
+
+<div ng-hide=" userTYPE == 'supad' " class="btn-agregar visible-xs" ng-click="mostrarModal({})"><i class="fa fa-paper-plane-o i-agregar" ></i></div>
+<div ng-include="'public/user/views/modal.view.html'"></div>
+

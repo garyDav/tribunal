@@ -132,11 +132,12 @@ function get_paginado_user( $pagina = 1, $por_pagina = 20 ){
 
 }
 
-function get_publication_paginado( $pagina = 1, $por_pagina = 10 ){
+function get_publication_paginado( $pagina = 1, $type = 'avisos' , $por_pagina = 20 ){
 
 	$conex = getConex();
 
-	$sql = "SELECT count(*) as cuantos FROM publication p,user u,person per WHERE (p.id_user=u.id AND u.id_person=per.id) AND (u.cod_dep=p.cod OR u.cod_ja=p.cod OR u.cod_all=p.cod);";
+	//$sql = "SELECT count(*) as cuantos FROM publication p,user u WHERE (p.id_user=u.id) AND (u.cod_dep=p.cod OR u.cod_ja=p.cod OR u.cod_all=p.cod);";
+	$sql = "SELECT count(*) as cuantos FROM publication p,user u WHERE p.id_user=u.id AND p.type='$type';";
 
 	$result = $conex->prepare($sql);
 	$result->execute();
@@ -169,7 +170,7 @@ function get_publication_paginado( $pagina = 1, $por_pagina = 10 ){
 	}
 
 
-	$sql = "SELECT p.title,p.description,p.fec,p.img,per.name,per.last_name FROM publication p,user u,person per WHERE (p.id_user=u.id AND u.id_person=per.id) AND (u.cod_dep=p.cod OR u.cod_ja=p.cod OR u.cod_all=p.cod) limit $desde, $por_pagina;";
+	$sql = "SELECT p.id,p.title,p.description,p.fec,p.img,p.doc,u.email,u.cellphone,ja.name AS ja_name,per.name,per.last_name FROM publication p,user u,person per,j_agroambiental ja WHERE p.id_user=u.id AND u.id_person=per.id AND u.id_jagroambiental=ja.id limit $desde, $por_pagina;";
 	$result = $conex->prepare($sql);
 	$result->execute();
 	$datos = $result->fetchAll(PDO::FETCH_OBJ);

@@ -86,6 +86,7 @@ CREATE TABLE publication(
 	id_user int,
 	title varchar(255),
 	description text,
+	type varchar(13),
 	fec datetime,
 	img varchar(255),
 	doc varchar(255),
@@ -274,7 +275,7 @@ CREATE PROCEDURE pUpdateUser (
 )
 BEGIN
 	DECLARE us int(11);
-	SET us = (SELECT id FROM user WHERE pwd LIKE v_pwdA);
+	SET us = (SELECT id FROM user WHERE id=v_id AND pwd LIKE v_pwdA);
 
 	IF ( (v_pwdA NOT LIKE '') AND (v_src NOT LIKE '') ) THEN
 		

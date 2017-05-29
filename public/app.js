@@ -6,7 +6,8 @@
 			'ngRoute',
 			'angular-loading-bar',
 			'jcs-autoValidate',
-			'userModule'], 
+			'userModule',
+			'publicationModule'], 
 		["$provide", function($provide) {
 		var PLURAL_CATEGORY = {ZERO: "zero", ONE: "one", TWO: "two", FEW: "few", MANY: "many", OTHER: "other"};
 		$provide.value("$locale", {
@@ -132,7 +133,6 @@
                     link: function(scope, elm, attrs, ctrl) {
 
                         var validateFn = function (viewValue) {
-                        	console.log(attrs.coincide);
                         	if(attrs.coincide != '')
 	                            if (ctrl.$isEmpty(viewValue) || viewValue.indexOf(attrs.coincide) === -1) {
 	                                ctrl.$setValidity('coincide', false);
@@ -260,7 +260,6 @@
 
 			$scope.mainUser.cellphone = parseInt($scope.mainUser.cellphone);
 			$scope.userSelMain = $scope.mainUser;
-			console.log($scope.mainUser);
 			$("#modal_userMain").modal();
 		};
 
@@ -275,10 +274,8 @@
 		$scope.editarUserMain = function(user,frmUser) {
 			if( (user.pwdN != '' || user.pwdR != '') && (user.pwdA == null || user.pwdA == '') ) {
 				swal("ERROR", "¡Antes debe ingresar su contraseña atigua!", "error");
-				console.log('entra cabron1');
 			}
 			else {
-			console.log('entra cabron2');
 			if(typeof user.src == 'object')
 				upload.saveImg(user.src).then(function( data ) {
 					if ( data.error == 'not' ) {
@@ -304,7 +301,6 @@
 						swal("ERROR SERVER", "¡"+data+"!", "error");
 				});
 			else {
-				console.log('entra cabron3');
 				mainService.editarUser(user).success(function(response){
 					$scope.editUser = response;
 					if( $scope.editUser.error == 'not' )

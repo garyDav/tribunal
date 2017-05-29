@@ -1,6 +1,6 @@
 <?php if(!defined('SPECIALCONSTANT')) die(json_encode([array('id'=>'0','error'=>'Acceso Denegado')]));
 
-$app->get('/publication/:id',function($id) use($app) {
+$app->get('/publication/:id/:type',function($id,$type) use($app) {
 	try {
 		//sleep(1);
 		if( isset( $id ) ){
@@ -8,12 +8,12 @@ $app->get('/publication/:id',function($id) use($app) {
 		}else{
 			$pag = 1;
 		}
-		$res = get_publication_paginado( $pag );
+		$res = get_publication_paginado( $pag,$type );
 
 		$app->response->headers->set('Content-type','application/json');
 		$app->response->headers->set('Access-Control-Allow-Origin','*');
 		$app->response->status(200);
-		$app->response->body(json_encode($res));
+		$app->response->body(json_encode( $res ));
 	}catch(PDOException $e) {
 		echo 'Error: '.$e->getMessage();
 	}
