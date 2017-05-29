@@ -25,11 +25,12 @@ angular.module('publicationModule').factory('publicationService', ['$http', '$q'
 		},
 
 
-		guardar: function( publication,type ){
+		guardar: function( publication ){
+			console.log(publication);
 
-			var d = $q.defer();
+			/*var d = $q.defer();
 
-			$http.post('rest/v1/publication/'+type+'/' , publication )
+			$http.post('rest/v1/publication/' , publication )
 			.success(function( response ){
 
 				if ( response.error == 'not' ) {
@@ -48,7 +49,7 @@ angular.module('publicationModule').factory('publicationService', ['$http', '$q'
 				console.error(response);
 			}));
 
-			return d.promise;
+			return d.promise;*/
 
 		},
 
@@ -77,6 +78,10 @@ angular.module('publicationModule').factory('publicationService', ['$http', '$q'
 					console.log(data);
 
 					if(data) {
+
+						data.publication.forEach(function(element,index,array) {
+							element.fec = new Date(element.fec);
+						});
 
 						self.err           = data.err;
 						self.conteo        = data.conteo;

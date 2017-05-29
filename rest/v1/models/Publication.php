@@ -8,7 +8,10 @@ $app->get('/publication/:id/:type',function($id,$type) use($app) {
 		}else{
 			$pag = 1;
 		}
-		$res = get_publication_paginado( $pag,$type );
+		if($type == 'avisos')
+			$res = get_publication_paginado_avisos( $pag );
+		else
+			$res = get_publication_paginado( $pag,$type );
 
 		$app->response->headers->set('Content-type','application/json');
 		$app->response->headers->set('Access-Control-Allow-Origin','*');
@@ -19,6 +22,7 @@ $app->get('/publication/:id/:type',function($id,$type) use($app) {
 	}
 })->conditions(array('id'=>'[0-9]{1,11}'));
 
+
 $app->post("/publication/",function() use($app) {
 	try {
 		$postdata = file_get_contents("php://input");
@@ -26,9 +30,9 @@ $app->post("/publication/",function() use($app) {
 		$request = json_decode($postdata);
 		$request = (array) $request;
 		$conex = getConex();
-		$res = array( 'err'=>'yes','msj'=>'Puta no se pudo hacer nada, revisa mierda' );
+		$res = array( 'err'=>'yes','msj'=>'No se pudo hacer nada' );
 
-		if( isset( $request['id'] )  ){  // ACTUALIZAR
+		if( isset( $request['id'] )  ){  // UPDATE
 
 			$sql = "UPDATE publication 
 						SET

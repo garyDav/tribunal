@@ -6,7 +6,15 @@ angular.module('publicationModule').controller('publicationCtrl', ['$scope', '$r
 
 		$scope.activar('mPublication','','Publicacion','lista de publicaciones');
 		$scope.publication   = {};
-		$scope.pubSel 		 = {};
+		$scope.pubSel 		 = {
+			id_user : '',
+			doc : '',
+			cod : '',
+			title : '',
+			description : '',
+			type : '',
+			img : ''
+		};
 		$scope.load 		 = true;
 
 		$scope.find = function(type) {
@@ -24,27 +32,34 @@ angular.module('publicationModule').controller('publicationCtrl', ['$scope', '$r
 		// ================================================
 		//   Mostrar modal de publicacion
 		// ================================================
-		$scope.mostrarModal = function( user ){
-
-			user.cellphone = parseInt(user.cellphone);
-			angular.copy( user, $scope.userSel );
-			$("#modal_user").modal();
+		$scope.mostrarModal = function( pub ){
+			angular.copy( pub, $scope.pubSel );
+			$("#modal_avisos").modal();
 		};
 
 		// ================================================
 		//   Funcion para guardar
 		// ================================================
-		$scope.guardar = function( user, frmUser){
-
-			publicationService.guardar( user ).then(function(){
+		$scope.guardarAvisos = function( pub, frmAviso){
+			$scope.pubSel = {
+				id_user : $rootScope.userID,
+				doc : '',
+				cod : pub.cod,
+				title : pub.title,
+				description : pub.description,
+				type : pub.type,
+				img : pub.img
+			};
+			console.log($scope.pubSel);
+			/*publicationService.guardar( $scope.pubSel ).then(function(){
 
 				// codigo cuando se actualizo
-				$("#modal_user").modal('hide');
-				$scope.userSel = {};
+				$("#modal_avisos").modal('hide');
+				$scope.pubSel = {};
 
-				frmUser.autoValidateFormOptions.resetForm();
+				frmAviso.autoValidateFormOptions.resetForm();
 
-			});
+			});*/
 
 		};
 		// ================================================

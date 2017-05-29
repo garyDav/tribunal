@@ -36,9 +36,12 @@
 				<tr>
 					<th><a class="mano" ng-click="columna='id'; reverse = !reverse;">#</a></th>
 					<th>Imagen </th>
-					<th><a class="mano" ng-click="columna='ci'; reverse = !reverse;">Title </a></th>
-					<th><a class="mano" ng-click="columna='name'; reverse = !reverse;">Descripción </a></th>
-					<th><a class="mano" ng-click="columna='civil_status'; reverse = !reverse;">Jurisdicción agroambintal </a></th>
+					<th><a class="mano" ng-click="columna='title'; reverse = !reverse;">Title </a></th>
+					<th><a class="mano" ng-click="columna='description'; reverse = !reverse;">Descripción </a></th>
+					<th><a class="mano" ng-click="columna='type'; reverse = !reverse;">Aviso </a></th>
+					<th><a class="mano" ng-click="columna='fec'; reverse = !reverse;">Publicado </a></th>
+					<th><a class="mano" ng-click="columna='fec'; reverse = !reverse;">Hora </a></th>
+					<th><a class="mano" ng-click="columna='ja_name'; reverse = !reverse;">Jurisdicción agroambintal </a></th>
 					<th>Acción</th>
 				</tr>
 			</thead>
@@ -48,10 +51,13 @@
 					<td><img ng-src="pub.img" width="110px"></td>
 					<td>{{ pub.title }}</td>
 					<td>{{ pub.description }}</td>
+					<td>{{ pub.type }}</td>
+					<td>{{ pub.fec | date:"longDate" }}</td>
+					<td>{{ pub.fec | date:"shortTime" }}</td>
 					<td>{{ pub.ja_name }}</td>
 
 					<td>
-						<a ng-click="mostrarModal( user )" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+						<a ng-click="mostrarModal( pub )" class="btn btn-warning"><i class="fa fa-edit"></i></a>
 					</td>
 				</tr>
 			</tbody>
@@ -95,6 +101,6 @@
 </div>
 
 
-<div ng-hide=" userTYPE == 'supad' " class="btn-agregar visible-xs" ng-click="mostrarModal({})"><i class="fa fa-paper-plane-o i-agregar" ></i></div>
-<div ng-include="'public/user/views/modal.view.html'"></div>
+<div class="btn-agregar visible-xs" ng-click="mostrarModal({})"><i class="fa fa-paper-plane-o i-agregar" ></i></div>
+<div ng-include="'public/publication/views/modal.avisos.view.html'"></div>
 
