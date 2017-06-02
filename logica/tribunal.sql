@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 29-05-2017 a las 15:12:46
+-- Tiempo de generación: 02-06-2017 a las 03:17:12
 -- Versión del servidor: 10.1.13-MariaDB
 -- Versión de PHP: 7.0.8
 
@@ -63,14 +63,14 @@ INSERT INTO province VALUES(null,v_id_department,v_name);
 SELECT @@identity AS id, 'not' AS error,'Provincia registrada correctamente.' AS msj;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsertPublication` (IN `v_id_user` INT, IN `v_title` VARCHAR(255), IN `v_description` TEXT, IN `v_img` VARCHAR(255), IN `v_doc` VARCHAR(255), IN `v_cod` VARCHAR(7))  BEGIN
-INSERT INTO publication VALUES(null,v_id_user,v_title,v_description,CURRENT_TIMESTAMP,v_img,v_doc,v_cod);
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsertPublication` (IN `v_id_user` INT, IN `v_title` VARCHAR(255), IN `v_description` TEXT, IN `v_type` VARCHAR(13), IN `v_img` VARCHAR(255), IN `v_doc` VARCHAR(255), IN `v_cod` VARCHAR(7))  BEGIN
+INSERT INTO publication VALUES(null,v_id_user,v_title,v_description,v_type,CURRENT_TIMESTAMP,v_img,v_doc,v_cod);
 SELECT @@identity AS id, 'not' AS error,'Publicación registrada correctamente.' AS msj;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsertUser` (IN `v_id_person` INT, IN `v_id_jagroambiental` INT, IN `v_email` VARCHAR(100), IN `v_pwd` VARCHAR(100), IN `v_type` VARCHAR(5), IN `v_cellphone` INT, IN `v_cod_dep` VARCHAR(7), IN `v_cod_ja` VARCHAR(7), IN `v_cod_all` VARCHAR(7))  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsertUser` (IN `v_id_person` INT, IN `v_id_jagroambiental` INT, IN `v_email` VARCHAR(100), IN `v_position` VARCHAR(100), IN `v_pwd` VARCHAR(100), IN `v_type` VARCHAR(5), IN `v_cellphone` INT, IN `v_cod_dep` VARCHAR(7), IN `v_cod_ja` VARCHAR(7), IN `v_cod_all` VARCHAR(7))  BEGIN
 IF NOT EXISTS(SELECT id FROM user WHERE email LIKE v_email) THEN
-INSERT INTO user VALUES(null,v_id_person,v_id_jagroambiental,v_email,v_pwd,v_type,v_cellphone,'',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,v_cod_dep,v_cod_ja,v_cod_all,'activo');
+INSERT INTO user VALUES(null,v_id_person,v_id_jagroambiental,v_email,v_position,v_pwd,v_type,v_cellphone,'',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,v_cod_dep,v_cod_ja,v_cod_all,'activo');
 SELECT @@identity AS id,v_type AS tipo,'not' AS error,'Usuario registrado correctamente.' AS msj;
 ELSE
 SELECT 'yes' error,'Error: Correo ya registrado.' msj;
@@ -248,7 +248,12 @@ INSERT INTO `j_agroambiental` (`id`, `id_municipality`, `name`, `cod_ja`) VALUES
 (5, 5, 'JA Sucre', 'JA-0005'),
 (6, 6, 'JA Tarija', 'JA-0006'),
 (7, 7, 'JA Cobija', 'JA-0007'),
-(8, 8, 'JA Trinidad', 'JA-0009');
+(8, 8, 'JA Trinidad', 'JA-0009'),
+(9, 10, 'JA la paz municipio 1', 'JA-0010'),
+(10, 11, 'JA la paz municipio 2', 'JA-0011'),
+(11, 12, 'JA la paz municipio 3', 'JA-0012'),
+(12, 13, 'JA la paz municipio 4', 'JA-0013'),
+(13, 14, 'JA la paz municipio 5', 'JA-0014');
 
 -- --------------------------------------------------------
 
@@ -275,7 +280,14 @@ INSERT INTO `municipality` (`id`, `id_province`, `name`) VALUES
 (6, 6, 'Tarija'),
 (7, 7, 'Cobija'),
 (8, 8, 'Trinidad'),
-(9, 9, 'Santa Cruz de la Sierra');
+(9, 9, 'Santa Cruz de la Sierra'),
+(10, 12, 'Ixiamas'),
+(11, 12, 'San Buena Ventura'),
+(12, 13, 'Sica Sica '),
+(13, 13, 'Ayo Ayo'),
+(14, 13, 'Calamarca'),
+(15, 13, 'Collana'),
+(16, 13, 'Colquencha');
 
 -- --------------------------------------------------------
 
@@ -316,7 +328,8 @@ INSERT INTO `person` (`id`, `ci`, `ex`, `name`, `last_name`, `fec_nac`, `sex`) V
 (16, 1489562, 'Pt', 'Manuel', 'Medrano', '1987-11-14', 'Masculino'),
 (17, 4589647, 'Tj', 'Rodrigo', 'Velasquez', '1980-05-12', 'Masculino'),
 (18, 7481953, 'Lp', 'Alberto', 'Arancibia', '1968-12-05', 'Masculino'),
-(19, 59846271, 'Pa', 'Jaime', 'Bellido', '1960-08-01', 'Masculino');
+(19, 59846271, 'Pa', 'Jaime', 'Bellido', '1960-08-01', 'Masculino'),
+(20, 0, 'Or', 'Asdf', 'Asdf', '1952-03-03', 'Femenino');
 
 -- --------------------------------------------------------
 
@@ -343,7 +356,14 @@ INSERT INTO `province` (`id`, `id_department`, `name`) VALUES
 (6, 6, 'Cercado'),
 (7, 7, 'Nicolas Suarez'),
 (8, 8, 'Cercado'),
-(9, 9, 'Andres de Ibañez');
+(9, 9, 'Andres de Ibañez'),
+(10, 5, 'Juana Azurduy de Padilla'),
+(11, 5, 'Jaime Zudáñez'),
+(12, 1, 'Abel Iturralde'),
+(13, 1, 'Aroma'),
+(14, 1, 'Bautista Saavedra'),
+(15, 1, 'Camacho'),
+(16, 1, 'Caranavi');
 
 -- --------------------------------------------------------
 
@@ -368,7 +388,13 @@ CREATE TABLE `publication` (
 --
 
 INSERT INTO `publication` (`id`, `id_user`, `title`, `description`, `type`, `fec`, `img`, `doc`, `cod`) VALUES
-(1, 1, 'Titulo', 'lorem ipsum', 'avisos', '2017-05-16 09:25:33', NULL, NULL, 'JA-0001');
+(38, 2, 'Titulo', 'Aviso', 'instructivo', '2017-06-01 18:24:00', '1496355840.jpeg', '', 'JA-0004'),
+(39, 2, 'Titulo', 'Descripcion', 'circular', '2017-06-01 18:29:13', '1496356153.jpeg', '', 'JA-0014'),
+(40, 2, 'Titulo de efemeride', 'descripcion', 'efemerides', '2017-06-01 18:31:35', '1496356295.jpeg', '', 'D-0003'),
+(41, 2, 'Potosi', 'Llueve en potosi', 'noticia', '2017-06-01 18:35:05', '1496356505.jpeg', '', 'D-0006'),
+(42, 1, 'sdf', 'asdfaa', 'comunicado', '2017-06-01 18:40:43', '1496356843.jpeg', '', 'D-0009'),
+(43, 1, 'Normativa N-21321', 'lafklsdlkfjkj', 'normativas', '2017-06-01 18:44:15', '', 'introduccion_a_nodejs_a_traves_de_koans_ebook.pdf-055.pdf', 'T-0000'),
+(44, 1, 'jooo', 'joder', 'reglamento', '2017-06-01 19:20:11', '', 'aprende java como si estuvieras en 1.pdf-617.pdf', 'JA-0007');
 
 -- --------------------------------------------------------
 
@@ -381,6 +407,7 @@ CREATE TABLE `user` (
   `id_person` int(11) DEFAULT NULL,
   `id_jagroambiental` int(11) DEFAULT NULL,
   `email` varchar(100) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `position` varchar(100) COLLATE utf8_spanish2_ci NOT NULL,
   `pwd` varchar(100) COLLATE utf8_spanish2_ci DEFAULT NULL,
   `type` varchar(5) COLLATE utf8_spanish2_ci DEFAULT NULL,
   `cellphone` int(11) DEFAULT NULL,
@@ -397,26 +424,27 @@ CREATE TABLE `user` (
 -- Volcado de datos para la tabla `user`
 --
 
-INSERT INTO `user` (`id`, `id_person`, `id_jagroambiental`, `email`, `pwd`, `type`, `cellphone`, `src`, `last_connection`, `registered`, `cod_dep`, `cod_ja`, `cod_all`, `status`) VALUES
-(1, 1, 1, 'adrh@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'adrh', 75799666, '1495920830.jpeg', '2017-05-22 08:26:36', '2017-05-22', 'D-0001', 'JA-0001', 'T-0000', 'activo'),
-(2, 2, 4, 'adrp@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'adrp', 65263447, '1495920882.jpeg', '2017-05-24 11:27:55', '2017-05-24', 'D-0004', 'JA-0004', 'T-0000', 'activo'),
-(3, 3, 3, 'adsg@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'adsg', 75723664, '1495920857.jpeg', '2017-05-24 11:35:48', '2017-05-24', 'D-0003', 'JA-0003', 'T-0000', 'activo'),
-(4, 4, 5, 'supad@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'supad', 75784521, '', '2017-05-24 12:18:11', '2017-05-24', 'D-0005', 'JA-0005', 'T-0000', 'activo'),
-(5, 5, 1, 'miguel@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 65884913, '', '2017-05-24 16:32:40', '2017-05-24', 'D-0001', 'JA-0001', 'T-0000', 'activo'),
-(6, 6, 5, 'ronald@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 74859612, '', '2017-05-24 16:43:09', '2017-05-24', 'D-0005', 'JA-0005', 'T-0000', 'activo'),
-(7, 7, 8, 'jime@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 74529681, '', '2017-05-24 16:49:39', '2017-05-24', 'D-0008', 'JA-0009', 'T-0000', 'activo'),
-(8, 8, 7, 'zule@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 71596324, '', '2017-05-24 16:51:13', '2017-05-24', 'D-0007', 'JA-0007', 'T-0000', 'activo'),
-(9, 9, 2, 'leo@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 74698521, '', '2017-05-24 16:52:27', '2017-05-24', 'D-0002', 'JA-0002', 'T-0000', 'activo'),
-(10, 10, 3, 'vale@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 74185296, '', '2017-05-24 16:53:33', '2017-05-24', 'D-0003', 'JA-0003', 'T-0000', 'activo'),
-(11, 11, 5, 'bacilio@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 79485632, '', '2017-05-24 16:55:14', '2017-05-24', 'D-0005', 'JA-0005', 'T-0000', 'activo'),
-(12, 12, 4, 'leandro@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 74985632, '', '2017-05-24 16:56:39', '2017-05-24', 'D-0004', 'JA-0004', 'T-0000', 'activo'),
-(13, 13, 1, 'lucia@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 74845691, '', '2017-05-24 16:58:45', '2017-05-24', 'D-0001', 'JA-0001', 'T-0000', 'activo'),
-(14, 14, 6, 'pablo@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 74985632, '', '2017-05-24 17:01:25', '2017-05-24', 'D-0006', 'JA-0006', 'T-0000', 'activo'),
-(15, 15, 2, 'gisel@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 74985178, '', '2017-05-24 17:03:57', '2017-05-24', 'D-0002', 'JA-0002', 'T-0000', 'activo'),
-(16, 16, 5, 'manuel@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 74965824, '', '2017-05-24 17:05:52', '2017-05-24', 'D-0005', 'JA-0005', 'T-0000', 'activo'),
-(17, 17, 3, 'rodrigo@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 74859741, '', '2017-05-24 17:06:59', '2017-05-24', 'D-0003', 'JA-0003', 'T-0000', 'activo'),
-(18, 18, 4, 'alberto@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 71935281, '', '2017-05-24 17:08:14', '2017-05-24', 'D-0004', 'JA-0004', 'T-0000', 'activo'),
-(19, 19, 8, 'jaime@gmail.com', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 76548912, '', '2017-05-24 17:09:49', '2017-05-24', 'D-0008', 'JA-0009', 'T-0000', 'activo');
+INSERT INTO `user` (`id`, `id_person`, `id_jagroambiental`, `email`, `position`, `pwd`, `type`, `cellphone`, `src`, `last_connection`, `registered`, `cod_dep`, `cod_ja`, `cod_all`, `status`) VALUES
+(1, 1, 1, 'adrh@gmail.com', 'Recursos Humanos', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'adrh', 75799666, '1495920830.jpeg', '2017-05-22 08:26:36', '2017-05-22', 'D-0001', 'JA-0001', 'T-0000', 'activo'),
+(2, 2, 4, 'adrp@gmail.com', 'Relacionador Publico', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'adrp', 65263447, '1495920882.jpeg', '2017-05-24 11:27:55', '2017-05-24', 'D-0004', 'JA-0004', 'T-0000', 'activo'),
+(3, 3, 3, 'adsg@gmail.com', '', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'adsg', 75723664, '1495920857.jpeg', '2017-05-24 11:35:48', '2017-05-24', 'D-0003', 'JA-0003', 'T-0000', 'activo'),
+(4, 4, 5, 'supad@gmail.com', '', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'supad', 75784521, '', '2017-05-24 12:18:11', '2017-05-24', 'D-0005', 'JA-0005', 'T-0000', 'activo'),
+(5, 5, 1, 'miguel@gmail.com', '', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 65884913, '', '2017-05-24 16:32:40', '2017-05-24', 'D-0001', 'JA-0001', 'T-0000', 'activo'),
+(6, 6, 5, 'ronald@gmail.com', '', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 74859612, '', '2017-05-24 16:43:09', '2017-05-24', 'D-0005', 'JA-0005', 'T-0000', 'activo'),
+(7, 7, 8, 'jime@gmail.com', '', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 74529681, '', '2017-05-24 16:49:39', '2017-05-24', 'D-0008', 'JA-0009', 'T-0000', 'activo'),
+(8, 8, 7, 'zule@gmail.com', '', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 71596324, '', '2017-05-24 16:51:13', '2017-05-24', 'D-0007', 'JA-0007', 'T-0000', 'activo'),
+(9, 9, 2, 'leo@gmail.com', '', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 74698521, '', '2017-05-24 16:52:27', '2017-05-24', 'D-0002', 'JA-0002', 'T-0000', 'activo'),
+(10, 10, 3, 'vale@gmail.com', '', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 74185296, '', '2017-05-24 16:53:33', '2017-05-24', 'D-0003', 'JA-0003', 'T-0000', 'activo'),
+(11, 11, 5, 'bacilio@gmail.com', '', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 79485632, '', '2017-05-24 16:55:14', '2017-05-24', 'D-0005', 'JA-0005', 'T-0000', 'activo'),
+(12, 12, 4, 'leandro@gmail.com', '', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 74985632, '', '2017-05-24 16:56:39', '2017-05-24', 'D-0004', 'JA-0004', 'T-0000', 'activo'),
+(13, 13, 1, 'lucia@gmail.com', '', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 74845691, '', '2017-05-24 16:58:45', '2017-05-24', 'D-0001', 'JA-0001', 'T-0000', 'activo'),
+(14, 14, 6, 'pablo@gmail.com', '', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 74985632, '', '2017-05-24 17:01:25', '2017-05-24', 'D-0006', 'JA-0006', 'T-0000', 'activo'),
+(15, 15, 2, 'gisel@gmail.com', '', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 74985178, '', '2017-05-24 17:03:57', '2017-05-24', 'D-0002', 'JA-0002', 'T-0000', 'activo'),
+(16, 16, 5, 'manuel@gmail.com', '', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 74965824, '', '2017-05-24 17:05:52', '2017-05-24', 'D-0005', 'JA-0005', 'T-0000', 'activo'),
+(17, 17, 3, 'rodrigo@gmail.com', '', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 74859741, '', '2017-05-24 17:06:59', '2017-05-24', 'D-0003', 'JA-0003', 'T-0000', 'activo'),
+(18, 18, 4, 'alberto@gmail.com', '', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 71935281, '', '2017-05-24 17:08:14', '2017-05-24', 'D-0004', 'JA-0004', 'T-0000', 'activo'),
+(19, 19, 8, 'jaime@gmail.com', '', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 76548912, '', '2017-05-24 17:09:49', '2017-05-24', 'D-0008', 'JA-0009', 'T-0000', 'activo'),
+(20, 20, 12, 'fasdf@adsfas', 'este es el cargo', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 75772133, '', '2017-06-01 19:08:51', '2017-06-01', 'D-0001', 'JA-0013', 'T-0000', 'activo');
 
 --
 -- Índices para tablas volcadas
@@ -520,32 +548,32 @@ ALTER TABLE `img`
 -- AUTO_INCREMENT de la tabla `j_agroambiental`
 --
 ALTER TABLE `j_agroambiental`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT de la tabla `municipality`
 --
 ALTER TABLE `municipality`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT de la tabla `person`
 --
 ALTER TABLE `person`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
 -- AUTO_INCREMENT de la tabla `province`
 --
 ALTER TABLE `province`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT de la tabla `publication`
 --
 ALTER TABLE `publication`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 --
 -- AUTO_INCREMENT de la tabla `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
 -- Restricciones para tablas volcadas
 --
