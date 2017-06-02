@@ -25,16 +25,16 @@ angular.module('publicationModule').factory('publicationService', ['$http', '$q'
 		},
 
 
-		guardar: function( publication ){
-			console.log(publication);
+		guardar: function( publication,type ){
 
-			/*var d = $q.defer();
+			var d = $q.defer();
 
 			$http.post('rest/v1/publication/' , publication )
 			.success(function( response ){
 
 				if ( response.error == 'not' ) {
-					self.cargarPagina( self.pag_actual  );
+					console.log(type);
+					self.cargarPagina( self.pag_actual,type  );
 					d.resolve();
 					swal("CORRECTO", "¡"+response.msj+"!", "success");
 				} else 
@@ -45,11 +45,12 @@ angular.module('publicationModule').factory('publicationService', ['$http', '$q'
 					console.error(response);
 				}
 
-			}.error(function( response ) {
-				console.error(response);
-			}));
+			}).error(function( err ) {
+				d.reject(err);
+				console.error(err);
+			});
 
-			return d.promise;*/
+			return d.promise;
 
 		},
 
@@ -70,7 +71,6 @@ angular.module('publicationModule').factory('publicationService', ['$http', '$q'
 		},
 
 		cargarPagina: function( pag,type ){
-
 			var d = $q.defer();
 
 			$http.get('rest/v1/publication/' + pag + '/' + type )
@@ -94,8 +94,24 @@ angular.module('publicationModule').factory('publicationService', ['$http', '$q'
 
 					}
 					return d.resolve();
+				}).error(function(err) {
+					d.reject();
+					console.error(err);
 				});
 
+			return d.promise;
+		},
+
+		cargarDepJa: function() {
+			var d = $q.defer();
+
+			$http.get('rest/v1/department/j_agroambiental/')
+				.success(function(data) {
+					d.resolve(data);
+				}).error(function(err) {
+					d.reject(err);
+					console.error(data);
+				});
 			return d.promise;
 		}
 

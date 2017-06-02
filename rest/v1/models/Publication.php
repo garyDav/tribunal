@@ -13,6 +13,25 @@ $app->get('/publication/:id/:type',function($id,$type) use($app) {
 		else
 			$res = get_publication_paginado( $pag,$type );
 
+		$sql = "SELECT 'Algo anda mal' name;";
+		foreach ($res['publication'] as $valor) {
+			$cod = $valor->cod;
+			if( $cod == 'T-0000' )
+				$valor->destinatario = 'Todos los usuarios';
+			else {
+				$conex = getConex();
+				if( !(strpos($cod, 'D-') === false) ) {
+					$sql = "SELECT name FROM department WHERE cod_dep='$cod';";
+				}
+				if( !(strpos($cod, 'JA-') === false) )
+					$sql = "SELECT name FROM j_agroambiental WHERE cod_ja='$cod';";
+				$result = $conex->prepare( $sql );
+				$result->execute();
+				$valor->destinatario = $result->fetchObject()->name;
+				//$valor->destinatario = $sql;
+			}
+		}
+
 		$app->response->headers->set('Content-type','application/json');
 		$app->response->headers->set('Access-Control-Allow-Origin','*');
 		$app->response->status(200);
@@ -31,16 +50,22 @@ $app->post("/publication/",function() use($app) {
 		$request = (array) $request;
 		$conex = getConex();
 		$res = array( 'err'=>'yes','msj'=>'No se pudo hacer nada' );
+		if( $request['img'] == null )
+			$request['img'] =  '';
+		if( $request['cod'] == null )
+			$request['cod'] =  '';
+		
 
-		if( isset( $request['id'] )  ){  // UPDATE
+		if( isset( $request['id'] ) ){  // UPDATE
 
 			$sql = "UPDATE publication 
 						SET
 							id_user    = '". $request['id_user'] ."',
 							title 	   = '". $request['title'] ."',
 							description= '". $request['description'] ."',
+							type	   = '". $request['type'] ."',
 							img        = '". $request['img'] ."',
-							img        = '". $request['doc'] ."',
+							doc        = '". $request['doc'] ."',
 							cod        = '". $request['cod'] ."'
 					WHERE id=" . $request['id'].";";
 
@@ -56,6 +81,7 @@ $app->post("/publication/",function() use($app) {
 						'". $request['id_user'] . "',
 						'". $request['title'] . "',
 						'". $request['description'] . "',
+						'". $request['type'] . "',
 						'". $request['img'] . "',
 						'". $request['doc'] . "',
 						'". $request['cod'] . "' );";

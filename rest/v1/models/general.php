@@ -170,7 +170,7 @@ function get_publication_paginado( $pagina = 1, $type = 'avisos' , $por_pagina =
 	}
 
 
-	$sql = "SELECT p.id,p.title,p.description,p.fec,p.img,p.doc,u.email,u.cellphone,ja.name AS ja_name,per.name,per.last_name FROM publication p,user u,person per,j_agroambiental ja WHERE p.id_user=u.id AND u.id_person=per.id AND u.id_jagroambiental=ja.id AND p.type='$type' limit $desde, $por_pagina;";
+	$sql = "SELECT p.id,p.title,p.description,p.fec,p.img,p.doc,p.cod,'' destinatario,u.email,u.position,u.cellphone,u.type userType,ja.name AS ja_name,per.name,per.last_name FROM publication p,user u,person per,j_agroambiental ja WHERE p.id_user=u.id AND u.id_person=per.id AND u.id_jagroambiental=ja.id AND p.type='$type' limit $desde, $por_pagina;";
 	$result = $conex->prepare($sql);
 	$result->execute();
 	$datos = $result->fetchAll(PDO::FETCH_OBJ);
@@ -203,7 +203,7 @@ function get_publication_paginado_avisos( $pagina = 1, $por_pagina = 20 ){
 
 	//$sql = "SELECT count(*) as cuantos FROM publication p,user u WHERE (p.id_user=u.id) AND (u.cod_dep=p.cod OR u.cod_ja=p.cod OR u.cod_all=p.cod);";
 	$sql = "SELECT count(*) as cuantos FROM publication p,user u 
-			WHERE p.id_user=u.id AND (p.type='instructivos' OR p.type='circulares' OR p.type='comunicados');";
+			WHERE p.id_user=u.id AND (p.type='instructivo' OR p.type='circular' OR p.type='comunicado');";
 
 	$result = $conex->prepare($sql);
 	$result->execute();
@@ -236,7 +236,7 @@ function get_publication_paginado_avisos( $pagina = 1, $por_pagina = 20 ){
 	}
 
 
-	$sql = "SELECT p.id,p.title,p.description,p.fec,p.img,p.type,u.email,u.cellphone,ja.name AS ja_name,per.name,per.last_name FROM publication p,user u,person per,j_agroambiental ja WHERE p.id_user=u.id AND u.id_person=per.id AND u.id_jagroambiental=ja.id AND (p.type='instructivos' OR p.type='circulares' OR p.type='comunicados') limit $desde, $por_pagina;";
+	$sql = "SELECT p.id,p.title,p.description,p.fec,p.img,p.type,p.cod,'' destinatario,u.email,u.position,u.cellphone,u.type userType,ja.name AS ja_name,per.name,per.last_name FROM publication p,user u,person per,j_agroambiental ja WHERE p.id_user=u.id AND u.id_person=per.id AND u.id_jagroambiental=ja.id AND (p.type='instructivo' OR p.type='circular' OR p.type='comunicado') limit $desde, $por_pagina;";
 	$result = $conex->prepare($sql);
 	$result->execute();
 	$datos = $result->fetchAll(PDO::FETCH_OBJ);

@@ -53,6 +53,7 @@ CREATE TABLE user (
 	id_person int,
 	id_jagroambiental int,
 	email varchar(100),
+	position varchar(100),
 	pwd varchar(100),
 	type varchar(5),
 	cellphone int,
@@ -170,6 +171,7 @@ CREATE PROCEDURE pInsertUser (
 	IN v_id_person int,
 	IN v_id_jagroambiental int,
 	IN v_email varchar(100),
+	IN v_position varchar(100),
 	IN v_pwd varchar(100),
 	IN v_type varchar(5),
 	IN v_cellphone int,
@@ -179,7 +181,7 @@ CREATE PROCEDURE pInsertUser (
 )
 BEGIN
 	IF NOT EXISTS(SELECT id FROM user WHERE email LIKE v_email) THEN
-		INSERT INTO user VALUES(null,v_id_person,v_id_jagroambiental,v_email,v_pwd,v_type,v_cellphone,'',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,v_cod_dep,v_cod_ja,v_cod_all,'activo');
+		INSERT INTO user VALUES(null,v_id_person,v_id_jagroambiental,v_email,v_position,v_pwd,v_type,v_cellphone,'',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,v_cod_dep,v_cod_ja,v_cod_all,'activo');
 		SELECT @@identity AS id,v_type AS tipo,'not' AS error,'Usuario registrado correctamente.' AS msj;
 	ELSE
 		SELECT 'yes' error,'Error: Correo ya registrado.' msj;
@@ -202,12 +204,13 @@ CREATE PROCEDURE pInsertPublication (
 	IN v_id_user int,
 	IN v_title varchar(255),
 	IN v_description text,
+	IN v_type varchar(13),
 	IN v_img varchar(255),
 	IN v_doc varchar(255),
 	IN v_cod varchar(7)
 )
 BEGIN
-	INSERT INTO publication VALUES(null,v_id_user,v_title,v_description,CURRENT_TIMESTAMP,v_img,v_doc,v_cod);
+	INSERT INTO publication VALUES(null,v_id_user,v_title,v_description,v_type,CURRENT_TIMESTAMP,v_img,v_doc,v_cod);
 	SELECT @@identity AS id, 'not' AS error,'Publicación registrada correctamente.' AS msj;
 END //
 

@@ -145,6 +145,13 @@
     display: block;
     text-align: right;
   }
+  table.responsive-table thead tr .tamanioImg {
+    height: 130px;
+  }
+  table.responsive-table tbody tr .tamanioImg {
+    height: 130px;
+    overflow: hidden;
+  }
   table.responsive-table td {
     display: block;
     min-height: 1.25em;

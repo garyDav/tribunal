@@ -22,7 +22,7 @@
 			<div class="box-tools hidden-xs">
 	            <div class="input-group">
 	              <a class="btn btn-primary"
-	              	ng-click="mostrarModal({})"><i class="fa fa-plus"></i> Agregar Avisos</a>
+	              	ng-click="mostrarModal('#modal_avisos',{})"><i class="fa fa-plus"></i> Agregar Avisos</a>
 	            </div>
 	        </div>
 
@@ -35,29 +35,31 @@
 			<thead>
 				<tr>
 					<th><a class="mano" ng-click="columna='id'; reverse = !reverse;">#</a></th>
-					<th>Imagen </th>
+					<th class="tamanioImg">Imagen </th>
 					<th><a class="mano" ng-click="columna='title'; reverse = !reverse;">Title </a></th>
 					<th><a class="mano" ng-click="columna='description'; reverse = !reverse;">Descripción </a></th>
 					<th><a class="mano" ng-click="columna='type'; reverse = !reverse;">Aviso </a></th>
+					<th><a class="mano" ng-click="columna='destinatario'; reverse = !reverse;">Destinatario </a></th>
 					<th><a class="mano" ng-click="columna='fec'; reverse = !reverse;">Publicado </a></th>
 					<th><a class="mano" ng-click="columna='fec'; reverse = !reverse;">Hora </a></th>
-					<th><a class="mano" ng-click="columna='ja_name'; reverse = !reverse;">Jurisdicción agroambintal </a></th>
+					<th><a class="mano" ng-click="columna='ja_name'; reverse = !reverse;">Publicado por </a></th>
 					<th>Acción</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr ng-repeat="pub in publication.pub | filter:busqueda | orderBy:columna:reverse">
 					<td>{{ pub.id }}</td>
-					<td><img ng-src="pub.img" width="110px"></td>
-					<td>{{ pub.title }}</td>
-					<td>{{ pub.description }}</td>
+					<td class="tamanioImg"><img ng-src="app/publication/{{pub.img}}" width="110px"></td>
+					<td>{{ pub.title | reducirTexto }}</td>
+					<td>{{ pub.description | reducirTexto }}</td>
 					<td>{{ pub.type }}</td>
+					<td>{{ pub.destinatario }}</td>
 					<td>{{ pub.fec | date:"longDate" }}</td>
 					<td>{{ pub.fec | date:"shortTime" }}</td>
-					<td>{{ pub.ja_name }}</td>
+					<td>{{ pub.position }}</td>
 
 					<td>
-						<a ng-click="mostrarModal( pub )" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+						<a ng-show="pub.userType == userTYPE" ng-click="mostrarModal( '#modal_avisos',pub )" class="btn btn-warning"><i class="fa fa-edit"></i></a>
 					</td>
 				</tr>
 			</tbody>
@@ -101,6 +103,6 @@
 </div>
 
 
-<div class="btn-agregar visible-xs" ng-click="mostrarModal({})"><i class="fa fa-paper-plane-o i-agregar" ></i></div>
+<div class="btn-agregar visible-xs" ng-click="mostrarModal('#modal_avisos',{})"><i class="fa fa-paper-plane-o i-agregar" ></i></div>
 <div ng-include="'public/publication/views/modal.avisos.view.html'"></div>
 

@@ -79,6 +79,7 @@ $app->post("/user/",function() use($app) {
 			$sql = "UPDATE user 
 						SET
 							email  		  = '". $request['email'] ."',
+							position      = '". $request['position'] ."',
 							pwd 	   	  = '". $pwd ."',
 							type  		  = '". $request['type'] ."',
 							cellphone     = '". $request['cellphone'] ."',
@@ -97,6 +98,7 @@ $app->post("/user/",function() use($app) {
 						'". $request['id_person'] . "',
 						'". $request['id_jagroambiental'] . "',
 						'". $request['email'] . "',
+						'". $request['position'] . "',
 						'". $pwd . "',
 						'". 'user' . "',
 						'". $request['cellphone'] . "',

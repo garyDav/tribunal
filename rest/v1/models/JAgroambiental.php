@@ -22,6 +22,36 @@ $app->get('/j_agroambiental/',function() use($app) {
 	}
 })->conditions(array('id'=>'[0-9]{1,11}'));
 
+$app->get('/department/j_agroambiental/',function() use($app) {
+	try {
+		
+		$conex = getConex();
+
+		$sql = "SELECT id,name,cod_dep,'' ja FROM department;";
+		$result = $conex->prepare( $sql );
+
+		$result->execute();
+
+		$dep = $result->fetchAll(PDO::FETCH_OBJ);
+		foreach ($dep as $valor) {
+			$idDep = $valor->id;
+			$sql = "SELECT ja.name,ja.cod_ja FROM j_agroambiental ja,municipality m,department d,province pr WHERE ja.id_municipality=m.id AND m.id_province=pr.id AND pr.id_department=d.id AND d.id='$idDep';";
+			$result = $conex->prepare( $sql );
+			$result->execute();
+			$valor->ja = $result->fetchAll(PDO::FETCH_OBJ);
+		}
+		$conex = null;
+
+		$app->response->headers->set('Content-type','application/json');
+		$app->response->headers->set('Access-Control-Allow-Origin','*');
+		$app->response->status(200);
+		$app->response->body(json_encode($dep));
+
+	}catch(PDOException $e) {
+		echo 'Error: '.$e->getMessage();
+	}
+})->conditions(array('id'=>'[0-9]{1,11}'));
+
 $app->get('/j_agroambiental/:id',function($id) use($app) {
 	try {
 		//sleep(1);

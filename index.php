@@ -86,16 +86,6 @@ if( !isset( $_SESSION['uid'] ) ){
 	          <!-- /.messages-menu -->
 
 
-
-	          <!-- Notifications Menu -->
-	          <li class="dropdown notifications-menu"
-	          	  ng-include="'public/main/views/notifications.view.html'">
-	          </li>
-
-
-
-	          
-
 	          <!-- User Account Menu -->
 	          <li class="dropdown user user-menu"
 	          	  ng-include="'public/main/views/user.view.html'">

@@ -1,7 +1,7 @@
 <?php
 
-if(!is_dir('../app/photos/'))
-	mkdir('../app/photos/',777);
+if(!is_dir('../app/publication/'))
+	mkdir('../app/publication/',777);
 if($_FILES['img']) {
 	if(is_uploaded_file($_FILES['img']['tmp_name'])) {
 		//Definir nombres
@@ -17,7 +17,7 @@ if($_FILES['img']) {
 		$error = $_FILES['img']['error'];
 		$extension = substr($tipo,strpos($tipo,'/')+1);
 		$name = time().'.'.$extension;
-		$lugar = '../app/photos/';
+		$lugar = '../app/publication/';
 		//Fin de definir nombres
 
 		if(!empty($nombre) && isset($nombre)) {

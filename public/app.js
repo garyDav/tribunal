@@ -374,6 +374,17 @@
 		}
 	});
 
+	app.filter( 'reducirTexto', function(){
+		return function(palabra){
+			if( palabra ){
+				if( palabra.length > 22)
+					return palabra.substr(0,22)+' ...';
+				else
+					return palabra;
+			}
+		}
+	});
+
 	// ================================================
 	//   Directiva para archivos
 	// ================================================
@@ -399,6 +410,38 @@
 				var formData = new FormData();
 				formData.append('img',img);
 				$http.post('php/server.php',formData,{
+					headers: { 'Content-Type': undefined }
+				}).success(function( data ) {
+					d.resolve( data );
+				}).error(function(msj, code) {
+					d.reject( msj );
+				});
+				return d.promise;
+			}
+		};
+		return self;
+	}]);
+
+	app.service('uploadPub',['$http','$q',function($http,$q) {
+		var self = {
+			saveImg : function(img) {
+				var d = $q.defer();
+				var formData = new FormData();
+				formData.append('img',img);
+				$http.post('php/publication.php',formData,{
+					headers: { 'Content-Type': undefined }
+				}).success(function( data ) {
+					d.resolve( data );
+				}).error(function(msj, code) {
+					d.reject( msj );
+				});
+				return d.promise;
+			},
+			saveDoc : function(doc) {
+				var d = $q.defer();
+				var formData = new FormData();
+				formData.append('doc',doc);
+				$http.post('php/publicationDoc.php',formData,{
 					headers: { 'Content-Type': undefined }
 				}).success(function( data ) {
 					d.resolve( data );
