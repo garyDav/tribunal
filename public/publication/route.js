@@ -24,24 +24,30 @@
 				templateUrl: 'public/publication/views/admin.normativas.view.html',
 				controller: 'publicationCtrl'
 			}).
-			when('/noticias',{
-				templateUrl: 'public/publication/views/list.noticias.view.html',
+
+
+
+
+
+
+			when('/circulares',{
+				templateUrl: 'public/publication/views/users/user.circular.view.html',
 				controller: 'publicationCtrl'
 			}).
-			when('/efemerides',{
-				templateUrl: 'public/publication/views/list.efemerides.view.html',
+			when('/instructivos',{
+				templateUrl: 'public/publication/views/users/user.instructivo.view.html',
 				controller: 'publicationCtrl'
 			}).
-			when('/avisos',{
-				templateUrl: 'public/publication/views/list.avisos.view.html',
-				controller: 'publicationCtrl'
-			}).
-			when('/reglamentos',{
-				templateUrl: 'public/publication/views/list.reglamentos.view.html',
+			when('/comunicados',{
+				templateUrl: 'public/publication/views/users/user.comunicado.view.html',
 				controller: 'publicationCtrl'
 			}).
 			when('/normativas',{
-				templateUrl: 'public/publication/views/list.normativas.view.html',
+				templateUrl: 'public/publication/views/users/user.normativa.view.html',
+				controller: 'publicationCtrl'
+			}).
+			when('/reglamentos',{
+				templateUrl: 'public/publication/views/users/user.reglamento.view.html',
 				controller: 'publicationCtrl'
 			});
 	}]);
