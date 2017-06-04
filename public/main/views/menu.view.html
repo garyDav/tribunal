@@ -20,18 +20,23 @@
   <ul class="sidebar-menu">
     <li class="header animated fadeInUp fast">Opciones</li>
     <!-- Optionally, you can add icons to the links -->
-    <li class="treeview active animated fadeInUp fast">
+    <li ng-class="mPrincipal" class="animated fadeInUp fast"><a ng-href="/tribunal"><i class="fa fa-dashboard"></i> <span>Principal</span></a></li>
+
+    <li ng-class="mAvisos" class="treeview animated fadeInUp fast">
       <a href="">
         <i class="fa fa-dashboard"></i> <span>Avisos</span> <i class="fa fa-angle-left pull-right"></i>
       </a>
       <ul class="treeview-menu menu-open" style="display: block;">
-        <li class=""><a ng-href="/tribunal/instructivos"><i class="fa fa-table"></i> Instructivos </a></li>
-        <li class=""><a ng-href="/tribunal/circulares"><i class="fa fa-table"></i> Circulares </a></li>
-        <li class=""><a ng-href="/tribunal/comunicados"><i class="fa fa-table"></i> Comunicados </a></li>
+        <li ng-class="mInstructivo"><a ng-href="/tribunal/instructivos"><i class="fa fa-table"></i> Instructivos </a></li>
+        <li ng-class="mCircular"><a ng-href="/tribunal/circulares"><i class="fa fa-table"></i> Circulares </a></li>
+        <li ng-class="mComunicado"><a ng-href="/tribunal/comunicados"><i class="fa fa-table"></i> Comunicados </a></li>
       </ul>
     </li>
-    <li class="animated fadeInUp fast"><a ng-href="/tribunal/reglamentos"><i class="fa fa-book"></i> <span>Reglamentos</span></a></li>
-    <li class="animated fadeInUp fast"><a ng-href="/tribunal/normativas"><i class="fa fa-link"></i> <span>Normativas</span></a></li>
+
+    <li ng-class="mReglamento" class="animated fadeInUp fast"><a ng-href="/tribunal/reglamentos"><i class="fa fa-book"></i> <span>Reglamentos</span></a></li>
+
+    <li ng-class="mNormativa" class="animated fadeInUp fast"><a ng-href="/tribunal/normativas"><i class="fa fa-link"></i> <span>Normativas</span></a></li>
+
     <!--<li class="treeview">
       <a href=""><i class="fa fa-link"></i> <span>Multilevel</span>
         <span class="pull-right-container">

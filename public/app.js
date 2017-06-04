@@ -333,9 +333,16 @@
 			$scope.titulo = titulo;
 			$scope.subtitulo = subtitulo;
 
-			$scope.mPrincipal = "";
+			$scope.mPrincipal  = '';
+			$scope.mAvisos     = '';
+			$scope.mInstructivo = '';
+			$scope.mCircular   = '';
+			$scope.mComunicado = '';
+			$scope.mNormativa  = '';
+			$scope.mReglamento = '';
 
 			$scope[menu] = 'active';
+			$scope[submenu] = 'active';
 		};
 
 		$scope.sidebar = function(control1,control2,control3) {

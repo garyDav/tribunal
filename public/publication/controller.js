@@ -181,3 +181,141 @@ angular.module('publicationModule').controller('publicationCtrl', ['$scope', '$r
 
 	}
 ]);
+
+
+angular.module('publicationModule').controller('pubInstructivoCtrl', ['$scope','publicationService',
+	function($scope, publicationService) {
+		console.log('pubInstructivoCtrl');
+		$scope.activar('mAvisos','mInstructivo','Instructivos','');
+
+		$scope.publication   = {};
+		$scope.comment       = {
+			id_publication : '',
+			id_user        : '',
+			description    : ''
+		};
+		$scope.load 		 = true;
+
+		$scope.moverA = function( pag ){
+			publicationService.cargarPaginaReverse( pag,'instructivo' ).then( function(){
+				$scope.publication = publicationService;
+				$scope.load = false;
+				console.log($scope.publication.pub[0]);
+			});
+		};
+		$scope.moverA(1);
+
+		$scope.mostrarModal = function(pubId){
+			$('#PubImagen'+pubId).modal();
+		};
+
+		$scope.comentar = function(pubId,userId,comment,form) {
+			$scope.comment = {
+				id_publication : pubId,
+				id_user        : userId,
+				description    : comment
+			};
+			publicationService.guardarCommnet( $scope.comment ).then(function( data ){
+				// codigo cuando se inserto o actualizo
+				if ( data.error == 'not' ) {
+					$scope.comment = {};
+					console.log(data);
+					form.autoValidateFormOptions.resetForm();
+					
+					$scope.publication.pub.forEach( function(element,index,array) {
+						if( element.id == data.idPub ) {
+							data.fec = new Date(data.fec);
+							element.comentarios.push( data );
+							//console.log(data.fec);
+						}
+					});
+
+					swal("CORRECTO", "¡"+data.msj+"!", "success");
+				} else {
+					swal("ERROR SERVER", "¡"+data+"!", "error");
+				}
+			});
+		};
+
+	}
+]);
+
+angular.module('publicationModule').controller('pubCircularCtrl', ['$scope','publicationService',
+	function($scope, publicationService) {
+		console.log('pubCircularCtrl');
+		$scope.activar('mAvisos','mCircular','Circulares','');
+
+		$scope.publication   = {};
+		$scope.load 		 = true;
+
+		$scope.moverA = function( pag ){
+			publicationService.cargarPaginaReverse( pag,'circular' ).then( function(){
+				$scope.publication = publicationService;
+				$scope.load = false;
+				console.log($scope.publication);
+			});
+		};
+		$scope.moverA(1);
+
+		$scope.comentar = function(pubId,userId,coment,form) {
+			console.log(pubId+' '+userId+' '+coment);
+		}
+	}
+]);
+
+angular.module('publicationModule').controller('pubComunicadoCtrl', ['$scope','publicationService',
+	function($scope, publicationService) {
+		console.log('pubComunicadoCtrl');
+		$scope.activar('mAvisos','mComunicado','Comunicados','');
+
+		$scope.publication   = {};
+		$scope.load 		 = true;
+
+		$scope.moverA = function( pag ){
+			publicationService.cargarPaginaReverse( pag,'comunicado' ).then( function(){
+				$scope.publication = publicationService;
+				$scope.load = false;
+				console.log($scope.publication);
+			});
+		};
+		$scope.moverA(1);
+	}
+]);
+
+angular.module('publicationModule').controller('pubNormativaCtrl', ['$scope','publicationService',
+	function($scope, publicationService) {
+		console.log('pubNormativaCtrl');
+		$scope.activar('mNormativa','','Normativas','');
+
+		$scope.publication   = {};
+		$scope.load 		 = true;
+
+		$scope.moverA = function( pag ){
+			publicationService.cargarPaginaReverse( pag,'normativa' ).then( function(){
+				$scope.publication = publicationService;
+				$scope.load = false;
+				console.log($scope.publication);
+			});
+		};
+		$scope.moverA(1);
+	}
+]);
+
+angular.module('publicationModule').controller('pubReglamentoCtrl', ['$scope','publicationService',
+	function($scope, publicationService) {
+		console.log('pubReglamentoCtrl');
+		$scope.activar('mReglamento','','Reglamentos','');
+
+		$scope.publication   = {};
+		$scope.load 		 = true;
+
+		$scope.moverA = function( pag ){
+			publicationService.cargarPaginaReverse( pag,'reglamento' ).then( function(){
+				$scope.publication = publicationService;
+				$scope.load = false;
+				console.log($scope.publication);
+			});
+		};
+		$scope.moverA(1);
+	}
+]);

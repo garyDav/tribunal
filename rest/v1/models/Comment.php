@@ -28,7 +28,7 @@ $app->post("/comment/",function() use($app) {
 		$request = json_decode($postdata);
 		$request = (array) $request;
 		$conex = getConex();
-		$res = array( 'err'=>'yes','msj'=>'Puta no se pudo hacer nada, revisa mierda' );
+		$res = array( 'err'=>'yes','msj'=>'No se pudo hacer nada.' );
 
 		if( isset( $request['id'] )  ){  // ACTUALIZAR
 

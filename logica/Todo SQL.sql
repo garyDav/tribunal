@@ -222,7 +222,7 @@ CREATE PROCEDURE pInsertComment (
 )
 BEGIN
 	INSERT INTO comment VALUES(null,v_id_publication,v_id_user,v_description,CURRENT_TIMESTAMP);
-	SELECT @@identity AS id, 'not' AS error,'Comentario enviado correctamente.' AS msj;
+	SELECT @@identity AS id,v_description description,CURRENT_TIMESTAMP fec,u.src,per.name,per.last_name,per.sex,v_id_publication idPub, 'not' AS error,'Comentario enviado correctamente.' AS msj FROM comment c,publication p,user u,person per WHERE c.id_publication=p.id AND c.id_user=u.id AND u.id_person=per.id AND c.id_user=v_id_user;
 END //
 
 DROP PROCEDURE IF EXISTS pInsertDepartment;

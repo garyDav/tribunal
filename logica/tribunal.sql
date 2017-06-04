@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 02-06-2017 a las 03:17:12
+-- Tiempo de generación: 04-06-2017 a las 16:46:54
 -- Versión del servidor: 10.1.13-MariaDB
 -- Versión de PHP: 7.0.8
 
@@ -26,7 +26,7 @@ DELIMITER $$
 --
 CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsertComment` (IN `v_id_publication` INT, IN `v_id_user` INT, IN `v_description` TEXT)  BEGIN
 INSERT INTO comment VALUES(null,v_id_publication,v_id_user,v_description,CURRENT_TIMESTAMP);
-SELECT @@identity AS id, 'not' AS error,'Comentario enviado correctamente.' AS msj;
+SELECT @@identity AS id,v_description description,CURRENT_TIMESTAMP fec,u.src,per.name,per.last_name,per.sex,v_id_publication idPub, 'not' AS error,'Comentario enviado correctamente.' AS msj FROM comment c,publication p,user u,person per WHERE c.id_publication=p.id AND c.id_user=u.id AND u.id_person=per.id AND c.id_user=v_id_user;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsertCommunicate` (IN `v_id_use` INT, IN `v_id_usr` INT, IN `v_message` TEXT)  BEGIN
@@ -168,6 +168,23 @@ CREATE TABLE `comment` (
   `description` text COLLATE utf8_spanish2_ci,
   `fec` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `comment`
+--
+
+INSERT INTO `comment` (`id`, `id_publication`, `id_user`, `description`, `fec`) VALUES
+(1, 46, 11, 'puta esto es un comentario', '2017-06-13 06:17:19'),
+(2, 47, 1, 'es un comentario de prueba', '2017-06-03 23:08:59'),
+(3, 47, 1, 'este es otro comentario', '2017-06-03 23:13:51'),
+(4, 47, 1, 'este es el tercer comentario', '2017-06-03 23:14:24'),
+(5, 47, 1, 'joder', '2017-06-04 10:24:29'),
+(6, 47, 1, 'mierda', '2017-06-04 10:38:35'),
+(7, 47, 1, 'la re puta', '2017-06-04 10:41:08'),
+(8, 47, 1, 'joooo', '2017-06-04 10:43:07'),
+(9, 47, 1, 'mmmier', '2017-06-04 10:44:16'),
+(10, 47, 1, 'a la mierda esto si da', '2017-06-04 10:45:16'),
+(11, 46, 1, 'puta este es otro comentario', '2017-06-04 10:45:36');
 
 -- --------------------------------------------------------
 
@@ -394,7 +411,10 @@ INSERT INTO `publication` (`id`, `id_user`, `title`, `description`, `type`, `fec
 (41, 2, 'Potosi', 'Llueve en potosi', 'noticia', '2017-06-01 18:35:05', '1496356505.jpeg', '', 'D-0006'),
 (42, 1, 'sdf', 'asdfaa', 'comunicado', '2017-06-01 18:40:43', '1496356843.jpeg', '', 'D-0009'),
 (43, 1, 'Normativa N-21321', 'lafklsdlkfjkj', 'normativas', '2017-06-01 18:44:15', '', 'introduccion_a_nodejs_a_traves_de_koans_ebook.pdf-055.pdf', 'T-0000'),
-(44, 1, 'jooo', 'joder', 'reglamento', '2017-06-01 19:20:11', '', 'aprende java como si estuvieras en 1.pdf-617.pdf', 'JA-0007');
+(44, 1, 'jooo', 'joder', 'reglamento', '2017-06-01 19:20:11', '', 'aprende java como si estuvieras en 1.pdf-617.pdf', 'JA-0007'),
+(45, 1, 'otro instructivo', 'descripcion largo de un instructivo', 'instructivo', '2017-06-03 19:59:09', '1496534349.jpeg', '', 'JA-0003'),
+(46, 1, 'Ultimo instructivo', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\ntempor incididunt ut labore et dolore magna aliqua.', 'instructivo', '2017-06-03 20:37:18', '1496536637.jpeg', '', 'T-0000'),
+(47, 1, 'Titulo Instructivo', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\ntempor incididunt ut labore et dolore magna aliqua.', 'instructivo', '2017-06-03 22:13:48', '1496542428.jpeg', '', 'JA-0009');
 
 -- --------------------------------------------------------
 
@@ -528,7 +548,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT de la tabla `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT de la tabla `communicate`
 --
@@ -568,7 +588,7 @@ ALTER TABLE `province`
 -- AUTO_INCREMENT de la tabla `publication`
 --
 ALTER TABLE `publication`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 --
 -- AUTO_INCREMENT de la tabla `user`
 --

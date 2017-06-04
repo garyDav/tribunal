@@ -41,6 +41,55 @@ $app->get('/publication/:id/:type',function($id,$type) use($app) {
 	}
 })->conditions(array('id'=>'[0-9]{1,11}'));
 
+$app->get('/publication/reverse/:pag/:type',function($pag,$type) use($app) {
+	try {
+		sleep(1);
+		if( isset( $pag ) )
+			$pag = $pag;
+		else
+		$pag = 1;
+
+		$res = get_publication_paginado_reverse( $pag,$type );
+
+		foreach ($res['publication'] as $valor) {
+			$conex = getConex();
+			$idPub = $valor->id;
+			$sql = "SELECT c.id,c.description,c.fec,per.name,per.last_name,per.sex,u.src FROM comment c,publication p,user u,person per WHERE c.id_publication=p.id AND c.id_user=u.id AND u.id_person=per.id AND c.id_publication='$idPub';";
+			$result = $conex->prepare( $sql );
+			$result->execute();
+			$valor->comentarios = $result->fetchAll(PDO::FETCH_OBJ);
+			//$valor->comentarios = 'putaMarta';
+		}
+		$conex = null;
+
+		/*$sql = "SELECT 'Algo anda mal' name;";
+		foreach ($res['publication'] as $valor) {
+			$cod = $valor->cod;
+			if( $cod == 'T-0000' )
+				$valor->destinatario = 'Todos los usuarios';
+			else {
+				$conex = getConex();
+				if( !(strpos($cod, 'D-') === false) ) {
+					$sql = "SELECT name FROM department WHERE cod_dep='$cod';";
+				}
+				if( !(strpos($cod, 'JA-') === false) )
+					$sql = "SELECT name FROM j_agroambiental WHERE cod_ja='$cod';";
+				$result = $conex->prepare( $sql );
+				$result->execute();
+				$valor->destinatario = $result->fetchObject()->name;
+				//$valor->destinatario = $sql;
+			}
+		}*/
+
+		$app->response->headers->set('Content-type','application/json');
+		$app->response->headers->set('Access-Control-Allow-Origin','*');
+		$app->response->status(200);
+		$app->response->body(json_encode( $res ));
+	}catch(PDOException $e) {
+		echo 'Error: '.$e->getMessage();
+	}
+})->conditions(array('id'=>'[0-9]{1,11}'));
+
 
 $app->post("/publication/",function() use($app) {
 	try {

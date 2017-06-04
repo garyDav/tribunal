@@ -32,23 +32,23 @@
 
 			when('/circulares',{
 				templateUrl: 'public/publication/views/users/user.circular.view.html',
-				controller: 'publicationCtrl'
+				controller: 'pubCircularCtrl'
 			}).
 			when('/instructivos',{
 				templateUrl: 'public/publication/views/users/user.instructivo.view.html',
-				controller: 'publicationCtrl'
+				controller: 'pubInstructivoCtrl'
 			}).
 			when('/comunicados',{
 				templateUrl: 'public/publication/views/users/user.comunicado.view.html',
-				controller: 'publicationCtrl'
+				controller: 'pubComunicadoCtrl'
 			}).
 			when('/normativas',{
 				templateUrl: 'public/publication/views/users/user.normativa.view.html',
-				controller: 'publicationCtrl'
+				controller: 'pubNormativaCtrl'
 			}).
 			when('/reglamentos',{
 				templateUrl: 'public/publication/views/users/user.reglamento.view.html',
-				controller: 'publicationCtrl'
+				controller: 'pubReglamentoCtrl'
 			});
 	}]);
 
