@@ -19,10 +19,9 @@
               <div class="description-block">
                 <h5 class="description-header">Paginas</h5>
                 <span class="description-text"
-                      ng-repeat="pag in publication.paginas"
-                      ng-class="{
-                        'active': publication.pag_actual === pag
-                      }"><a class="btn btn-primary btn-xs mano" ng-click="moverA(pag)">{{ pag }}</a></span>
+                      ng-repeat="pag in publication.paginas">
+                      <a ng-class="{'btn  btn-primary btn-xs mano': publication.pag_actual === pag,
+                                    'btn btn-default btn-xs mano':publication.pag_actual != pag}" ng-click="moverA(pag)">{{ pag }}</a></span>
               </div>
             </div>
             <div class="col-sm-4">
@@ -64,7 +63,12 @@
     <div class="box box-widget">
       <div class="box-header with-border">
         <div class="user-block">
-          <img class="img-circle" src="app/photos/{{pub.src}}" alt="User Image">
+
+          <img ng-show=" (pub.src == null || pub.src == '') && pub.sex == 'Masculino' " src="app/img/avatarM.png" class="img-responsive img-circle" alt="User Image">
+          <img ng-show=" (pub.src == null || pub.src == '') && pub.sex == 'Femenino' " src="app/img/avatarF.png" class="img-responsive img-circle" alt="User Image">
+          <img ng-hide=" (pub.src == null || pub.src == '') " src="app/photos/{{pub.src}}" class="img-responsive img-circle" alt="User Image">
+
+
           <span class="username"><a href="">{{pub.title}} </a> </span>
           <span class="description">Publicado - {{pub.fec | date:"longDate"}} a las {{pub.fec | date:"shortTime"}} </span>
         </div>
@@ -92,50 +96,73 @@
         <span class="pull-right text-muted">Celular: {{pub.cellphone}}  Correo: {{pub.email}} </span>
       </div>
       <!-- /.box-body -->
-      <div class="box-footer box-comments">
-        <div class="box-comment" ng-repeat="com in pub.comentarios">
-          <!-- User image -->
-          <img ng-show=" (com.src == null || com.src == '') && com.sex == 'Masculino' " src="app/img/avatarM.png" class="img-responsive img-circle img-sm" alt="User Image">
-          <img ng-show=" (com.src == null || com.src == '') && com.sex == 'Femenino' " src="app/img/avatarF.png" class="img-responsive img-circle img-sm" alt="User Image">
-          <img ng-hide=" (com.src == null || com.src == '') " src="app/photos/{{com.src}}" class="img-responsive img-circle img-sm" alt="User Image">
-
-          <div class="comment-text">
-            <span class="username">
-              {{com.name}} {{com.last_name}}
-              <span class="text-muted pull-right">{{com.fec | date:"longDate"}} a las {{com.fec | date:"shortTime"}}</span>
-            </span><!-- /.username -->
-            {{com.description}}
+      <div class="box box-default collapsed-box" style="background:#F5F5F5;">
+        <div class="box-header with-border">
+          <h3 class="box-title">
+            <span class="label label-primary">Hay {{ pub.comentarios.length }} comentarios </span>
+          </h3>
+          <div class="box-tools pull-right">
+            <span class="label label-default">Comentar </span>
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+            </button>
           </div>
-          <!-- /.comment-text -->
         </div>
+        <!-- /.box-header -->
+        <div class="box-body" style="display: none;">
 
-        <!-- /.box-comment -->
-      </div>
-      <!-- /.box-footer -->
-      <div class="box-footer">
-        <form name="formulario"
-            ng-submit="comentar( pub.id,userID,description, formulario );"
-            novalidate="novalidate">
-          
-          <img ng-show=" (mainUser.src == null || mainUser.src == '') && mainUser.sex == 'Masculino' " src="app/img/avatarM.png" class="img-responsive img-circle img-sm" alt="User Image">
-          <img ng-show=" (mainUser.src == null || mainUser.src == '') && mainUser.sex == 'Femenino' " src="app/img/avatarF.png" class="img-responsive img-circle img-sm" alt="User Image">
-          <img ng-hide=" (mainUser.src == null || mainUser.src == '') " src="app/photos/{{mainUser.src}}" class="img-responsive img-circle img-sm" alt="User Image">
+          <div class="box-footer box-comments">
 
-          <!-- .img-push is used to add margin to elements next to floating images -->
-          <div class="form-group img-push">
-            <input type="text" class="form-control input-sm" 
-                  ng-model="description"
-                  placeholder="Comenta..."
-                  disable-valid-styling="true"
-                  disable-invalid-styling="true">
+
+            <div class="box-comment" ng-repeat="com in pub.comentarios">
+              <!-- User image -->
+              <img ng-show=" (com.src == null || com.src == '') && com.sex == 'Masculino' " src="app/img/avatarM.png" class="img-responsive img-circle img-sm" alt="User Image">
+              <img ng-show=" (com.src == null || com.src == '') && com.sex == 'Femenino' " src="app/img/avatarF.png" class="img-responsive img-circle img-sm" alt="User Image">
+              <img ng-hide=" (com.src == null || com.src == '') " src="app/photos/{{com.src}}" class="img-responsive img-circle img-sm" alt="User Image">
+
+              <div class="comment-text">
+                <span class="username">
+                  {{com.name}} {{com.last_name}}
+                  <span class="text-muted pull-right">{{com.fec | date:"longDate"}} a las {{com.fec | date:"shortTime"}}</span>
+                </span><!-- /.username -->
+                {{com.description}}
+              </div>
+              <!-- /.comment-text -->
+            </div>
+
+            <!-- /.box-comment -->
           </div>
-          <hr>
-          <div class="pull-right">
-            <input type="submit" class="btn btn-primary btn-sm" value="Enviar">
+          <!-- /.box-footer -->
+          <div class="box-footer">
+            <form name="formulario"
+                ng-submit="comentar( pub.id,userID,description, formulario );"
+                novalidate="novalidate">
+              
+              <img ng-show=" (mainUser.src == null || mainUser.src == '') && mainUser.sex == 'Masculino' " src="app/img/avatarM.png" class="img-responsive img-circle img-sm" alt="User Image">
+              <img ng-show=" (mainUser.src == null || mainUser.src == '') && mainUser.sex == 'Femenino' " src="app/img/avatarF.png" class="img-responsive img-circle img-sm" alt="User Image">
+              <img ng-hide=" (mainUser.src == null || mainUser.src == '') " src="app/photos/{{mainUser.src}}" class="img-responsive img-circle img-sm" alt="User Image">
+
+              <!-- .img-push is used to add margin to elements next to floating images -->
+              <div class="form-group img-push">
+                <input type="text" class="form-control input-sm" 
+                      ng-model="description"
+                      placeholder="Comenta..."
+                      disable-valid-styling="true"
+                      disable-invalid-styling="true">
+              </div>
+              <hr>
+              <div class="pull-right">
+                <input type="submit" class="btn btn-primary btn-sm" value="Enviar">
+              </div>
+            </form>
           </div>
-        </form>
+          <!-- /.box-footer -->
+
+
+
+        </div>
+        <!-- /.box-body -->
       </div>
-      <!-- /.box-footer -->
+      
     </div>
   </div>
 
@@ -146,7 +173,10 @@
 
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-          <h4 class="modal-title">{{pub.title}} </h4>
+          <h4 class="modal-title">
+            {{pub.title}} 
+            <a ng-href="app/publication/{{pub.img}}" target="blank" class="btn btn-primary btn-xs"><i class="fa fa-download"></i></a>
+          </h4>
         </div>
 
         <form>
@@ -159,6 +189,13 @@
 
 
 </div>
+
+<div class="box-body" ng-show="!load && !publication.pub.length">
+  <div class="cargando">
+    No existen registros.
+  </div>
+</div>
+
 
 <div class="row">
   <div class="col-md-8 col-md-offset-2">

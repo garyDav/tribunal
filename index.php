@@ -144,7 +144,7 @@ if( !isset( $_SESSION['uid'] ) ){
 	      <li class="active" ng-show=" userTYPE == 'adrh' || userTYPE == 'supad' ">
 	      	<a ng-click="sidebar('#control-sidebar-stats-tab','#control-sidebar-settings-tab','#control-sidebar-home-tab')" data-toggle="tab"><i class="fa fa-users"></i></a>
 	      </li>
-	      <li ng-hide=" userTYPE == 'supad' ">
+	      <li><!-- ng-hide=" userTYPE == 'supad' " -->
 	      	<a ng-click="sidebar('#control-sidebar-home-tab','#control-sidebar-settings-tab','#control-sidebar-stats-tab')" data-toggle="tab"><i class="fa fa-registered"></i></a>
 	      </li>
 	      <li ng-hide=" userTYPE == 'supad' || userTYPE != 'adrp' ">
@@ -178,7 +178,7 @@ if( !isset( $_SESSION['uid'] ) ){
 	      </div>
 	      <!-- /.tab-pane -->
 	      <!-- Home tab content -->
-	      <div class="tab-pane" ng-hide=" userTYPE == 'supad' " id="control-sidebar-home-tab">
+	      <div class="tab-pane" id="control-sidebar-home-tab"><!-- ng-hide=" userTYPE == 'supad' " -->
 	        <h3 class="control-sidebar-heading">Publicar</h3>
 	        <ul class="control-sidebar-menu">
               <li ng-hide=" userTYPE == 'adrh' || userTYPE == 'adsg' ">

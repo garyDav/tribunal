@@ -1,1 +1,222 @@
-circular
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-widget widget-user">
+        <!-- Add the bg color to the header using any of the bg-* classes -->
+        <div class="widget-user-header bg-black" style="background: url('app/img/descargas/sucre.jpg') center center;">
+          <h3 class="widget-user-username">Sucre</h3>
+          <h5 class="widget-user-desc">Capital de Bolivia</h5>
+        </div>
+
+        <div class="box-footer">
+          <div class="row" ng-show="publication.total_paginas > 1">
+            <div class="col-sm-4 border-right">
+              <div class="description-block">
+                <h5 class="description-header">Primero</h5>
+                <span class="description-text"><a class="btn btn-default mano" ng-click="moverA(1)">«</a></span>
+              </div>
+            </div>
+            <div class="col-sm-4 border-right">
+              <div class="description-block">
+                <h5 class="description-header">Paginas</h5>
+                <span class="description-text"
+                      ng-repeat="pag in publication.paginas">
+                      <a ng-class="{'btn  btn-primary btn-xs mano': publication.pag_actual === pag,
+                                    'btn btn-default btn-xs mano':publication.pag_actual != pag}" ng-click="moverA(pag)">{{ pag }}</a></span>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="description-block">
+                <h5 class="description-header">Ultimo</h5>
+                <span class="description-text"><a class="btn btn-default mano" ng-click="moverA( publication.total_paginas )" >»</a></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+  </div>
+</div>
+
+
+<div class="row" ng-show="load">
+  <div class="col-md-8 col-md-offset-2">
+    <div class="box box-danger">
+      <div class="box-header">
+        <h3 class="box-title">Cargando las Circulares</h3>
+      </div>
+      <div class="box-body">
+        Espere por favor...
+      </div>
+      <!-- /.box-body -->
+      <!-- Loading (remove the following to stop the loading)-->
+      <div class="overlay">
+        <i class="fa fa-refresh fa-spin"></i>
+      </div>
+      <!-- end loading -->
+    </div>
+  </div>
+</div>
+
+
+<div class="row" ng-hide="load || !publication.pub.length" ng-repeat="pub in publication.pub">
+  <div class="col-md-8 col-md-offset-2">
+    <div class="box box-widget">
+      <div class="box-header with-border">
+        <div class="user-block">
+          
+          <img ng-show=" (pub.src == null || pub.src == '') && pub.sex == 'Masculino' " src="app/img/avatarM.png" class="img-responsive img-circle" alt="User Image">
+          <img ng-show=" (pub.src == null || pub.src == '') && pub.sex == 'Femenino' " src="app/img/avatarF.png" class="img-responsive img-circle" alt="User Image">
+          <img ng-hide=" (pub.src == null || pub.src == '') " src="app/photos/{{pub.src}}" class="img-responsive img-circle" alt="User Image">
+
+
+
+          <span class="username"><a href="">{{pub.title}} </a> </span>
+          <span class="description">Publicado - {{pub.fec | date:"longDate"}} a las {{pub.fec | date:"shortTime"}} </span>
+        </div>
+        <!-- /.user-block -->
+        <div class="box-tools">
+          <button type="button" class="btn btn-box-tool" data-toggle="tooltip" title="" data-original-title="Mark as read">
+            <i class="fa fa-circle-o"></i></button>
+          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+          </button>
+          <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+        </div>
+        <!-- /.box-tools -->
+      </div>
+      <!-- /.box-header -->
+      <div class="box-body">
+        <!-- post text -->
+        <p>{{pub.description}} </p>
+
+        <strong>
+          Por: {{pub.position}}
+        </strong>
+        <br>
+        <!-- Social sharing buttons -->
+        <button type="button" class="btn btn-default" ng-click="mostrarModal(pub.id);"><i class="fa fa-file-image-o"></i> Ver</button>
+        <span class="pull-right text-muted">Celular: {{pub.cellphone}}  Correo: {{pub.email}} </span>
+      </div>
+      <!-- /.box-body -->
+      <div class="box box-default collapsed-box" style="background:#F5F5F5;">
+        <div class="box-header with-border">
+          <h3 class="box-title">
+            <span class="label label-primary">Hay {{ pub.comentarios.length }} comentarios </span>
+          </h3>
+          <div class="box-tools pull-right">
+            <span class="label label-default">Comentar </span>
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+            </button>
+          </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body" style="display: none;">
+
+          <div class="box-footer box-comments">
+
+
+            <div class="box-comment" ng-repeat="com in pub.comentarios">
+              <!-- User image -->
+              <img ng-show=" (com.src == null || com.src == '') && com.sex == 'Masculino' " src="app/img/avatarM.png" class="img-responsive img-circle img-sm" alt="User Image">
+              <img ng-show=" (com.src == null || com.src == '') && com.sex == 'Femenino' " src="app/img/avatarF.png" class="img-responsive img-circle img-sm" alt="User Image">
+              <img ng-hide=" (com.src == null || com.src == '') " src="app/photos/{{com.src}}" class="img-responsive img-circle img-sm" alt="User Image">
+
+              <div class="comment-text">
+                <span class="username">
+                  {{com.name}} {{com.last_name}}
+                  <span class="text-muted pull-right">{{com.fec | date:"longDate"}} a las {{com.fec | date:"shortTime"}}</span>
+                </span><!-- /.username -->
+                {{com.description}}
+              </div>
+              <!-- /.comment-text -->
+            </div>
+
+            <!-- /.box-comment -->
+          </div>
+          <!-- /.box-footer -->
+          <div class="box-footer">
+            <form name="formulario"
+                ng-submit="comentar( pub.id,userID,description, formulario );"
+                novalidate="novalidate">
+              
+              <img ng-show=" (mainUser.src == null || mainUser.src == '') && mainUser.sex == 'Masculino' " src="app/img/avatarM.png" class="img-responsive img-circle img-sm" alt="User Image">
+              <img ng-show=" (mainUser.src == null || mainUser.src == '') && mainUser.sex == 'Femenino' " src="app/img/avatarF.png" class="img-responsive img-circle img-sm" alt="User Image">
+              <img ng-hide=" (mainUser.src == null || mainUser.src == '') " src="app/photos/{{mainUser.src}}" class="img-responsive img-circle img-sm" alt="User Image">
+
+              <!-- .img-push is used to add margin to elements next to floating images -->
+              <div class="form-group img-push">
+                <input type="text" class="form-control input-sm" 
+                      ng-model="description"
+                      placeholder="Comenta..."
+                      disable-valid-styling="true"
+                      disable-invalid-styling="true">
+              </div>
+              <hr>
+              <div class="pull-right">
+                <input type="submit" class="btn btn-primary btn-sm" value="Enviar">
+              </div>
+            </form>
+          </div>
+          <!-- /.box-footer -->
+
+
+
+        </div>
+        <!-- /.box-body -->
+      </div>
+      
+    </div>
+  </div>
+
+  <div class="modal fade" id="PubImagen{{pub.id}}">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+          <h4 class="modal-title">
+            {{pub.title}} 
+            <a ng-href="app/publication/{{pub.img}}" target="blank" class="btn btn-primary btn-xs"><i class="fa fa-download"></i></a>
+          </h4>
+        </div>
+
+        <form>
+          <img src="app/publication/{{pub.img}}" class="img-responsive" alt="Imgen instructivo">
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+<div class="box-body" ng-show="!load && !publication.pub.length">
+  <div class="cargando">
+    No existen registros.
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <div class="box-footer clearfix" ng-show="publication.total_paginas > 1">
+      <ul class="pagination pagination-sm no-margin pull-right">
+        <li><a class="mano" ng-click="moverA(1)">«</a></li>
+
+        <li ng-repeat="pag in publication.paginas"
+          ng-class="{
+            'active': publication.pag_actual === pag
+          }">
+          <a class="mano" ng-click="moverA(pag)">{{ pag }}</a>
+        </li>
+
+        <li><a class="mano" ng-click="moverA( publication.total_paginas )" >»</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+
+
+

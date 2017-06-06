@@ -1,4 +1,4 @@
-angular.module('publicationModule').factory('publicationService', ['$http', '$q', function($http, $q){
+angular.module('publicationModule').factory('publicationService', ['$http', '$q','$rootScope', function($http, $q,$rootScope){
 
 	var self = {
 
@@ -123,7 +123,7 @@ angular.module('publicationModule').factory('publicationService', ['$http', '$q'
 		cargarPaginaReverse: function( pag,type ){
 			var d = $q.defer();
 
-			$http.get('rest/v1/publication/reverse/' + pag + '/' + type )
+			$http.get( 'rest/v1/publication/reverse/' + pag + '/' + type + '/' + $rootScope.userID )
 				.success(function( data ){
 					console.log(data);
 
@@ -165,6 +165,25 @@ angular.module('publicationModule').factory('publicationService', ['$http', '$q'
 					d.reject(err);
 					console.error(data);
 				});
+			return d.promise;
+		},
+
+		cargarPublicacionPrincipal: function() {
+			var d = $q.defer();
+			$http.get('rest/v1/publication/principal/'+$rootScope.userID)
+				.success(function( response ){
+					response.fec = new Date(response.fec);
+					response.comentarios.forEach(function(element2,index2,array2) {
+						element2.fec = new Date(element2.fec);
+					});
+					console.log(response);
+					d.resolve(response);
+				})
+				.error(function( err ) {
+					d.reject(err);
+					console.error(err);
+				});
+
 			return d.promise;
 		}
 

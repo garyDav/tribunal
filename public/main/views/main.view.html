@@ -1,8 +1,6 @@
-<ol class="breadcrumb animated fadeIn fast">
+<!--<ol class="breadcrumb animated fadeIn fast">
     <li><a ng-href="/tribunal"><i class="fa fa-dashboard"></i> Principal</a></li>
-</ol>
-
-
+</ol>-->
 <!-- Venta Modal Cumpleaños -->
 <div class="modal fade" id="cumple" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 <div class="modal-dialog" role="document">
@@ -179,197 +177,269 @@
 
 <!-- Fin Venta Modal Cumpleaños -->
 
-
 <div class="row">
-	<div class="col-md-12">
-		<div class="box box-widget widget-user">
-			<!-- Add the bg color to the header using any of the bg-* classes -->
-			<div class="widget-user-header bg-aqua-active">
-			  <h3 class="widget-user-username">Alexander Pierce</h3>
-			  <h5 class="widget-user-desc">Founder &amp; CEO</h5>
-			</div>
-			<div class="widget-user-image">
-			  <img class="img-circle" src="app/img/avatarM.png" alt="User Avatar">
-			</div>
-			<div class="box-footer">
-			  <div class="row">
-			    <div class="col-sm-4 border-right">
-			      <div class="description-block">
-			        <h5 class="description-header">3,200</h5>
-			        <span class="description-text">SALES</span>
-			      </div>
-			      <!-- /.description-block -->
-			    </div>
-			    <!-- /.col -->
-			    <div class="col-sm-4 border-right">
-			      <div class="description-block">
-			        <h5 class="description-header">13,000</h5>
-			        <span class="description-text">FOLLOWERS</span>
-			      </div>
-			      <!-- /.description-block -->
-			    </div>
-			    <!-- /.col -->
-			    <div class="col-sm-4">
-			      <div class="description-block">
-			        <h5 class="description-header">35</h5>
-			        <span class="description-text">PRODUCTS</span>
-			      </div>
-			      <!-- /.description-block -->
-			    </div>
-			    <!-- /.col -->
-			  </div>
-			  <!-- /.row -->
-			</div>
-		</div>
-		
-	</div>
-	<div class="col-md-6">
-		<div class="box box-widget">
-			<div class="box-header with-border">
-			  <div class="user-block">
-			    <img class="img-circle" src="app/img/avatarM.png" alt="User Image">
-			    <span class="username"><a href="#">Jonathan Burke Jr.</a></span>
-			    <span class="description">Shared publicly - 7:30 PM Today</span>
-			  </div>
-			  <!-- /.user-block -->
-			  <div class="box-tools">
-			    <button type="button" class="btn btn-box-tool" data-toggle="tooltip" title="" data-original-title="Mark as read">
-			      <i class="fa fa-circle-o"></i></button>
-			    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-			    </button>
-			    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-			  </div>
-			  <!-- /.box-tools -->
-			</div>
-			<!-- /.box-header -->
-			<div class="box-body">
-			  <img class="img-responsive pad" src="app/img/pub.jpg" alt="Photo">
+	<div class="col-xs-10 col-xs-offset-1">
+		<div ng-hide="!pubPrincipal">
+			<div class="box box-widget">
+				<div class="box-header with-border">
+				  <div class="user-block">
+				    <!--<img ng-show=" (pub.src == null || pub.src == '') && pub.sex == 'Masculino' " src="app/img/avatarM.png" class="img-responsive img-circle" alt="User Image">
+		            <img ng-show=" (pub.src == null || pub.src == '') && pub.sex == 'Femenino' " src="app/img/avatarF.png" class="img-responsive img-circle" alt="User Image">
+		            <img ng-hide=" (pub.src == null || pub.src == '') " src="app/photos/{{pub.src}}" class="img-responsive img-circle" alt="User Image">
+-->
 
-			  <p>I took this photo this morning. What do you guys think?</p>
-			  <button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Share</button>
-			  <button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</button>
-			  <span class="pull-right text-muted">127 likes - 3 comments</span>
-			</div>
-			<!-- /.box-body -->
-			<div class="box-footer box-comments">
-			  <div class="box-comment">
-			    <!-- User image -->
-			    <img class="img-circle img-sm" src="app/img/avatarF.png" alt="User Image">
+				    <span class="username"><a href="">{{pubPrincipal.title}} </a> </span>
+	          		<span class="description">Publicado - {{pubPrincipal.fec | date:"longDate"}} a las {{pubPrincipal.fec | date:"shortTime"}} </span>
+				  </div>
+				  <!-- /.user-block -->
+				  <div class="box-tools">
+				    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+				    </button>
+				  </div>
+				  <!-- /.box-tools -->
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body">
+				  <img class="img-responsive pad" ng-src="app/publication/{{pubPrincipal.img}}" alt="Photo">
 
-			    <div class="comment-text">
-			          <span class="username">
-			            Maria Gonzales
-			            <span class="text-muted pull-right">8:03 PM Today</span>
-			          </span><!-- /.username -->
-			      It is a long established fact that a reader will be distracted
-			      by the readable content of a page when looking at its layout.
-			    </div>
-			    <!-- /.comment-text -->
-			  </div>
-			  <!-- /.box-comment -->
-			  <div class="box-comment">
-			    <!-- User image -->
-			    <img class="img-circle img-sm" src="app/img/avatarF.png" alt="User Image">
+				  <p>{{pubPrincipal.description}} </p>
+				  <span class="pull-right text-muted">Celular: {{pubPrincipal.cellphone}}  Correo: {{pubPrincipal.email}} </span>
+				</div>
+				<!-- /.box-body -->
+				
+				<div class="box box-default collapsed-box" style="background:#F5F5F5;">
+			        <div class="box-header with-border">
+			          <h3 class="box-title">
+			            <span class="label label-primary">Hay {{ pubPrincipal.comentarios.length }} comentarios </span>
+			          </h3>
+			          <div class="box-tools pull-right">
+			            <span class="label label-default">Comentar </span>
+			            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+			            </button>
+			          </div>
+			        </div>
+			        <!-- /.box-header -->
+			        <div class="box-body" style="display: none;">
 
-			    <div class="comment-text">
-			          <span class="username">
-			            Luna Stark
-			            <span class="text-muted pull-right">8:03 PM Today</span>
-			          </span><!-- /.username -->
-			      It is a long established fact that a reader will be distracted
-			      by the readable content of a page when looking at its layout.
-			    </div>
-			    <!-- /.comment-text -->
-			  </div>
-			  <!-- /.box-comment -->
-			</div>
-			<!-- /.box-footer -->
-			<div class="box-footer">
-			  <form action="#" method="post">
-			    <img class="img-responsive img-circle img-sm" src="app/img/avatarF.png" alt="Alt Text">
-			    <!-- .img-push is used to add margin to elements next to floating images -->
-			    <div class="img-push">
-			      <input type="text" class="form-control input-sm" placeholder="Press enter to post comment">
-			    </div>
-			  </form>
-			</div>
-			<!-- /.box-footer -->
-		</div>
-		
-	</div>
-	<div class="col-md-6">
-		<div class="box box-widget">
-			<div class="box-header with-border">
-			  <div class="user-block">
-			    <img class="img-circle" src="app/img/avatarM.png" alt="User Image">
-			    <span class="username"><a href="#">Jonathan Burke Jr.</a></span>
-			    <span class="description">Shared publicly - 7:30 PM Today</span>
-			  </div>
-			  <!-- /.user-block -->
-			  <div class="box-tools">
-			    <button type="button" class="btn btn-box-tool" data-toggle="tooltip" title="" data-original-title="Mark as read">
-			      <i class="fa fa-circle-o"></i></button>
-			    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-			    </button>
-			    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-			  </div>
-			  <!-- /.box-tools -->
-			</div>
-			<!-- /.box-header -->
-			<div class="box-body">
-			  <img class="img-responsive pad" src="app/img/pub.jpg" alt="Photo">
+			          <div class="box-footer box-comments">
 
-			  <p>I took this photo this morning. What do you guys think?</p>
-			  <button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Share</button>
-			  <button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</button>
-			  <span class="pull-right text-muted">127 likes - 3 comments</span>
-			</div>
-			<!-- /.box-body -->
-			<div class="box-footer box-comments">
-			  <div class="box-comment">
-			    <!-- User image -->
-			    <img class="img-circle img-sm" src="app/img/avatarF.png" alt="User Image">
 
-			    <div class="comment-text">
-			          <span class="username">
-			            Maria Gonzales
-			            <span class="text-muted pull-right">8:03 PM Today</span>
-			          </span><!-- /.username -->
-			      It is a long established fact that a reader will be distracted
-			      by the readable content of a page when looking at its layout.
-			    </div>
-			    <!-- /.comment-text -->
-			  </div>
-			  <!-- /.box-comment -->
-			  <div class="box-comment">
-			    <!-- User image -->
-			    <img class="img-circle img-sm" src="app/img/avatarF.png" alt="User Image">
+			            <div class="box-comment" ng-repeat="com in pubPrincipal.comentarios">
+			              <!-- User image -->
+			              <img ng-show=" (com.src == null || com.src == '') && com.sex == 'Masculino' " src="app/img/avatarM.png" class="img-responsive img-circle img-sm" alt="User Image">
+			              <img ng-show=" (com.src == null || com.src == '') && com.sex == 'Femenino' " src="app/img/avatarF.png" class="img-responsive img-circle img-sm" alt="User Image">
+			              <img ng-hide=" (com.src == null || com.src == '') " src="app/photos/{{com.src}}" class="img-responsive img-circle img-sm" alt="User Image">
 
-			    <div class="comment-text">
-			          <span class="username">
-			            Luna Stark
-			            <span class="text-muted pull-right">8:03 PM Today</span>
-			          </span><!-- /.username -->
-			      It is a long established fact that a reader will be distracted
-			      by the readable content of a page when looking at its layout.
+			              <div class="comment-text">
+			                <span class="username">
+			                  {{com.name}} {{com.last_name}}
+			                  <span class="text-muted pull-right">{{com.fec | date:"longDate"}} a las {{com.fec | date:"shortTime"}}</span>
+			                </span><!-- /.username -->
+			                {{com.description}}
+			              </div>
+			              <!-- /.comment-text -->
+			            </div>
+
+			            <!-- /.box-comment -->
+			          </div>
+			          <!-- /.box-footer -->
+			          <div class="box-footer">
+			            <form name="formulario"
+			                ng-submit="comentarPrincipal( pubPrincipal.id,userID,description, formulario );"
+			                novalidate="novalidate">
+			              
+			              <img ng-show=" (mainUser.src == null || mainUser.src == '') && mainUser.sex == 'Masculino' " src="app/img/avatarM.png" class="img-responsive img-circle img-sm" alt="User Image">
+			              <img ng-show=" (mainUser.src == null || mainUser.src == '') && mainUser.sex == 'Femenino' " src="app/img/avatarF.png" class="img-responsive img-circle img-sm" alt="User Image">
+			              <img ng-hide=" (mainUser.src == null || mainUser.src == '') " src="app/photos/{{mainUser.src}}" class="img-responsive img-circle img-sm" alt="User Image">
+
+			              <!-- .img-push is used to add margin to elements next to floating images -->
+			              <div class="form-group img-push">
+			                <input type="text" class="form-control input-sm" 
+			                      ng-model="description"
+			                      placeholder="Comenta..."
+			                      disable-valid-styling="true"
+			                      disable-invalid-styling="true">
+			              </div>
+			              <hr>
+			              <div class="pull-right">
+			                <input type="submit" class="btn btn-primary btn-sm" value="Enviar">
+			              </div>
+			            </form>
+			          </div>
+			          <!-- /.box-footer -->
+
+
+
+			        </div>
+			        <!-- /.box-body -->
 			    </div>
-			    <!-- /.comment-text -->
-			  </div>
-			  <!-- /.box-comment -->
+
+
+
 			</div>
-			<!-- /.box-footer -->
-			<div class="box-footer">
-			  <form action="#" method="post">
-			    <img class="img-responsive img-circle img-sm" src="app/img/avatarF.png" alt="Alt Text">
-			    <!-- .img-push is used to add margin to elements next to floating images -->
-			    <div class="img-push">
-			      <input type="text" class="form-control input-sm" placeholder="Press enter to post comment">
-			    </div>
-			  </form>
-			</div>
-			<!-- /.box-footer -->
+			
 		</div>
 	</div>
 </div>
 
+
+
+
+<div class="row">
+	<div class="col-md-12">
+
+	    <div class="row box box-widget" ng-show="publication.total_paginas > 1">
+            <div class="col-sm-4 border-right">
+              <div class="description-block">
+                <h5 class="description-header">Anterior</h5>
+                <span class="description-text"><a class="btn btn-default mano" ng-click="moverA(publication.pag_anterior)">«</a></span>
+              </div>
+            </div>
+            <div class="col-sm-4 border-right">
+              <div class="description-block">
+                <h5 class="description-header">Pagina</h5>
+                <span class="label label-default">
+                    {{ publication.pag_actual }}
+                </span>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="description-block">
+                <h5 class="description-header">Siguiente</h5>
+                <span class="description-text"><a class="btn btn-default mano" ng-click="moverA( publication.pag_siguiente )" >»</a></span>
+              </div>
+            </div>
+        </div>
+		
+	</div>
+	<div class="col-md-6" ng-hide="load || !publication.pub.length || pub.id == pubPrincipal.id " ng-repeat="pub in publication.pub">
+		<div class="box box-widget collapsed-box">
+			<div class="box-header with-border">
+			  <div class="user-block">
+			    <img ng-show=" (pub.src == null || pub.src == '') && pub.sex == 'Masculino' " src="app/img/avatarM.png" class="img-responsive img-circle" alt="User Image">
+	            <img ng-show=" (pub.src == null || pub.src == '') && pub.sex == 'Femenino' " src="app/img/avatarF.png" class="img-responsive img-circle" alt="User Image">
+	            <img ng-hide=" (pub.src == null || pub.src == '') " src="app/photos/{{pub.src}}" class="img-responsive img-circle" alt="User Image">
+
+
+			    <span class="username"><a href="">{{pub.title}} </a> </span>
+          		<span class="description">Publicado - {{pub.fec | date:"longDate"}} a las {{pub.fec | date:"shortTime"}} </span>
+			  </div>
+			  <!-- /.user-block -->
+			  <div class="box-tools">
+			    <button type="button" class="btn btn-box-tool" data-toggle="tooltip" title="" data-original-title="Mark as read">
+			      <i class="fa fa-circle-o"></i></button>
+			    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+			    </button>
+			    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+			  </div>
+			  <!-- /.box-tools -->
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body">
+			  <img class="img-responsive pad" ng-src="app/publication/{{pub.img}}" alt="Photo">
+
+			  <p>{{pub.description}} </p>
+			  <span class="pull-right text-muted">Celular: {{pub.cellphone}}  Correo: {{pub.email}} </span>
+			</div>
+			<!-- /.box-body -->
+			
+			<div class="box box-default collapsed-box" style="background:#F5F5F5;">
+		        <div class="box-header with-border">
+		          <h3 class="box-title">
+		            <span class="label label-primary">Hay {{ pub.comentarios.length }} comentarios </span>
+		          </h3>
+		          <div class="box-tools pull-right">
+		            <span class="label label-default">Comentar </span>
+		            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+		            </button>
+		          </div>
+		        </div>
+		        <!-- /.box-header -->
+		        <div class="box-body" style="display: none;">
+
+		          <div class="box-footer box-comments">
+
+
+		            <div class="box-comment" ng-repeat="com in pub.comentarios">
+		              <!-- User image -->
+		              <img ng-show=" (com.src == null || com.src == '') && com.sex == 'Masculino' " src="app/img/avatarM.png" class="img-responsive img-circle img-sm" alt="User Image">
+		              <img ng-show=" (com.src == null || com.src == '') && com.sex == 'Femenino' " src="app/img/avatarF.png" class="img-responsive img-circle img-sm" alt="User Image">
+		              <img ng-hide=" (com.src == null || com.src == '') " src="app/photos/{{com.src}}" class="img-responsive img-circle img-sm" alt="User Image">
+
+		              <div class="comment-text">
+		                <span class="username">
+		                  {{com.name}} {{com.last_name}}
+		                  <span class="text-muted pull-right">{{com.fec | date:"longDate"}} a las {{com.fec | date:"shortTime"}}</span>
+		                </span><!-- /.username -->
+		                {{com.description}}
+		              </div>
+		              <!-- /.comment-text -->
+		            </div>
+
+		            <!-- /.box-comment -->
+		          </div>
+		          <!-- /.box-footer -->
+		          <div class="box-footer">
+		            <form name="formulario"
+		                ng-submit="comentar( pub.id,userID,description, formulario );"
+		                novalidate="novalidate">
+		              
+		              <img ng-show=" (mainUser.src == null || mainUser.src == '') && mainUser.sex == 'Masculino' " src="app/img/avatarM.png" class="img-responsive img-circle img-sm" alt="User Image">
+		              <img ng-show=" (mainUser.src == null || mainUser.src == '') && mainUser.sex == 'Femenino' " src="app/img/avatarF.png" class="img-responsive img-circle img-sm" alt="User Image">
+		              <img ng-hide=" (mainUser.src == null || mainUser.src == '') " src="app/photos/{{mainUser.src}}" class="img-responsive img-circle img-sm" alt="User Image">
+
+		              <!-- .img-push is used to add margin to elements next to floating images -->
+		              <div class="form-group img-push">
+		                <input type="text" class="form-control input-sm" 
+		                      ng-model="description"
+		                      placeholder="Comenta..."
+		                      disable-valid-styling="true"
+		                      disable-invalid-styling="true">
+		              </div>
+		              <hr>
+		              <div class="pull-right">
+		                <input type="submit" class="btn btn-primary btn-sm" value="Enviar">
+		              </div>
+		            </form>
+		          </div>
+		          <!-- /.box-footer -->
+
+
+
+		        </div>
+		        <!-- /.box-body -->
+		    </div>
+
+
+
+		</div>
+		
+	</div>
+</div>
+
+
+<div class="box-body" ng-show="!load && !publication.pub.length">
+  <div class="cargando">
+    No existen registros.
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <div class="box-footer clearfix" ng-show="publication.total_paginas > 1">
+      <ul class="pagination pagination-sm no-margin pull-right">
+        <li><a class="mano" ng-click="moverA(1)">«</a></li>
+
+        <li ng-repeat="pag in publication.paginas"
+          ng-class="{
+            'active': publication.pag_actual === pag
+          }">
+          <a class="mano" ng-click="moverA(pag)">{{ pag }}</a>
+        </li>
+
+        <li><a class="mano" ng-click="moverA( publication.total_paginas )" >»</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
 

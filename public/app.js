@@ -149,7 +149,7 @@
                         ctrl.$parsers.push(validateFn);
                         ctrl.$formatters.push(validateFn);
                     }
-                }
+                };
             }]);
 
 	app.config(['$locationProvider',function($locationProvider) {
@@ -362,8 +362,82 @@
 	// ================================================
 	//   Controlador de principal
 	// ================================================
-	app.controller('principalCtrl', ['$scope', function($scope){
+	app.controller('principalCtrl', ['$scope','publicationService', function($scope,publicationService){
 		$scope.activar('mPrincipal','','Principal','información');
+
+		$scope.publication   = {};
+		$scope.comment       = {
+			id_publication : '',
+			id_user        : '',
+			description    : ''
+		};
+		$scope.pubPrincipal  = {}
+		$scope.load 		 = true;
+
+		publicationService.cargarPublicacionPrincipal().then( function( data ) {
+			$scope.pubPrincipal = data;
+		} );
+
+		$scope.moverA = function( pag ){
+			publicationService.cargarPaginaReverse( pag,'noticias_efemerides' ).then( function(){
+				$scope.publication = publicationService;
+				$scope.load = false;
+				console.log($scope.publication);
+			});
+		};
+		$scope.moverA(1);
+
+		$scope.comentarPrincipal = function(pubId,userId,comment,form) {
+			$scope.comment = {
+				id_publication : pubId,
+				id_user        : userId,
+				description    : comment
+			};
+			publicationService.guardarCommnet( $scope.comment ).then(function( data ){
+				// codigo cuando se inserto o actualizo
+				if ( data.error == 'not' ) {
+					$scope.comment = {};
+					form.autoValidateFormOptions.resetForm();
+
+					data.fec = new Date(data.fec);
+					$scope.pubPrincipal.comentarios.push( data );
+
+					swal("CORRECTO", "¡"+data.msj+"!", "success");
+				} else {
+					swal("ERROR SERVER", "¡"+data+"!", "error");
+				}
+			});
+		};
+
+		$scope.comentar = function(pubId,userId,comment,form) {
+			$scope.comment = {
+				id_publication : pubId,
+				id_user        : userId,
+				description    : comment
+			};
+			publicationService.guardarCommnet( $scope.comment ).then(function( data ){
+				// codigo cuando se inserto o actualizo
+				if ( data.error == 'not' ) {
+					$scope.comment = {};
+					console.log(data);
+					form.autoValidateFormOptions.resetForm();
+					
+					$scope.publication.pub.forEach( function(element,index,array) {
+						if( element.id == data.idPub ) {
+							data.fec = new Date(data.fec);
+							element.comentarios.push( data );
+							//console.log(data.fec);
+						}
+					});
+
+					swal("CORRECTO", "¡"+data.msj+"!", "success");
+				} else {
+					swal("ERROR SERVER", "¡"+data+"!", "error");
+				}
+			});
+		};
+
+
 	}]);
 
 	// ================================================

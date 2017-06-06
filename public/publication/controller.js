@@ -65,47 +65,52 @@ angular.module('publicationModule').controller('publicationCtrl', ['$scope', '$r
 				pub.type='noticia';
 			if(type=='efemerides')
 				pub.type='efemerides';
-			$scope.pubSel = {
-				id : pub.id,
-				id_user : $rootScope.userID,
-				doc : '',
-				cod : pub.cod,
-				title : pub.title,
-				description : pub.description,
-				type : pub.type,
-				img : pub.img
-			};
-			console.log($scope.pubSel);
-			if( typeof $scope.pubSel.img == 'object' )
-				uploadPub.saveImg($scope.pubSel.img).then(function( data ) {
-					if ( data.error == 'not' ) {
-						$scope.pubSel.img = data.src;
-						publicationService.guardar( $scope.pubSel,type ).then(function(){
-							// codigo cuando se inserto o actualizo
-							$(modal).modal('hide');
-							$scope.pubSel = {};
+			if( pub.img ) {
 
-							frmPublicacion.autoValidateFormOptions.resetForm();
-						});
-					} else 
-					if ( data.error == 'yes' )
-						swal("ERROR", "¡"+data.msj+"!", "error");
-					else {
-						swal("ERROR SERVER", "¡"+data+"!", "error");
-						console.error(data);
-					}
-				});
-			else {
-				console.log('Enter function');
-				publicationService.guardar( $scope.pubSel,type ).then(function(){
-					// codigo cuando se inserto o actualizo
-					$(modal).modal('hide');
-					$scope.pubSel = {};
+				$scope.pubSel = {
+					id : pub.id,
+					id_user : $rootScope.userID,
+					doc : '',
+					cod : pub.cod,
+					title : pub.title,
+					description : pub.description,
+					type : pub.type,
+					img : pub.img
+				};
+				console.log($scope.pubSel);
+				if( typeof $scope.pubSel.img == 'object' )
+					uploadPub.saveImg($scope.pubSel.img).then(function( data ) {
+						if ( data.error == 'not' ) {
+							$scope.pubSel.img = data.src;
+							publicationService.guardar( $scope.pubSel,type ).then(function(){
+								// codigo cuando se inserto o actualizo
+								$(modal).modal('hide');
+								$scope.pubSel = {};
 
-					frmPublicacion.autoValidateFormOptions.resetForm();
-				});
+								frmPublicacion.autoValidateFormOptions.resetForm();
+							});
+						} else 
+						if ( data.error == 'yes' )
+							swal("ERROR", "¡"+data.msj+"!", "error");
+						else {
+							swal("ERROR SERVER", "¡"+data+"!", "error");
+							console.error(data);
+						}
+					});
+				else {
+					console.log('Enter function');
+					publicationService.guardar( $scope.pubSel,type ).then(function(){
+						// codigo cuando se inserto o actualizo
+						$(modal).modal('hide');
+						$scope.pubSel = {};
+
+						frmPublicacion.autoValidateFormOptions.resetForm();
+					});
+				}
+
+			} else {
+				swal("ERROR", "¡Inserte una imagen!", "error");
 			}
-
 		};
 
 
@@ -246,20 +251,53 @@ angular.module('publicationModule').controller('pubCircularCtrl', ['$scope','pub
 		$scope.activar('mAvisos','mCircular','Circulares','');
 
 		$scope.publication   = {};
+		$scope.comment       = {
+			id_publication : '',
+			id_user        : '',
+			description    : ''
+		};
 		$scope.load 		 = true;
 
 		$scope.moverA = function( pag ){
 			publicationService.cargarPaginaReverse( pag,'circular' ).then( function(){
 				$scope.publication = publicationService;
 				$scope.load = false;
-				console.log($scope.publication);
+				console.log($scope.publication.pub[0]);
 			});
 		};
 		$scope.moverA(1);
 
-		$scope.comentar = function(pubId,userId,coment,form) {
-			console.log(pubId+' '+userId+' '+coment);
-		}
+		$scope.mostrarModal = function(pubId){
+			$('#PubImagen'+pubId).modal();
+		};
+
+		$scope.comentar = function(pubId,userId,comment,form) {
+			$scope.comment = {
+				id_publication : pubId,
+				id_user        : userId,
+				description    : comment
+			};
+			publicationService.guardarCommnet( $scope.comment ).then(function( data ){
+				// codigo cuando se inserto o actualizo
+				if ( data.error == 'not' ) {
+					$scope.comment = {};
+					console.log(data);
+					form.autoValidateFormOptions.resetForm();
+					
+					$scope.publication.pub.forEach( function(element,index,array) {
+						if( element.id == data.idPub ) {
+							data.fec = new Date(data.fec);
+							element.comentarios.push( data );
+							//console.log(data.fec);
+						}
+					});
+
+					swal("CORRECTO", "¡"+data.msj+"!", "success");
+				} else {
+					swal("ERROR SERVER", "¡"+data+"!", "error");
+				}
+			});
+		};
 	}
 ]);
 
@@ -269,16 +307,53 @@ angular.module('publicationModule').controller('pubComunicadoCtrl', ['$scope','p
 		$scope.activar('mAvisos','mComunicado','Comunicados','');
 
 		$scope.publication   = {};
+		$scope.comment       = {
+			id_publication : '',
+			id_user        : '',
+			description    : ''
+		};
 		$scope.load 		 = true;
 
 		$scope.moverA = function( pag ){
 			publicationService.cargarPaginaReverse( pag,'comunicado' ).then( function(){
 				$scope.publication = publicationService;
 				$scope.load = false;
-				console.log($scope.publication);
+				console.log($scope.publication.pub[0]);
 			});
 		};
 		$scope.moverA(1);
+
+		$scope.mostrarModal = function(pubId){
+			$('#PubImagen'+pubId).modal();
+		};
+
+		$scope.comentar = function(pubId,userId,comment,form) {
+			$scope.comment = {
+				id_publication : pubId,
+				id_user        : userId,
+				description    : comment
+			};
+			publicationService.guardarCommnet( $scope.comment ).then(function( data ){
+				// codigo cuando se inserto o actualizo
+				if ( data.error == 'not' ) {
+					$scope.comment = {};
+					console.log(data);
+					form.autoValidateFormOptions.resetForm();
+					
+					$scope.publication.pub.forEach( function(element,index,array) {
+						if( element.id == data.idPub ) {
+							data.fec = new Date(data.fec);
+							element.comentarios.push( data );
+							//console.log(data.fec);
+						}
+					});
+
+					swal("CORRECTO", "¡"+data.msj+"!", "success");
+				} else {
+					swal("ERROR SERVER", "¡"+data+"!", "error");
+				}
+			});
+		};
 	}
 ]);
 
@@ -288,16 +363,53 @@ angular.module('publicationModule').controller('pubNormativaCtrl', ['$scope','pu
 		$scope.activar('mNormativa','','Normativas','');
 
 		$scope.publication   = {};
+		$scope.comment       = {
+			id_publication : '',
+			id_user        : '',
+			description    : ''
+		};
 		$scope.load 		 = true;
 
 		$scope.moverA = function( pag ){
-			publicationService.cargarPaginaReverse( pag,'normativa' ).then( function(){
+			publicationService.cargarPaginaReverse( pag,'normativas' ).then( function(){
 				$scope.publication = publicationService;
 				$scope.load = false;
-				console.log($scope.publication);
+				console.log($scope.publication.pub[0]);
 			});
 		};
 		$scope.moverA(1);
+
+		$scope.mostrarModal = function(pubId){
+			$('#PubImagen'+pubId).modal();
+		};
+
+		$scope.comentar = function(pubId,userId,comment,form) {
+			$scope.comment = {
+				id_publication : pubId,
+				id_user        : userId,
+				description    : comment
+			};
+			publicationService.guardarCommnet( $scope.comment ).then(function( data ){
+				// codigo cuando se inserto o actualizo
+				if ( data.error == 'not' ) {
+					$scope.comment = {};
+					console.log(data);
+					form.autoValidateFormOptions.resetForm();
+					
+					$scope.publication.pub.forEach( function(element,index,array) {
+						if( element.id == data.idPub ) {
+							data.fec = new Date(data.fec);
+							element.comentarios.push( data );
+							//console.log(data.fec);
+						}
+					});
+
+					swal("CORRECTO", "¡"+data.msj+"!", "success");
+				} else {
+					swal("ERROR SERVER", "¡"+data+"!", "error");
+				}
+			});
+		};
 	}
 ]);
 
@@ -307,15 +419,52 @@ angular.module('publicationModule').controller('pubReglamentoCtrl', ['$scope','p
 		$scope.activar('mReglamento','','Reglamentos','');
 
 		$scope.publication   = {};
+		$scope.comment       = {
+			id_publication : '',
+			id_user        : '',
+			description    : ''
+		};
 		$scope.load 		 = true;
 
 		$scope.moverA = function( pag ){
 			publicationService.cargarPaginaReverse( pag,'reglamento' ).then( function(){
 				$scope.publication = publicationService;
 				$scope.load = false;
-				console.log($scope.publication);
+				console.log($scope.publication.pub[0]);
 			});
 		};
 		$scope.moverA(1);
+
+		$scope.mostrarModal = function(pubId){
+			$('#PubImagen'+pubId).modal();
+		};
+
+		$scope.comentar = function(pubId,userId,comment,form) {
+			$scope.comment = {
+				id_publication : pubId,
+				id_user        : userId,
+				description    : comment
+			};
+			publicationService.guardarCommnet( $scope.comment ).then(function( data ){
+				// codigo cuando se inserto o actualizo
+				if ( data.error == 'not' ) {
+					$scope.comment = {};
+					console.log(data);
+					form.autoValidateFormOptions.resetForm();
+					
+					$scope.publication.pub.forEach( function(element,index,array) {
+						if( element.id == data.idPub ) {
+							data.fec = new Date(data.fec);
+							element.comentarios.push( data );
+							//console.log(data.fec);
+						}
+					});
+
+					swal("CORRECTO", "¡"+data.msj+"!", "success");
+				} else {
+					swal("ERROR SERVER", "¡"+data+"!", "error");
+				}
+			});
+		};
 	}
 ]);
