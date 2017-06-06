@@ -125,7 +125,7 @@ angular.module('publicationModule').factory('publicationService', ['$http', '$q'
 
 			$http.get( 'rest/v1/publication/reverse/' + pag + '/' + type + '/' + $rootScope.userID )
 				.success(function( data ){
-					console.log(data);
+					//console.log(data);
 
 					if(data) {
 
@@ -172,12 +172,14 @@ angular.module('publicationModule').factory('publicationService', ['$http', '$q'
 			var d = $q.defer();
 			$http.get('rest/v1/publication/principal/'+$rootScope.userID)
 				.success(function( response ){
-					response.fec = new Date(response.fec);
-					response.comentarios.forEach(function(element2,index2,array2) {
-						element2.fec = new Date(element2.fec);
-					});
-					console.log(response);
-					d.resolve(response);
+					if(response) {
+						response.fec = new Date(response.fec);
+						response.comentarios.forEach(function(element2,index2,array2) {
+							element2.fec = new Date(element2.fec);
+						});
+						console.log(response);
+						d.resolve(response);
+					}
 				})
 				.error(function( err ) {
 					d.reject(err);

@@ -374,6 +374,8 @@
 		$scope.pubPrincipal  = {}
 		$scope.load 		 = true;
 
+		console.log($scope.pubPrincipal.length);
+
 		publicationService.cargarPublicacionPrincipal().then( function( data ) {
 			$scope.pubPrincipal = data;
 		} );
@@ -382,7 +384,7 @@
 			publicationService.cargarPaginaReverse( pag,'noticias_efemerides' ).then( function(){
 				$scope.publication = publicationService;
 				$scope.load = false;
-				console.log($scope.publication);
+				//console.log($scope.publication);
 			});
 		};
 		$scope.moverA(1);
