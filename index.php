@@ -81,7 +81,8 @@ if( !isset( $_SESSION['uid'] ) ){
 
 	          <!-- Messages: style can be found in dropdown.less-->
 	          <li class="dropdown messages-menu"
-	          	  ng-include="'public/main/views/message.view.html'">
+	          	  ng-include="'public/communicate/views/message.view.html'"
+	          	  ng-controller="communicateCtrl" ng-init="find();">
 	          </li>
 	          <!-- /.messages-menu -->
 
@@ -294,21 +295,25 @@ if( !isset( $_SESSION['uid'] ) ){
 	<!-- Module -->
 	<script src="public/user/module.js"></script>
 	<script src="public/publication/module.js"></script>
+	<script src="public/communicate/module.js"></script>
 	<!-- Fin Module -->
 	
 	<!-- Route -->
 	<script src="public/user/route.js"></script>
 	<script src="public/publication/route.js"></script>
+	<script src="public/communicate/route.js"></script>
 	<!-- Fin Route -->
 
 	<!-- Service -->
 	<script src="public/user/service.js"></script>
 	<script src="public/publication/service.js"></script>
+	<script src="public/communicate/service.js"></script>
 	<!-- Fin Service -->
 	
 	<!-- Controllers -->
 	<script src="public/user/controller.js"></script>
 	<script src="public/publication/controller.js"></script>
+	<script src="public/communicate/controller.js"></script>
 	<!-- Fin Controllers -->
 
 	<script src="public/app.js"></script>

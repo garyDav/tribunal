@@ -1,16 +1,15 @@
 <?php if(!defined('SPECIALCONSTANT')) die(json_encode([array('id'=>'0','error'=>'Acceso Denegado')]));
 
-$app->get('/communicate/:id',function($id) use($app) {
+$app->get('/communicate/:id/:p',function($id,$p) use($app) {
 	try {
-		$conex = getConex();
 
-		$sql = "SELECT c.message,c.fec,per.name,per.last_name FROM communicate c,user u,person per WHERE c.id_use=u.id AND c.id_usr=u.id AND u.id_person=per.id AND c.id_usr='$id';";
-		$result = $conex->prepare( $sql );
+		if( isset( $p ) ){
+			$pag = $p;
+		}else{
+			$pag = 1;
+		}
 
-		$result->execute();
-		$conex = null;
-
-		$res = $result->fetchAll(PDO::FETCH_OBJ);
+		$res = get_paginado_communicate( $id, $pag );
 
 		$app->response->headers->set('Content-type','application/json');
 		$app->response->headers->set('Access-Control-Allow-Origin','*');

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 06-06-2017 a las 17:37:30
+-- Tiempo de generación: 17-06-2017 a las 15:53:54
 -- Versión del servidor: 10.1.13-MariaDB
 -- Versión de PHP: 7.0.8
 
@@ -180,8 +180,16 @@ CREATE TABLE `communicate` (
   `id_use` int(11) DEFAULT NULL,
   `id_usr` int(11) DEFAULT NULL,
   `message` text COLLATE utf8_spanish2_ci,
-  `fec` datetime DEFAULT NULL
+  `fec` datetime DEFAULT NULL,
+  `viewed` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `communicate`
+--
+
+INSERT INTO `communicate` (`id`, `id_use`, `id_usr`, `message`, `fec`, `viewed`) VALUES
+(1, 4, 1, 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam', '2017-05-10 09:36:26', 0);
 
 -- --------------------------------------------------------
 
@@ -515,12 +523,12 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT de la tabla `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `communicate`
 --
 ALTER TABLE `communicate`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `department`
 --
@@ -555,7 +563,7 @@ ALTER TABLE `province`
 -- AUTO_INCREMENT de la tabla `publication`
 --
 ALTER TABLE `publication`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `user`
 --

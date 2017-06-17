@@ -1,0 +1,33 @@
+<!-- Menu toggle button -->
+<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+  <i class="fa fa-envelope-o"></i>
+  <span class="label label-success">{{listMessages.mNoLeidos}} </span>
+</a>
+<ul class="dropdown-menu">
+  <li class="header">Tienes {{listMessages.mNoLeidos}} {{mensajes}}</li>
+  <li>
+    <!-- inner menu: contains the messages -->
+    <ul class="menu">
+      <li ng-repeat='msj in listMessages.communicate'><!-- start message -->
+        <a href="">
+          <div class="pull-left">
+            <!-- User Image -->
+            <img ng-hide=" !msj.src && msj.sex=='Femenino' " ng-src="app/img/avatarM.png" class="img-circle" alt="User Image">
+            <img ng-hide=" !msj.src && msj.sex=='Masculino' " ng-src="app/img/avatarF.png" class="img-circle" alt="User Image">
+            <img ng-show="msj.src" ng-src="app/photos/{{msj.src}}" class="img-circle" alt="User Image">
+          </div>
+          <!-- Message title and timestamp -->
+          <h4>
+            {{msj.name | palabra}} {{msj.last_name | palabra}}
+            <small><i class="fa fa-clock-o"></i> {{ msj.fec }} </small>
+          </h4>
+          <!-- The message -->
+          <p>{{ msj.message }} </p>
+        </a>
+      </li>
+      <!-- end message -->
+    </ul>
+    <!-- /.menu -->
+  </li>
+  <li class="footer"><a href="#">Ver todos los mensajes</a></li>
+</ul>

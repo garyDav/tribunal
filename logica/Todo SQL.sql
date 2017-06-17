@@ -76,6 +76,7 @@ CREATE TABLE communicate(
 	id_usr int,
 	message text,
 	fec datetime,
+	viewed tinyint(1),
 
 	FOREIGN KEY (id_use) REFERENCES user(id),
 	FOREIGN KEY (id_usr) REFERENCES user(id)

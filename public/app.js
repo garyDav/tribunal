@@ -7,7 +7,8 @@
 			'angular-loading-bar',
 			'jcs-autoValidate',
 			'userModule',
-			'publicationModule'], 
+			'publicationModule',
+			'communicateModule'], 
 		["$provide", function($provide) {
 		var PLURAL_CATEGORY = {ZERO: "zero", ONE: "one", TWO: "two", FEW: "few", MANY: "many", OTHER: "other"};
 		$provide.value("$locale", {
@@ -246,10 +247,15 @@
 				swal("ERROR", "¡Antes debe ingresar su contraseña atigua!", "error");
 		});*/
 
+		mainService.cargar().then( function(){
+			$scope.config = mainService.config;
+		});
+
 		$scope.init = function() {
 			mainService.data().then( function(){
 				mainService.mainUser($rootScope.userID).then(function( data ) {
 					$scope.mainUser = data;
+					//console.log($scope.mainUser);
 				});
 			});
 		};
@@ -262,10 +268,6 @@
 			$scope.userSelMain = $scope.mainUser;
 			$("#modal_userMain").modal();
 		};
-
-		mainService.cargar().then( function(){
-			$scope.config = mainService.config;
-		});
 
 		$scope.cancelarUserMain = function(frmUser) {
 			location.reload();
@@ -464,6 +466,19 @@
 					return palabra.substr(0,22)+' ...';
 				else
 					return palabra;
+			}
+		}
+	});
+
+	app.filter( 'palabra', function(){
+
+		return function(palabra){
+			if( palabra ){
+				var unaPalabra = palabra.split(" ");
+				if( unaPalabra[0] )
+					return unaPalabra[0];
+				else
+					return '';
 			}
 		}
 	});
