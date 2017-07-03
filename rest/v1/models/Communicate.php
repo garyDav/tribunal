@@ -20,6 +20,31 @@ $app->get('/communicate/:id/:p',function($id,$p) use($app) {
 	}
 })->conditions(array('id'=>'[0-9]{1,11}'));
 
+$app->get('/messages/:ide/:idr',function($ide,$idr) use($app) {
+	try {
+		$conex = getConex();
+		//Sleep(1);
+
+		$result = $conex->prepare("UPDATE communicate SET viewed='1' WHERE id_usr='$idr' AND id_use='$ide';");
+		$result->execute();
+		$sql = "SELECT c.id,c.message,c.fec,u.src,c.id_use,c.id_usr,per.sex,per.name,per.last_name,u.last_connection FROM communicate c,user u,person per WHERE c.id_use=u.id AND u.id_person=per.id AND (c.id_use='$ide' AND c.id_usr='$idr' OR c.id_use='$idr' AND c.id_usr='$ide');";
+		$result = $conex->prepare( $sql );
+
+		$result->execute();
+		$conex = null;
+
+		$res = $result->fetchAll(PDO::FETCH_OBJ);
+
+		$app->response->headers->set('Content-type','application/json');
+		$app->response->headers->set('Access-Control-Allow-Origin','*');
+		$app->response->status(200);
+		$app->response->body(json_encode($res));
+	}catch(PDOException $e) {
+		echo 'Error: '.$e->getMessage();
+	}
+})->conditions(array('id'=>'[0-9]{1,11}'));
+
+
 $app->post("/communicate/",function() use($app) {
 	try {
 		$postdata = file_get_contents("php://input");
@@ -27,37 +52,17 @@ $app->post("/communicate/",function() use($app) {
 		$request = json_decode($postdata);
 		$request = (array) $request;
 		$conex = getConex();
-		$res = array( 'err'=>'yes','msj'=>'Puta no se pudo hacer nada, revisa mierda' );
 
-		if( isset( $request['id'] )  ){  // ACTUALIZAR
+		$sql = "CALL pInsertCommunicate(
+					'". $request['id_use'] . "',
+					'". $request['id_usr'] . "',
+					'". $request['message'] . "' );";
 
-			$sql = "UPDATE communicate 
-						SET
-							id_use  		  = '". $request['id_use'] ."',
-							id_usr 	   	  = '". $request['id_usr'] ."',
-							message          = '". $request['message'] ."'
-					WHERE id=" . $request['id'].";";
+		$hecho = $conex->prepare( $sql );
+		$hecho->execute();
+		$conex = null;
 
-			$hecho = $conex->prepare( $sql );
-			$hecho->execute();
-			$conex = null;
-			
-			$res = array( 'id'=>$request['id'], 'error'=>'not', 'msj'=>'Registro actualizado' );
-
-		}else{  // INSERT
-
-			$sql = "CALL pInsertCommunicate(
-						'". $request['id_use'] . "',
-						'". $request['id_usr'] . "',
-						'". $request['message'] . "' );";
-
-			$hecho = $conex->prepare( $sql );
-			$hecho->execute();
-			$conex = null;
-
-			$res = $hecho->fetchObject();
-
-		}
+		$res = $hecho->fetchObject();
 
 		$app->response->headers->set('Content-type','application/json');
 		$app->response->status(200);

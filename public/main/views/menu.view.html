@@ -10,7 +10,7 @@
       <img ng-hide=" (mainUser.src == null || mainUser.src == '') " src="app/photos/{{mainUser.src}}" class="img-circle profile-heigth" alt="User Image">
     </div>
     <div class="pull-left info">
-      <p>{{mainUser.name}} {{mainUser.last_name}} </p>
+      <p>{{mainUser.name | palabra}} {{mainUser.last_name | palabra}} </p>
       <!-- Status -->
       <a href=""><i class="fa fa-circle text-success"></i> Online</a>
     </div>

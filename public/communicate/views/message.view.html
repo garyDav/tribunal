@@ -9,17 +9,17 @@
     <!-- inner menu: contains the messages -->
     <ul class="menu">
       <li ng-repeat='msj in listMessages.communicate'><!-- start message -->
-        <a href="">
+        <a ng-href="/tribunal/mensajes/{{msj.id}}">
           <div class="pull-left">
             <!-- User Image -->
-            <img ng-hide=" !msj.src && msj.sex=='Femenino' " ng-src="app/img/avatarM.png" class="img-circle" alt="User Image">
-            <img ng-hide=" !msj.src && msj.sex=='Masculino' " ng-src="app/img/avatarF.png" class="img-circle" alt="User Image">
+            <img ng-show=" msj.src == '' && msj.sex=='Femenino' " ng-src="app/img/avatarF.png" class="img-circle" alt="User Image">
+            <img ng-show=" msj.src == '' && msj.sex=='Masculino' " ng-src="app/img/avatarM.png" class="img-circle" alt="User Image">
             <img ng-show="msj.src" ng-src="app/photos/{{msj.src}}" class="img-circle" alt="User Image">
           </div>
           <!-- Message title and timestamp -->
           <h4>
             {{msj.name | palabra}} {{msj.last_name | palabra}}
-            <small><i class="fa fa-clock-o"></i> {{ msj.fec }} </small>
+            <small><i class="fa fa-calendar-o"></i> {{ msj.fec }} </small>
           </h4>
           <!-- The message -->
           <p>{{ msj.message }} </p>
@@ -29,5 +29,17 @@
     </ul>
     <!-- /.menu -->
   </li>
-  <li class="footer"><a href="#">Ver todos los mensajes</a></li>
+  <li>
+    <div class="box-footer clearfix" ng-show="listMessages.total_paginas > 1">
+      <ul class="pagination pagination-sm no-margin pull-right">
+        <li><a class="mano" ng-click="moverA(listMessages.pag_anterior)">«</a></li>
+
+        <li class="active" ng-show="listMessages.communicate.length">
+          <a class="mano" >{{ listMessages.pag_actual }}</a>
+        </li>
+        <li><a class="mano" ng-click="moverA( listMessages.pag_siguiente )" >»</a></li>
+      </ul>
+    </div>
+  </li>
+  <li class="footer"><a ng-href="/tribunal/mensajes/1">Ver todos los mensajes</a></li>
 </ul>

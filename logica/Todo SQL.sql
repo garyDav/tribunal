@@ -196,7 +196,7 @@ CREATE PROCEDURE pInsertCommunicate (
 	IN v_message text
 )
 BEGIN
-	INSERT INTO communicate VALUES(null,v_id_use,v_id_usr,v_message,CURRENT_TIMESTAMP);
+	INSERT INTO communicate VALUES(null,v_id_use,v_id_usr,v_message,CURRENT_TIMESTAMP,0);
 	SELECT @@identity AS id, 'not' AS error,'Mensaje enviado correctamente.' AS msj;
 END //
 

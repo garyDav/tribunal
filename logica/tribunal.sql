@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 17-06-2017 a las 15:53:54
+-- Tiempo de generación: 03-07-2017 a las 17:44:27
 -- Versión del servidor: 10.1.13-MariaDB
 -- Versión de PHP: 7.0.8
 
@@ -30,7 +30,7 @@ SELECT @@identity AS id,v_description description,CURRENT_TIMESTAMP fec,u.src,pe
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsertCommunicate` (IN `v_id_use` INT, IN `v_id_usr` INT, IN `v_message` TEXT)  BEGIN
-INSERT INTO communicate VALUES(null,v_id_use,v_id_usr,v_message,CURRENT_TIMESTAMP);
+INSERT INTO communicate VALUES(null,v_id_use,v_id_usr,v_message,CURRENT_TIMESTAMP,0);
 SELECT @@identity AS id, 'not' AS error,'Mensaje enviado correctamente.' AS msj;
 END$$
 
@@ -189,7 +189,25 @@ CREATE TABLE `communicate` (
 --
 
 INSERT INTO `communicate` (`id`, `id_use`, `id_usr`, `message`, `fec`, `viewed`) VALUES
-(1, 4, 1, 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam', '2017-05-10 09:36:26', 0);
+(1, 4, 1, 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam', '2017-05-10 09:36:26', 1),
+(2, 4, 1, 'jooder responde la re puta', '2017-07-02 07:23:25', 1),
+(3, 3, 1, 'jooooder', '2017-07-03 05:17:21', 1),
+(4, 1, 4, 'te respondí puta', '2017-07-03 11:02:27', 1),
+(5, 1, 10, 'hola puto', '2017-07-03 07:23:24', 1),
+(7, 1, 3, 'heeee loka', '2017-07-03 16:01:56', 0),
+(8, 1, 3, 'pinche puta', '2017-07-03 16:02:48', 0),
+(9, 1, 3, 'joooder ahora si da', '2017-07-03 16:04:53', 0),
+(10, 1, 3, 'mierdaaa', '2017-07-03 16:07:45', 0),
+(11, 1, 4, 'ohh siii', '2017-07-03 16:07:58', 1),
+(12, 1, 3, 'pinche puta', '2017-07-03 16:08:06', 0),
+(13, 1, 4, 'jodete', '2017-07-03 16:08:17', 1),
+(14, 10, 1, 'vete a la mierda pervertido', '2017-07-03 16:38:51', 1),
+(15, 13, 4, 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.', '2017-07-02 08:24:00', 1),
+(16, 19, 4, 'Praesentium ea, labore sunt aperiam fugit ex harum quis accusamus, sit quia dignissimos est eos a atque vel', '2017-07-03 04:16:17', 1),
+(17, 4, 19, 'pinche puto al fin hablas', '2017-07-03 16:44:59', 1),
+(18, 19, 4, 'si pues perra', '2017-07-03 16:45:55', 1),
+(19, 4, 19, 'al carajo con tigo', '2017-07-03 16:46:19', 0),
+(20, 4, 1, 'mierda perro', '2017-07-03 16:46:34', 0);
 
 -- --------------------------------------------------------
 
@@ -528,7 +546,7 @@ ALTER TABLE `comment`
 -- AUTO_INCREMENT de la tabla `communicate`
 --
 ALTER TABLE `communicate`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
 -- AUTO_INCREMENT de la tabla `department`
 --

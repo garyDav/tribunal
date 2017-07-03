@@ -1,8 +1,8 @@
 (function(angular) {
 
 	'use strict';
-	angular.module('communicateModule').controller('communicateCtrl',['$scope','communicateService','$rootScope',
-		function($scope,communicateService,$rootScope) {
+	angular.module('communicateModule').controller('communicateCtrl',['$scope','communicateService','$rootScope','$routeParams',
+		function($scope,communicateService,$rootScope,$routeParams) {
 			$scope.find = function() {
 				$scope.listMessages = {};
 				$scope.load 		= true;
@@ -16,22 +16,73 @@
 							$scope.mensajes = 'mensaje no leido';
 						else
 							$scope.mensajes = 'mensajes no leidos';
-						console.log($scope.listMessages);
+						//console.log($scope.listMessages);
 					});
 				};
 				$scope.moverA(1);
 			};
-			/*$scope.findAll = function() {
-				$scope.listMessages = {};
-				$scope.load 		= true;
+			$scope.findAll = function() {
+				$scope.activar('','','Mensajes','');
+				$scope.listAllMessages = [];
+				$scope.listMessagesId = {
+					name: '',
+					last_connection: '',
+					messages: []
+				};
+				$scope.myMessage = {
+					id_use: '',
+					id_usr: '',
+					message: ''
+				};
+				$scope.loadAll = true;
+				$scope.loadMessage = true;
+				var pag = $routeParams.id;
 				
-				$scope.moverA = function(pag) {
+				/*communicateService.loadAllMessages().then(function( response ){
+					$scope.loadAll = false;
+					$scope.listAllMessages = response;
+					console.log($scope.listAllMessages);
+				});*/
+
+
+				$scope.moverMen = function(pag) {
 					communicateService.cargarPagina(pag).then(function(){
-						$scope.listMessages = communicateService;
-						console.log($scope.listMessages);
+						$scope.loadAll = false;
+						$scope.listAllMessages = communicateService;
+						//console.log($scope.listAllMessages);
 					});
 				};
-			};*/
+				$scope.moverMen(1);
+
+				$scope.loadAllMessage = function(id) {
+					$scope.loadMessage = true;
+					$scope.myMessage.id_usr = id;
+					$scope.myMessage.message = '';
+					communicateService.loadAllMessages(id).then(function( response ) {
+						if(response[0]) {
+							$scope.loadMessage = false;
+							$scope.listMessagesId = {
+								name: communicateService.userDate.name+' '+communicateService.userDate.last_name,
+								last_connection: communicateService.userDate.last_connection,
+								messages: response
+							};
+							//console.log($scope.listMessagesId);
+						}
+					});
+					//communicateService.loadAllMessages(id);
+				};
+
+				$scope.loadAllMessage(pag);
+
+				$scope.sendMessage = function(form,myMessage) {
+					myMessage.id_use = $rootScope.userID;
+					communicateService.saveMessage(myMessage).then(function(response) {
+						$scope.loadAllMessage(myMessage.id_usr);
+						myMessage.message = '';
+					});
+				};
+
+			};
 
 		}
 	]);

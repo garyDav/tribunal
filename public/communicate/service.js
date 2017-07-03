@@ -1,8 +1,8 @@
 (function(angular) {
 
 	'use strict';
-	angular.module('communicateModule').factory('communicateService',['$http','$q',
-		function($http,$q) {
+	angular.module('communicateModule').factory('communicateService',['$http','$q','$rootScope',
+		function($http,$q,$rootScope) {
 			var self= {
 
 				'cargando'		: false,
@@ -15,6 +15,11 @@
 				'total_paginas' : 1,
 				'paginas'	    : [],
 				'mNoLeidos'		: 0,
+				'userDate'		: {
+					'name': '',
+					'last_name': '',
+					'last_connection': ''
+				},
 
 				timeVerbal: function(fecha) {
 					//var fecha = '2017-06-12 06:18:20';
@@ -23,72 +28,42 @@
 					var fMes = Number(fecha.substr(5,2));
 					var fAnio = Number(fecha.substr(0,4));
 				 	var dias = new Array('dom','lun','mar','mie','jue','vie','sab');
+				 	var meses = new Array('Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Set','Oct','Nov','Dic');
 					var verbal = '';
 					var hora = 0;
 					var fechaObj = new Date(fecha);
 
 
 				 	if( fAnio == tiempo.getUTCFullYear() ) {
-				 		if( fDia == tiempo.getDate() ) {
-				 			if( (parseInt(fecha.substr(11,2)) > 12) ){
-				 				hora = parseInt(fecha.substr(11,2));
-				 				hora -= 12;
-				 				if( hora < 10 )
-				 					hora = "0"+hora;
-						 		verbal += hora+fecha.substr(13,3)+" PM";
-						 	}
-						 	else{
-						 		verbal += fecha.substr(11,5)+" AM";
-						 	}
-				 		} else {
-				 			if( fMes == (tiempo.getMonth()+1) ) {
-				 				if( fDia >= tiempo.getDate()-6 ) {
-				 					verbal = dias[fechaObj.getDay()];
-				 				} else {
-				 					verbal = 'fecha';
-				 				}
-				 			} else {
-				 				verbal = 'fecha y mes';
-				 			}
-				 		}
-				 	} else {
-				 		verbal = 'mes y año';
-				 	}
- 	
-					/*var cadena = fecha.substr(8,2)+" de ";
-					var mes = parseInt(fecha.substr(5,2));
-				 	switch(mes){
-			 			case 1:cadena+="Enero";break;
-			 			case 2:cadena+="Febrero";break;
-			 			case 3:cadena+="Marzo";break;
-			 			case 4:cadena+="Abril";break;
-			 			case 5:cadena+="Mayo";break;
-			 			case 6:cadena+="Junio";break;
-			 			case 7:cadena+="Julio";break;
-			 			case 8:cadena+="Agosto";break;
-			 			case 9:cadena+="Septiembre";break;
-			 			case 10:cadena+="Octubre";break;
-			 			case 11:cadena+="Noviembre";break;
-			 			case 12:cadena+="Diciembre";break;
-			 			default:break;
-				 	}*/
-
-				 	/*if(""+tiempo.getUTCFullYear() !== fecha.substr(0,4)){
-				 		cadena += " del "+fecha.substr(0,4);
-				 	}
-
-				 	if(fecha.substr(8,2) === ""+tiempo.getDate()){
-						cadena = "Hoy";
+						if( fDia == tiempo.getDate() && fMes == (tiempo.getMonth()+1) ) {
+							if( (parseInt(fecha.substr(11,2)) > 12) ){
+								hora = parseInt(fecha.substr(11,2));
+								hora -= 12;
+								if( hora < 10 )
+									hora = "0"+hora;
+								verbal += hora+fecha.substr(13,3)+" PM";
+							}
+							else{
+								verbal += fecha.substr(11,5)+" AM";
+							}
+						} else {
+							if( fMes == (tiempo.getMonth()+1) ) {
+								if( fDia >= tiempo.getDate()-6 ) {
+									verbal = dias[fechaObj.getDay()];
+										if( fDia == tiempo.getDate()-1 )
+											verbal = 'ayer';
+								} else {
+									verbal = 'fec: '+fecha.substr(8,2);
+								}
+							} else {
+								verbal = meses[fMes-1];
+							}
+						}
+					} else {
+						verbal = meses[fMes-1]+' del '+fechaObj.getUTCFullYear();
 					}
-					else if(fecha.substr(8,2) === ""+(tiempo.getDate()-1)){
-						cadena = "Ayer";
-					}
-				 	if((parseInt(fecha.substr(11,2))>=12)){
-				 		cadena += " a las "+fecha.substr(11,5)+" PM";
-				 	}
-				 	else{
-				 		cadena += " a las "+fecha.substr(11,5)+" AM";
-				 	}*/
+	
+
 				 	return verbal;
 				},
 
@@ -105,8 +80,11 @@
 
 									var conteo = 0;
 									if(response) {
+										//console.log(response);
 										response.communicate.forEach(function(element,index,array) {
 											element.fec = self.timeVerbal(element.fec);
+											element.last_connection = new Date(element.last_connection);
+											//element.last_connection = self.timeVerbal(element.last_connection);
 											if( !Number(element.viewed) )
 												conteo ++;
 										});
@@ -133,11 +111,47 @@
 						}
 					});
 
+					return d.promise;
+				},
 
+				loadAllMessages: function(id) {
+					var d = $q.defer();
 
-					
+					$http.get('rest/v1/messages/'+id+'/'+$rootScope.userID).success(function( response ){
+						if(response) {
+							self.cargarPagina(1);
+							response.forEach(function(element,index,array) {
+								if(element.id_use != $rootScope.userID) {
+									self.userDate.name = element.name;
+									self.userDate.last_name = element.last_name;
+									self.userDate.last_connection = new Date(element.last_connection);
+								}
+								element.fec = new Date(element.fec);
+							});
+							console.log(response);
+							d.resolve(response);
+						}
+					}).error(function( err ){
+						d.reject(err);
+						console.error(err);
+					});
 
 					return d.promise;
+				},
+
+				saveMessage: function(data) {
+					var d = $q.defer();
+
+					$http.post('rest/v1/communicate',data).success(function(response) {
+						//self.loadAllMessages(data.id_usr);
+						d.resolve(response);
+					}).error(function(err) {
+						console.error(err);
+						d.reject(err);
+					});
+
+					return d.promise;
+
 				}
 
 

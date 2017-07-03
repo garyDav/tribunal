@@ -1,1 +1,149 @@
-<h2>hola que tal</h2>
+<div ng-init="findAll();">
+	<div class="row">
+		<div class="col-md-4" style="padding: 0;">
+			
+
+		  <div class="box box-widget collapsed-box" style="border-bottom:1px solid #CCC; margin-bottom:1px;" ng-repeat="men in listAllMessages.communicate">
+        <div class="box-header with-border">
+          <div class="user-block">
+
+		        <!-- User image -->
+            <img ng-show=" (men.src == null || men.src == '') && men.sex == 'Masculino' " src="app/img/avatarM.png" class="img-responsive img-circle img-md" alt="User Image">
+            <img ng-show=" (men.src == null || men.src == '') && men.sex == 'Femenino' " src="app/img/avatarF.png" class="img-responsive img-circle img-md" alt="User Image">
+            <img ng-hide=" (men.src == null || men.src == '') " src="app/photos/{{men.src}}" class="img-responsive img-circle img-md" alt="User Image">
+
+
+            <span class="username"><a ng-click="loadAllMessage(men.id);" class="mano">{{men.name | palabra}} {{men.last_name | palabra}} </a></span>
+            <span class="description"><i class="fa fa-calendar-o"></i> {{men.fec}} </span>
+          </div>
+        </div>
+        <!-- /.box-header -->
+
+
+
+      </div>
+      <div class="box-footer clearfix" ng-show="listAllMessages.total_paginas > 1">
+        <ul class="pagination pagination-sm no-margin pull-right">
+          <li><a class="mano" ng-click="moverMen(listAllMessages.pag_anterior)">«</a></li>
+
+          <li class="active" ng-show="listAllMessages.communicate.length">
+            <a class="mano" >{{ listAllMessages.pag_actual }}</a>
+          </li>
+          <li><a class="mano" ng-click="moverMen( listAllMessages.pag_siguiente )" >»</a></li>
+        </ul>
+      </div>
+
+
+		</div>
+		<div class="col-md-8" style="padding: 0;">
+			
+
+
+			<div ng-show="listMessagesId.messages.length > 0 && !loadMessage" class="box box-warning direct-chat direct-chat-warning" style="border-left: 1px solid #999;">
+                <div class="box-header with-border">
+                  <h3 class="box-title">{{listMessagesId.name}} </h3>
+
+                  <div class="box-tools pull-right">
+                    <span data-toggle="tooltip" title="3 New Messages" class="badge bg-yellow">{{listMessagesId.last_connection | date:"longDate"}} a las {{listMessagesId.last_connection | date:"shortTime"}} </span>
+
+                    <!-- 
+
+                    date:"yyyy/MM/dd" = 2017/04/25
+                    date:"medium" = 25/04/2017 14:30:10
+                    date:"short" = 25/04/17 14:30
+                    date:"fullDate" = martes, 25 de abril de 2017
+                    date:"longDate" = 25 de abril de 2017
+                    date:"mediumDate" = 25/04/2017
+                    date:"shortDate" = 25/04/17
+                    date:"mediumTime" = 14:30:10
+                    date:"shortTime" = 14:30
+                    date = 25/04/2017
+
+                    -->
+                  </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body" style="height:360px;">
+                  <!-- Conversations are loaded here -->
+                  <div class="direct-chat-messages" style="height:360px;">
+
+
+                    <!-- MENSAJE RECIBIDO -->
+                    <div ng-repeat="msj in listMessagesId.messages">
+                      
+                    <div class="direct-chat-msg" ng-hide="msj.id_use == userID">
+                      <div class="direct-chat-info clearfix">
+                        <span class="direct-chat-timestamp pull-left">{{msj.fec | date:"fullDate"}} a las {{msj.fec | date:"shortTime"}} </span>
+                      </div>
+                      <!-- /.direct-chat-info -->
+                      <!-- User image -->
+                      <img ng-show=" (msj.src == null || msj.src == '') && msj.sex == 'Masculino' " src="app/img/avatarM.png" class="img-responsive direct-chat-img" alt="User Image">
+                      <img ng-show=" (msj.src == null || msj.src == '') && msj.sex == 'Femenino' " src="app/img/avatarF.png" class="img-responsive direct-chat-img" alt="User Image">
+                      <img ng-hide=" msj.src == '' " src="app/photos/{{msj.src}}" class="img-responsive direct-chat-img" alt="User Image">
+
+                      <div class="direct-chat-text">
+                        {{msj.message}}
+                      </div>
+                      <!-- /.direct-chat-text -->
+                    </div>
+                    <!-- FIN MENSAJE RECIBIDO -->
+
+
+                    <!-- MENSAJE ENVIADO -->
+                    <div class="direct-chat-msg right" ng-show="msj.id_use == userID">
+                      <div class="direct-chat-info clearfix">
+                        <span class="direct-chat-timestamp pull-right">{{msj.fec | date:"fullDate"}} a las {{msj.fec | date:"shortTime"}} </span>
+                      </div>
+                      <!-- /.direct-chat-info -->
+                      <div class="direct-chat-text">
+                        {{msj.message}}
+                      </div>
+                      <!-- /.direct-chat-text -->
+                    </div>
+                    <!-- FIN MENSAJE ENVIADO -->
+                    </div>
+
+
+                  </div>
+                  <!--/.direct-chat-messages-->
+
+
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                  <form name="form"
+                    ng-submit="sendMessage(form,myMessage);">
+                    <div class="form-group input-group">
+                      <input type="text" ng-model="myMessage.message" placeholder="Escriba mensaje..." class="form-control">
+                          <span class="input-group-btn">
+                            <button type="submit" class="btn btn-warning btn-flat">Enviar</button>
+                          </span>
+                    </div>
+                  </form>
+                </div>
+                <!-- /.box-footer-->
+      </div>
+      <div class="box" ng-show="loadMessage">
+
+        <div class="box box-danger box-solid">
+          <div class="box-header">
+            <h3 class="box-title">Cargando mensajes...</h3>
+          </div>
+          <div class="box-body">
+            Espere por favor
+          </div>
+          <!-- /.box-body -->
+          <!-- Loading (remove the following to stop the loading)-->
+          <div class="overlay">
+            <i class="fa fa-refresh fa-spin"></i>
+          </div>
+          <!-- end loading -->
+        </div>
+
+      </div>
+
+
+		</div>
+	</div>	
+</div>
+

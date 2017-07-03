@@ -43,7 +43,7 @@ $app->get('/publication/:id/:type',function($id,$type) use($app) {
 
 $app->get('/publication/reverse/:pag/:type/:idUser',function($pag,$type,$idUser) use($app) {
 	try {
-		sleep(1);
+		//sleep(1);
 		if( isset( $pag ) )
 			$pag = $pag;
 		else

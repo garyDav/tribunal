@@ -1,6 +1,7 @@
 <?php if(!defined("SPECIALCONSTANT")) die(json_encode([array("id"=>"0","nombre"=>"Acceso Denegado")]));
 
 function getConex() {
+	//sleep(1);
 	try {
 		$us = "root";
 		$pwd = "";

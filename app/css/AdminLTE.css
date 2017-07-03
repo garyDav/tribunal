@@ -2738,8 +2738,11 @@ table.text-center th {
   margin-top: -6px;
 }
 .right .direct-chat-text {
-  margin-right: 50px;
-  margin-left: 0;
+  /*margin-right: 50px;
+  margin-left: 0;*/
+  /*Editado*/
+  margin-right: 10px;
+  margin-left: 170px;
 }
 .right .direct-chat-text:after,
 .right .direct-chat-text:before {

@@ -17,4 +17,19 @@ if( $actual == $cualquiera )
 else
 	echo 'no';
 
+
+$fecha = '2017-07-09';
+$nuevafecha = strtotime ( '+10 month' , strtotime ( $fecha ) ) ;
+$nuevafecha = date ( 'Y-m-j' , $nuevafecha );
+ 
+echo '<br>'.'nueva fecha: '.$nuevafecha;
+
+$vector = [];
+$vector[] = '1';
+$vector[] = '2';
+$vector[] = '3';
+foreach ($vector as $key => $value) {
+	echo '<br>'.$vector[$key];
+}
+
 ?>
