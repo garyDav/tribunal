@@ -23,7 +23,7 @@ if($_FILES['doc']) {
 		if(!empty($nombre) && isset($nombre)) {
 			if($error == 0) {
 				if( strpos($tipo,'doc') || strpos($tipo,'docx') || strpos($tipo,'pdf') || strpos($tipo,'xls') || strpos($tipo,'xlsx') || strpos($tipo,'odt') || strpos($tipo,'ott') || strpos($tipo,'txt') ) {
-					if($size < 5777168) {
+					if($size < 5777168) { //5Megas
 						if(move_uploaded_file($_FILES['doc']['tmp_name'], $lugar.$name)) {
 							$msj = 'Documento subido';
 							$e = 'not';

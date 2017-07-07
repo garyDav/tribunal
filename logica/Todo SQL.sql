@@ -25,7 +25,7 @@ CREATE TABLE province(
 	id_department int,
 	name varchar(100),
 
-	FOREIGN KEY (id_department) REFERENCES department(id)
+	FOREIGN KEY (id_department) REFERENCES department(id) ON DELETE CASCADE
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
@@ -34,7 +34,7 @@ CREATE TABLE municipality(
 	id_province int,
 	name varchar(100),
 
-	FOREIGN KEY (id_province) REFERENCES province(id)
+	FOREIGN KEY (id_province) REFERENCES province(id) ON DELETE CASCADE
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
@@ -44,7 +44,7 @@ CREATE TABLE j_agroambiental(
 	name varchar(100),
 	cod_ja varchar(7),
 
-	FOREIGN KEY (id_municipality) REFERENCES municipality(id)
+	FOREIGN KEY (id_municipality) REFERENCES municipality(id) ON DELETE CASCADE
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
@@ -65,8 +65,8 @@ CREATE TABLE user (
 	cod_all varchar(7),
 	status varchar(6),
 
-	FOREIGN KEY (id_person) REFERENCES person(id),
-	FOREIGN KEY (id_jagroambiental) REFERENCES j_agroambiental(id)
+	FOREIGN KEY (id_person) REFERENCES person(id) ON DELETE CASCADE,
+	FOREIGN KEY (id_jagroambiental) REFERENCES j_agroambiental(id) ON DELETE CASCADE
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
@@ -78,8 +78,8 @@ CREATE TABLE communicate(
 	fec datetime,
 	viewed tinyint(1),
 
-	FOREIGN KEY (id_use) REFERENCES user(id),
-	FOREIGN KEY (id_usr) REFERENCES user(id)
+	FOREIGN KEY (id_use) REFERENCES user(id) ON DELETE CASCADE,
+	FOREIGN KEY (id_usr) REFERENCES user(id) ON DELETE CASCADE
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
@@ -94,7 +94,7 @@ CREATE TABLE publication(
 	doc varchar(255),
 	cod varchar(7),
 
-	FOREIGN KEY (id_user) REFERENCES user(id)
+	FOREIGN KEY (id_user) REFERENCES user(id) ON DELETE CASCADE
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
@@ -105,8 +105,8 @@ CREATE TABLE comment(
 	description text,
 	fec datetime,
 
-	FOREIGN KEY (id_publication) REFERENCES publication(id),
-	FOREIGN KEY (id_user) REFERENCES user(id)
+	FOREIGN KEY (id_publication) REFERENCES publication(id) ON DELETE CASCADE,
+	FOREIGN KEY (id_user) REFERENCES user(id) ON DELETE CASCADE
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
