@@ -24,6 +24,8 @@
 			$scope.findAll = function() {
 				$scope.activar('','','Mensajes','');
 				$scope.listAllMessages = [];
+				$scope.userM 		   = [];
+				$scope.userSel 		   = {};
 				$scope.listMessagesId = {
 					name: '',
 					last_connection: '',
@@ -80,6 +82,28 @@
 						$scope.loadAllMessage(myMessage.id_usr);
 						myMessage.message = '';
 					});
+				};
+
+				$scope.sendMessageNew = function(form,myMessage) {
+					myMessage.id_use = $rootScope.userID;
+					communicateService.saveMessage(myMessage).then(function(response) {
+						//$scope.loadAllMessage(myMessage.id_usr);
+						myMessage.message = '';
+						if ( response.error == 'not' ) {
+							swal("CORRECTO", "¡"+response.msj+"!", "success");
+						}
+						console.log(response);
+					});
+				};
+
+				communicateService.cargarUsers().then(function(response) {
+					$scope.userM = response;
+					console.log(response);
+				});
+
+				$scope.newMessage= function( user,id ) {
+					user.id_usr = id;
+					//console.log(user);
 				};
 
 			};

@@ -68,7 +68,7 @@ $app->post("/user/",function() use($app) {
 		$request = json_decode($postdata);
 		$request = (array) $request;
 		$conex = getConex();
-		$res = array( 'err'=>'yes','msj'=>'Puta no se pudo hacer nada, revisa mierda' );
+		$res = array( 'err'=>'yes','msj'=>'Revisa' );
 		
 		$salt = '#/$02.06$/#_#/$25.10$/#';
 		$pwd = md5($salt.$request['pwd']);
@@ -93,6 +93,11 @@ $app->post("/user/",function() use($app) {
 			$res = array( 'id'=>$request['id'], 'error'=>'not', 'msj'=>'Usuario actualizado' );
 
 		}else{  // INSERT
+			$cod_ja = $request['cod_ja'];
+			$sql = "SELECT dep.cod_dep FROM j_agroambiental j,municipality mu,province pr,department dep WHERE 	j.id_municipality=mu.id AND mu.id_province=pr.id AND pr.id_department=dep.id AND j.cod_ja='$cod_ja';";
+			$hecho = $conex->prepare( $sql );
+			$hecho->execute();
+			$cod_dep = $hecho->fetchObject()->cod_dep;
 
 			$sql = "CALL pInsertUser(
 						'". $request['id_person'] . "',
@@ -102,7 +107,7 @@ $app->post("/user/",function() use($app) {
 						'". $pwd . "',
 						'". 'user' . "',
 						'". $request['cellphone'] . "',
-						'". $request['cod_dep'] . "',
+						'". $cod_dep . "',
 						'". $request['cod_ja'] . "',
 						'". 'T-0000' . "' );";
 

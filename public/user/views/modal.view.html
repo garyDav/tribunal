@@ -148,27 +148,29 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr ng-repeat="j in jabro | filter:jagroModel | orderBy:coldep:reversedep">
-                      <td>{{ j.id }}</td>
-                      <td>{{ j.name }}</td>
-                      <td>
-                        <a ng-click="viewJA = !viewJA; llenar_jagroambiental( userSel,j.id,j.cod_ja );" class="btn btn-default"><i class="fa fa-hand-o-up"></i></a>
-                      </td>
-                    </tr>
+                    <!--<div style="background: red; height:150px; overflow:hidden; overflow-y:scroll;">-->
+                      <tr ng-repeat="j in jabro | filter:jagroModel | orderBy:coldep:reversedep">
+                        <td>{{ j.id }}</td>
+                        <td>{{ j.name }}</td>
+                        <td>
+                          <a ng-click="viewJA = !viewJA; llenar_jagroambiental( userSel,j.id,j.cod_ja );" class="btn btn-default"><i class="fa fa-hand-o-up"></i></a>
+                        </td>
+                      </tr>
+                    <!--</div>-->
                   </tbody>
 
                 </table>
               </div>
             </div>
 
-            <div class="form-group">
+            <!--<div class="form-group">
               <label>Departamento</label>
               <select type="text" class="form-control" placeholder="departamento"
                   ng-model="userSel.cod_dep" required>
                   <option value="" disabled selected>Departamento </option>
                   <option ng-repeat="dep in department" ng-value="dep.cod_dep">{{dep.name}} </option>
               </select>
-            </div>
+            </div>-->
           </div>
 
         </div>

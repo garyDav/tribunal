@@ -45,6 +45,28 @@ $app->get('/messages/:ide/:idr',function($ide,$idr) use($app) {
 })->conditions(array('id'=>'[0-9]{1,11}'));
 
 
+$app->get('/mensaje/user/:id',function($id) use($app) {
+	try {
+		$conex = getConex();
+
+		$sql = "SELECT u.id,per.name,per.last_name FROM user u,person per WHERE u.id_person=per.id AND u.id<>'$id';";
+		$result = $conex->prepare( $sql );
+
+		$result->execute();
+		$conex = null;
+
+		$res = $result->fetchAll(PDO::FETCH_OBJ);
+
+		$app->response->headers->set('Content-type','application/json');
+		$app->response->headers->set('Access-Control-Allow-Origin','*');
+		$app->response->status(200);
+		$app->response->body(json_encode($res));
+	}catch(PDOException $e) {
+		echo 'Error: '.$e->getMessage();
+	}
+})->conditions(array('id'=>'[0-9]{1,11}'));
+
+
 $app->post("/communicate/",function() use($app) {
 	try {
 		$postdata = file_get_contents("php://input");

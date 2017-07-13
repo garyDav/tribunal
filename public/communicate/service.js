@@ -152,6 +152,19 @@
 
 					return d.promise;
 
+				},
+
+				cargarUsers: function() {
+					var d = $q.defer();
+
+					$http.get('rest/v1/mensaje/user/'+$rootScope.userID).success(function(response) {
+						d.resolve(response);
+					}).error(function(err) {
+						console.error(err);
+						d.reject(err);
+					});
+
+					return d.promise;
 				}
 
 

@@ -1,4 +1,85 @@
+
 <div ng-init="findAll();">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="box box-success collapsed-box">
+          <div class="box-header with-border">
+            <h3 class="box-title">¿Nuevo Mensaje?</h3>
+
+            <div class="box-tools pull-right">
+              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+              </button>
+              <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+              </button>
+            </div>
+            <!-- /.box-tools -->
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body">
+
+        <form name="formN"
+              ng-submit="sendMessageNew(formN,userSel);"
+                novalidate="novalidate">
+
+
+              <div class="form-group">
+                <label>Mensaje</label>
+                <textarea class="form-control" rows="2" placeholder="Ingrese tu mensaje"
+                    ng-model="userSel.message"></textarea>
+              </div>
+
+              <div class="form-group">
+                <label class="mano" ng-click="viewN = !viewN;">Mensaje para...</label> <span>Seleccionado ID: {{userSel.id_usr}} </span>
+                <div class="animated fadeIn" ng-show="viewN">
+
+                  <!-- /.filtros -->
+                  <div class="filtros">
+                  <div class="form-group busqueda linea b-largo">
+                    <label for="busqueda"><i class="fa fa-search mano" aria-hidden="true"></i></label>
+                    <input id="busqueda" type="text" placeholder="Busque aqui..." ng-model="nuevoMensaje">
+                  </div>
+                  </div>
+
+                  <div class="form-group">
+                    <input type="hidden" ng-model="userSel.id_usr">
+                  </div>
+
+                  <table class="table table-bordered responsive-table">
+                    <thead>
+                      <tr>
+                        <th><a class="mano" ng-click="col='id'; reverse = !reverse;">#</a></th>
+                        <th><a class="mano" ng-click="col='name'; reverse = !reverse;">Usuario</a></th>
+                        <th>Seleccione uno</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!--<div style="background: red; height:150px; overflow:hidden; overflow-y:scroll;">-->
+                        <tr ng-repeat="u in userM | filter:nuevoMensaje | orderBy:col:reverse">
+                          <td>{{ u.id }}</td>
+                          <td>{{ u.name | palabra }} {{ u.last_name | palabra }}</td>
+                          <td>
+                            <a ng-click="viewN = !viewN; newMessage( userSel,u.id );" class="btn btn-default"><i class="fa fa-hand-o-up"></i></a>
+                          </td>
+                        </tr>
+                      <!--</div>-->
+                    </tbody>
+
+                  </table>
+                </div>
+              </div>
+
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-success"><i class="fa fa-paper-plane"></i> Enviar</button>
+            </div>
+
+          </form>
+
+          </div>
+          <!-- /.box-body -->
+        </div>
+    </div>
+  </div>
+
 	<div class="row">
 		<div class="col-md-4" style="padding: 0;">
 			
