@@ -1,0 +1,123 @@
+<ol class="breadcrumb animated fadeIn fast">
+    <li><a ng-href="/tribunal"><i class="fa fa-dashboard"></i> Principal</a></li>
+    <li class="active">Cumpleaños</li>
+</ol>
+
+<div class="row">
+	<div class="col-md-12">
+      <!-- Horizontal Form -->
+      <div class="box box-info">
+        <div class="box-header with-border">
+          <h3 class="box-title">Felicitar Cumpleañeros</h3>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+        <form name="form" ng-submit="cumple(self,form);"
+        	  class="form-horizontal" 
+        	  novalidate="novalidate">
+          <div class="box-body">
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Cumpleañeros</label>
+				<div class="col-sm-10">
+					<select class="form-control" ng-model="tipo" ng-change="escogerTipo(tipo)" disable-valid-styling="true">
+					  <option value="sem">Esta semana</option>
+					  <option value="mes">Este Mes</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="">
+				<table class="table responsive-table">
+			        <thead>
+			          <tr>
+			              <th style="" class="form-group">
+			              	<input type="checkbox" id="tod"  disable-valid-styling="true"> 
+			              	Todos 
+			              </th>
+			              <th>Cumpleañero</th>
+			              <th>Cargo</th>
+			              <th>Juz. Agro.</th>
+			              <th>Fecha Cumpleaños</th>
+			              <th>Falta</th>
+			          </tr>
+			        </thead>
+
+			        <tbody class="table-hover" id="idUserE">
+			          <tr ng-repeat="b in birthday">
+			            <td>
+			            	<div class="form-group" style="text-align:center;">
+			                    <input type="checkbox" class="cump" id="{{b.id}}" disable-valid-styling="true">
+			                </div>
+			            </td>
+			            <td>{{b.name | palabra}} {{b.last_name | palabra}} </td>
+			            <td>{{b.position}} </td>
+			            <td>{{b.j_name}} </td>
+			            <td>{{b.fec_birthday}} </td>
+			            <td>{{b.day_birthday}} días </td>
+			          </tr>
+			        </tbody>
+			    </table>
+			</div>
+
+			<div class="row">
+            	<label class="col-sm-12">
+            		Felicitaciones:
+            	</label>
+			</div>
+            <div class="form-group">
+              <div class="col-sm-12">
+                <textarea class="form-control" rows="3" placeholder="Enter ..." ng-model="self.msj" disable-valid-styling="true"></textarea>
+              </div>
+            </div>
+          </div>
+          <!-- /.box-body -->
+          <div class="box-footer">
+            <button type="reset" class="btn btn-default pull-right">Cancelar</button>
+            <button type="submit" class="btn btn-primary pull-right">Enviar</button>
+          </div>
+          <!-- /.box-footer -->
+        </form>
+		<div class="">
+			<table class="table responsive-table">
+		        <thead>
+		          <tr>
+		              <th>Cumpleañero</th>
+		              <th>Fecha</th>
+		              <th>Juzgado</th>
+		              <th>Cargo</th>
+		          </tr>
+		        </thead>
+
+		        <tbody class="table-hover">
+		          <tr>
+		            <td>Eclair</td>
+		            <td>05/05/2017</td>
+		            <td>J.A. Cotagaita</td>
+		            <td>Secretario</td>
+		          </tr>
+		          <tr>
+		            <td>Eclair</td>
+		            <td>05/05/2017</td>
+		            <td>J.A. Cotagaita</td>
+		            <td>Secretario</td>
+		          </tr>
+		          <tr>
+		            <td>Eclair</td>
+		            <td>05/05/2017</td>
+		            <td>J.A. Cotagaita</td>
+		            <td>Secretario</td>
+		          </tr>
+		          <tr>
+		            <td>Eclair</td>
+		            <td>05/05/2017</td>
+		            <td>J.A. Cotagaita</td>
+		            <td>Secretario</td>
+		          </tr>
+		        </tbody>
+		    </table>
+		</div>
+      </div>
+      <!-- /.box -->
+
+    </div>
+</div>

@@ -72,12 +72,15 @@ function get_paginado_communicate( $id, $pagina = 1, $por_pagina = 8 ){
 
 	$conex = getConex();
 
-	$sql = "SELECT count(*) as cuantos FROM communicate c,user u,person per WHERE c.id_use=u.id AND u.id_person=per.id AND c.id_usr='$id' GROUP BY u.id DESC;";
+	$sql = "SELECT count(*) as cuantos FROM communicate c,user u,person per WHERE c.id_use=u.id AND u.id_person=per.id AND c.id_usr='$id' AND (c.viewed='0' OR c.viewed='1') GROUP BY u.id DESC;";
 
 	$result = $conex->prepare($sql);
 	$result->execute();
 	$res = $result->fetchObject();
-	$cuantos = $res->cuantos;
+	if( !$res )
+		$cuantos = 0;
+	else
+		$cuantos = $res->cuantos;
 
 
 	$total_paginas = ceil( $cuantos / $por_pagina );
@@ -111,7 +114,7 @@ function get_paginado_communicate( $id, $pagina = 1, $por_pagina = 8 ){
   				(SELECT fec FROM communicate WHERE id_use=u.id AND id_usr='$id' ORDER BY id DESC LIMIT 1) fec,
   				(SELECT viewed FROM communicate WHERE id_use=u.id AND id_usr='$id' ORDER BY id DESC LIMIT 1) viewed
 			FROM communicate c,user u,person per 
- 				WHERE c.id_use=u.id AND u.id_person=per.id AND c.id_use<>'$id' AND id_usr='$id' ORDER BY c.id DESC limit $desde, $por_pagina;";
+ 				WHERE c.id_use=u.id AND u.id_person=per.id AND c.id_use<>'$id' AND id_usr='$id' AND (c.viewed='0' OR c.viewed='1') ORDER BY c.id DESC limit $desde, $por_pagina;";
 	$result = $conex->prepare($sql);
 	$result->execute();
 	$datos = $result->fetchAll(PDO::FETCH_OBJ);

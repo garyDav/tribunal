@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 07-07-2017 a las 17:44:25
+-- Tiempo de generación: 21-07-2017 a las 12:41:04
 -- Versión del servidor: 10.1.13-MariaDB
 -- Versión de PHP: 7.0.8
 
@@ -29,8 +29,8 @@ INSERT INTO comment VALUES(null,v_id_publication,v_id_user,v_description,CURRENT
 SELECT @@identity AS id,v_description description,CURRENT_TIMESTAMP fec,u.src,per.name,per.last_name,per.sex,v_id_publication idPub, 'not' AS error,'Comentario enviado correctamente.' AS msj FROM comment c,publication p,user u,person per WHERE c.id_publication=p.id AND c.id_user=u.id AND u.id_person=per.id AND c.id_user=v_id_user;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsertCommunicate` (IN `v_id_use` INT, IN `v_id_usr` INT, IN `v_message` TEXT)  BEGIN
-INSERT INTO communicate VALUES(null,v_id_use,v_id_usr,v_message,CURRENT_TIMESTAMP,0);
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsertCommunicate` (IN `v_id_use` INT, IN `v_id_usr` INT, IN `v_message` TEXT, IN `v_viewed` TINYINT(1))  BEGIN
+INSERT INTO communicate VALUES(null,v_id_use,v_id_usr,v_message,CURRENT_TIMESTAMP,v_viewed);
 SELECT @@identity AS id, 'not' AS error,'Mensaje enviado correctamente.' AS msj;
 END$$
 
@@ -153,6 +153,34 @@ END IF;
 END IF;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `tSelectCumple` (IN `v_anio` VARCHAR(4), IN `v_mes` VARCHAR(2), IN `v_dia` VARCHAR(2), IN `v_tipo` VARCHAR(5))  BEGIN
+DECLARE fecha_ahora varchar(10);
+
+DECLARE error int DEFAULT 0;
+DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+BEGIN
+SET error=1;
+SELECT "yes" error,"Transaccion no completada: tInsertPayment" msj;
+END;
+
+START TRANSACTION;
+SET fecha_ahora = (SELECT CONCAT(v_anio,'-',v_mes,'-',v_dia));
+
+IF (v_tipo = 'sem') THEN
+SELECT u.id,p.name,p.last_name,p.fec_nac,u.position,j.name j_name,CONCAT(v_anio,'-',SUBSTRING(p.fec_nac,6,5)) fec_birthday,DATEDIFF(CONCAT(v_anio,'-',SUBSTRING(p.fec_nac,6,5)),fecha_ahora) day_birthday FROM person p,user u,j_agroambiental j WHERE u.id_person=p.id AND u.cod_ja=j.cod_ja AND u.status LIKE 'activo' AND (DATEDIFF(CONCAT(v_anio,'-',SUBSTRING(p.fec_nac,6,5)),fecha_ahora) > -1 AND DATEDIFF(CONCAT(v_anio,'-',SUBSTRING(p.fec_nac,6,5)),fecha_ahora) < 8);
+ELSE
+IF (v_tipo = 'mes') THEN
+SELECT u.id,p.name,p.last_name,p.fec_nac,u.position,j.name j_name,CONCAT(v_anio,'-',SUBSTRING(p.fec_nac,6,5)) fec_birthday,DATEDIFF(CONCAT(v_anio,'-',SUBSTRING(p.fec_nac,6,5)),fecha_ahora) day_birthday FROM person p,user u,j_agroambiental j WHERE u.id_person=p.id AND u.cod_ja=j.cod_ja AND u.status LIKE 'activo' AND SUBSTRING(p.fec_nac,6,2)=v_mes AND DATEDIFF(CONCAT(v_anio,'-',SUBSTRING(p.fec_nac,6,5)),fecha_ahora) > -1;
+END IF;
+END IF;
+
+IF (error = 1) THEN
+ROLLBACK;
+ELSE
+COMMIT;
+END IF;
+END$$
+
 DELIMITER ;
 
 -- --------------------------------------------------------
@@ -192,7 +220,14 @@ INSERT INTO `communicate` (`id`, `id_use`, `id_usr`, `message`, `fec`, `viewed`)
 (1, 3, 1, 'Hola como estas', '2017-07-07 10:25:32', 1),
 (2, 9, 1, 'Hola necesito tu numero', '2017-07-07 06:16:18', 1),
 (3, 1, 3, 'Estoy bien y tu?', '2017-07-07 17:31:28', 1),
-(4, 3, 1, 'Yo bien perro?', '2017-07-07 17:34:48', 0);
+(4, 3, 1, 'Yo bien perro?', '2017-07-07 17:34:48', 1),
+(5, 1, 5, 'hola que tal', '2017-07-13 11:03:49', 0),
+(6, 1, 8, 'hola mensaje de prueba', '2017-07-13 11:06:19', 0),
+(7, 1, 17, 'ohhh siiiii', '2017-07-13 11:08:09', 0),
+(8, 1, 22, 'Hola ratón sin cola', '2017-07-13 11:09:44', 0),
+(12, 2, 21, 'felicidades malditos', '2017-07-21 11:51:43', 2),
+(13, 2, 15, 'felicidades malditos', '2017-07-21 11:51:43', 2),
+(14, 2, 11, 'felicidades malditos', '2017-07-21 11:51:43', 2);
 
 -- --------------------------------------------------------
 
@@ -687,17 +722,18 @@ INSERT INTO `person` (`id`, `ci`, `ex`, `name`, `last_name`, `fec_nac`, `sex`) V
 (8, 145975632, 'Bn', 'Zulema', 'Taboada', '1975-12-09', 'Femenino'),
 (9, 19564871, 'Tj', 'Leonel', 'Barrios', '1991-11-14', 'Masculino'),
 (10, 5896412, 'Pt', 'Valeria', 'Zurita', '1978-09-04', 'Femenino'),
-(11, 45678912, 'Cb', 'Bacilio', 'Gutierrez', '1964-10-10', 'Masculino'),
+(11, 45678912, 'Cb', 'Bacilio', 'Gutierrez', '1964-07-27', 'Masculino'),
 (12, 15948267, 'Sc', 'Leandro', 'Carmona', '1985-01-01', 'Masculino'),
 (13, 45897465, 'Sc', 'Lucia', 'Benavides', '1982-04-15', 'Femenino'),
 (14, 36985214, 'Or', 'Pablo', 'Palacios', '1990-02-01', 'Masculino'),
-(15, 45879623, 'Or', 'Gisel', 'Mendez', '1986-09-04', 'Femenino'),
+(15, 45879623, 'Or', 'Gisel', 'Mendez', '1986-07-23', 'Femenino'),
 (16, 1489562, 'Pt', 'Manuel', 'Medrano', '1987-11-14', 'Masculino'),
 (17, 4589647, 'Tj', 'Rodrigo', 'Velasquez', '1980-05-12', 'Masculino'),
 (18, 7481953, 'Lp', 'Alberto', 'Arancibia', '1968-12-05', 'Masculino'),
 (19, 59846271, 'Pa', 'Jaime', 'Bellido', '1960-08-01', 'Masculino'),
 (20, 4568710, 'Or', 'Asdf', 'Asdf', '1952-03-03', 'Femenino'),
-(21, 15987456, 'Or', 'Timoteo', 'Carranza', '1996-12-29', 'Masculino');
+(21, 15987456, 'Or', 'Timoteo', 'Carranza', '1996-07-29', 'Masculino'),
+(22, 1111, 'Lp', 'Joselito', 'Vaca', '1987-07-02', 'Masculino');
 
 -- --------------------------------------------------------
 
@@ -899,17 +935,18 @@ INSERT INTO `user` (`id`, `id_person`, `id_jagroambiental`, `email`, `position`,
 (8, 8, 704, 'zule@gmail.com', '', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 71596324, '', '2017-05-24 16:51:13', '2017-05-24', 'D-0007', 'JA-0043', 'T-0000', 'activo'),
 (9, 9, 202, 'leo@gmail.com', '', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 74698521, '', '2017-05-24 16:52:27', '2017-05-24', 'D-0002', 'JA-0009', 'T-0000', 'activo'),
 (10, 10, 304, 'vale@gmail.com', '', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 74185296, '', '2017-05-24 16:53:33', '2017-05-24', 'D-0003', 'JA-0019', 'T-0000', 'activo'),
-(11, 11, 505, 'bacilio@gmail.com', '', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 79485632, '', '2017-05-24 16:55:14', '2017-05-24', 'D-0005', 'JA-0033', 'T-0000', 'activo'),
+(11, 11, 505, 'bacilio@gmail.com', 'juez', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 79485632, '', '2017-05-24 16:55:14', '2017-05-24', 'D-0005', 'JA-0033', 'T-0000', 'activo'),
 (12, 12, 401, 'leandro@gmail.com', '', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 74985632, '', '2017-05-24 16:56:39', '2017-05-24', 'D-0004', 'JA-0024', 'T-0000', 'activo'),
 (13, 13, 102, 'lucia@gmail.com', '', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 74845691, '', '2017-05-24 16:58:45', '2017-05-24', 'D-0001', 'JA-0002', 'T-0000', 'activo'),
 (14, 14, 603, 'pablo@gmail.com', '', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 74985632, '', '2017-05-24 17:01:25', '2017-05-24', 'D-0006', 'JA-0036', 'T-0000', 'activo'),
-(15, 15, 201, 'gisel@gmail.com', '', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 74985178, '', '2017-05-24 17:03:57', '2017-05-24', 'D-0002', 'JA-0008', 'T-0000', 'activo'),
+(15, 15, 201, 'gisel@gmail.com', 'algo', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 74985178, '', '2017-05-24 17:03:57', '2017-05-24', 'D-0002', 'JA-0008', 'T-0000', 'activo'),
 (16, 16, 504, 'manuel@gmail.com', '', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 74965824, '', '2017-05-24 17:05:52', '2017-05-24', 'D-0005', 'JA-0032', 'T-0000', 'activo'),
 (17, 17, 303, 'rodrigo@gmail.com', '', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 74859741, '', '2017-05-24 17:06:59', '2017-05-24', 'D-0003', 'JA-0018', 'T-0000', 'activo'),
 (18, 18, 402, 'alberto@gmail.com', '', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 71935281, '', '2017-05-24 17:08:14', '2017-05-24', 'D-0004', 'JA-0025', 'T-0000', 'activo'),
 (19, 19, 806, 'jaime@gmail.com', '', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 76548912, '', '2017-05-24 17:09:49', '2017-05-24', 'D-0008', 'JA-0055', 'T-0000', 'activo'),
 (20, 20, 901, 'fasdf@adsfas', 'este es el cargo', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 75772133, '', '2017-06-01 19:08:51', '2017-06-01', 'D-0009', 'JA-0057', 'T-0000', 'activo'),
-(21, 21, 100, 'timo@gmail.com', 'Juez', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 74185236, '', '2017-06-08 20:50:09', '2017-06-08', 'D-0001', 'TA-0001', 'T-0000', 'activo');
+(21, 21, 100, 'timo@gmail.com', 'Juez', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 74185236, '', '2017-06-08 20:50:09', '2017-06-08', 'D-0001', 'TA-0001', 'T-0000', 'activo'),
+(22, 22, 802, 'joselito@gmail.com', 'descgraciado', '585f7f3723df82f91fffd25a5c6900597cd4d1c1', 'user', 75784255, '', '2017-07-13 10:12:38', '2017-07-13', 'D-0008', 'JA-0051', 'T-0000', 'activo');
 
 --
 -- Índices para tablas volcadas
@@ -998,7 +1035,7 @@ ALTER TABLE `comment`
 -- AUTO_INCREMENT de la tabla `communicate`
 --
 ALTER TABLE `communicate`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT de la tabla `department`
 --
@@ -1023,7 +1060,7 @@ ALTER TABLE `municipality`
 -- AUTO_INCREMENT de la tabla `person`
 --
 ALTER TABLE `person`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
 -- AUTO_INCREMENT de la tabla `province`
 --
@@ -1038,7 +1075,7 @@ ALTER TABLE `publication`
 -- AUTO_INCREMENT de la tabla `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
 -- Restricciones para tablas volcadas
 --

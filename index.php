@@ -78,6 +78,15 @@ if( !isset( $_SESSION['uid'] ) ){
 	      <div class="navbar-custom-menu">
 	        <ul class="nav navbar-nav">
 
+			  
+
+
+			  
+			  <li class="dropdown notifications-menu"
+	              ng-include="'public/cumple/views/notification.view.html'"
+	          	  ng-controller="cumpleCtrl" ng-init="find();">
+	          </li>
+
 
 	          <!-- Messages: style can be found in dropdown.less-->
 	          <li class="dropdown messages-menu"
@@ -237,7 +246,7 @@ if( !isset( $_SESSION['uid'] ) ){
 	        <h3 class="control-sidebar-heading">Registrar</h3>
 	        <ul class="control-sidebar-menu">
               <li>
-                <a ng-href="">
+                <a ng-href="/tribunal/felicitar">
                   <i class="menu-icon fa fa-birthday-cake bg-orange"></i>
                   <div class="menu-info">
                     <h4 class="control-sidebar-subheading">Cumpleaños</h4>
@@ -246,7 +255,7 @@ if( !isset( $_SESSION['uid'] ) ){
                 </a>
               </li>
               <li>
-                <a ng-href="">
+                <a ng-href="/tribunal/galeria">
                   <i class="menu-icon fa fa-picture-o bg-light-blue"></i>
                   <div class="menu-info">
                     <h4 class="control-sidebar-subheading">Fotos</h4>
@@ -296,24 +305,32 @@ if( !isset( $_SESSION['uid'] ) ){
 	<script src="public/user/module.js"></script>
 	<script src="public/publication/module.js"></script>
 	<script src="public/communicate/module.js"></script>
+	<script src="public/galeria/module.js"></script>
+	<script src="public/cumple/module.js"></script>
 	<!-- Fin Module -->
 	
 	<!-- Route -->
 	<script src="public/user/route.js"></script>
 	<script src="public/publication/route.js"></script>
 	<script src="public/communicate/route.js"></script>
+	<script src="public/galeria/route.js"></script>
+	<script src="public/cumple/route.js"></script>
 	<!-- Fin Route -->
 
 	<!-- Service -->
 	<script src="public/user/service.js"></script>
 	<script src="public/publication/service.js"></script>
 	<script src="public/communicate/service.js"></script>
+	<script src="public/cumple/service.js"></script>
+	<!--<script src="public/galeria/service.js"></script>-->
 	<!-- Fin Service -->
 	
 	<!-- Controllers -->
 	<script src="public/user/controller.js"></script>
 	<script src="public/publication/controller.js"></script>
 	<script src="public/communicate/controller.js"></script>
+	<script src="public/galeria/controller.js"></script>
+	<script src="public/cumple/controller.js"></script>
 	<!-- Fin Controllers -->
 
 	<script src="public/app.js"></script>
