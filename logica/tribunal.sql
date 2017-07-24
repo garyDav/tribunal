@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 21-07-2017 a las 12:41:04
+-- Tiempo de generación: 24-07-2017 a las 10:33:34
 -- Versión del servidor: 10.1.13-MariaDB
 -- Versión de PHP: 7.0.8
 
@@ -37,6 +37,11 @@ END$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsertDepartment` (IN `v_name` VARCHAR(100), IN `v_cod_dep` VARCHAR(7))  BEGIN
 INSERT INTO department VALUES(null,v_name,v_cod_dep);
 SELECT @@identity AS id, 'not' AS error,'Departamento registrado correctamente.' AS msj;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsertImg` (IN `v_title` VARCHAR(255), IN `v_description` TEXT, IN `v_src` VARCHAR(255))  BEGIN
+INSERT INTO img VALUES(null,v_title,v_description,v_src);
+SELECT @@identity AS id, 'not' AS error,'guardada correctamente.' AS msj;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsertJAgroambiental` (IN `v_id_municipality` INT, IN `v_name` VARCHAR(100), IN `v_cod_ja` VARCHAR(7))  BEGIN
@@ -224,10 +229,7 @@ INSERT INTO `communicate` (`id`, `id_use`, `id_usr`, `message`, `fec`, `viewed`)
 (5, 1, 5, 'hola que tal', '2017-07-13 11:03:49', 0),
 (6, 1, 8, 'hola mensaje de prueba', '2017-07-13 11:06:19', 0),
 (7, 1, 17, 'ohhh siiiii', '2017-07-13 11:08:09', 0),
-(8, 1, 22, 'Hola ratón sin cola', '2017-07-13 11:09:44', 0),
-(12, 2, 21, 'felicidades malditos', '2017-07-21 11:51:43', 2),
-(13, 2, 15, 'felicidades malditos', '2017-07-21 11:51:43', 2),
-(14, 2, 11, 'felicidades malditos', '2017-07-21 11:51:43', 2);
+(8, 1, 22, 'Hola ratón sin cola', '2017-07-13 11:09:44', 0);
 
 -- --------------------------------------------------------
 
@@ -268,6 +270,14 @@ CREATE TABLE `img` (
   `description` text COLLATE utf8_spanish2_ci,
   `src` varchar(255) COLLATE utf8_spanish2_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `img`
+--
+
+INSERT INTO `img` (`id`, `title`, `description`, `src`) VALUES
+(1, '', 'prueba5', '1500899006.jpeg'),
+(2, '', 'Joder', '1500902051.jpeg');
 
 -- --------------------------------------------------------
 
@@ -726,9 +736,9 @@ INSERT INTO `person` (`id`, `ci`, `ex`, `name`, `last_name`, `fec_nac`, `sex`) V
 (12, 15948267, 'Sc', 'Leandro', 'Carmona', '1985-01-01', 'Masculino'),
 (13, 45897465, 'Sc', 'Lucia', 'Benavides', '1982-04-15', 'Femenino'),
 (14, 36985214, 'Or', 'Pablo', 'Palacios', '1990-02-01', 'Masculino'),
-(15, 45879623, 'Or', 'Gisel', 'Mendez', '1986-07-23', 'Femenino'),
-(16, 1489562, 'Pt', 'Manuel', 'Medrano', '1987-11-14', 'Masculino'),
-(17, 4589647, 'Tj', 'Rodrigo', 'Velasquez', '1980-05-12', 'Masculino'),
+(15, 45879623, 'Or', 'Gisel', 'Mendez', '1986-07-26', 'Femenino'),
+(16, 1489562, 'Pt', 'Manuel', 'Medrano', '1987-07-29', 'Masculino'),
+(17, 4589647, 'Tj', 'Rodrigo', 'Velasquez', '1980-07-30', 'Masculino'),
 (18, 7481953, 'Lp', 'Alberto', 'Arancibia', '1968-12-05', 'Masculino'),
 (19, 59846271, 'Pa', 'Jaime', 'Bellido', '1960-08-01', 'Masculino'),
 (20, 4568710, 'Or', 'Asdf', 'Asdf', '1952-03-03', 'Femenino'),
@@ -1035,7 +1045,7 @@ ALTER TABLE `comment`
 -- AUTO_INCREMENT de la tabla `communicate`
 --
 ALTER TABLE `communicate`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 --
 -- AUTO_INCREMENT de la tabla `department`
 --
@@ -1045,7 +1055,7 @@ ALTER TABLE `department`
 -- AUTO_INCREMENT de la tabla `img`
 --
 ALTER TABLE `img`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `j_agroambiental`
 --
