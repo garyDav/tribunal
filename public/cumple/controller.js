@@ -26,7 +26,10 @@
 				}
 				vec.forEach(function(e,i,v) {
 					cumpleService.enviarMensaje(e,self.msj).then(function(response) {
-						console.log(response);
+						console.log(i);
+						if ( response.error == 'not' ) {
+							swal("CORRECTO", "¡"+response.msj+"!", "success");
+						}
 					});
 				});
 			};

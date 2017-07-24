@@ -82,10 +82,11 @@
 									if(response) {
 										//console.log(response);
 										response.communicate.forEach(function(element,index,array) {
+											console.log(element);
 											element.fec = self.timeVerbal(element.fec);
 											element.last_connection = new Date(element.last_connection);
 											//element.last_connection = self.timeVerbal(element.last_connection);
-											if( !Number(element.viewed) )
+											if( element.viewed == '0' || element.viewed == '2' )
 												conteo ++;
 										});
 

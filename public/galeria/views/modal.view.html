@@ -1,0 +1,41 @@
+<div class="modal fade" id="modal_galeria" ng-controller="galeriaCtrl" ng-init="findOne();">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <h4 class="modal-title">Inserta una imagen: </h4>
+      </div>
+
+
+      <form name="frmGaleria"
+            ng-submit="guardarGaleria( pubSel, frmGaleria )"
+            novalidate="novalidate">
+
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label>Descripción</label>
+            <textarea class="form-control" rows="2" placeholder="Ingrese una descripción"
+                ng-model="pubSel.description" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Ingrese la imagen: </label><span>(tamaño máximo) 4.8Mb.</span>
+            <input type="file" file-model="pubSel.img">
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Guardar</button>
+        </div>
+
+      </form>
+
+
+
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>

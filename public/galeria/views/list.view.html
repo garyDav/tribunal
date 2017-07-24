@@ -1,37 +1,22 @@
+<div ng-init="find();">
 <div class="row">
-	<div class="col-md-6 col-md-offset-3">
+	<div class="col-md-8 col-md-offset-2">
 	  <div class="box box-solid">
 	    <div class="box-header with-border">
-	      <h3 class="box-title">Carousel</h3>
+	      <h3>Imágenes </h3>
 	    </div>
 	    <!-- /.box-header -->
 	    <div class="box-body">
 	      <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
 	        <ol class="carousel-indicators">
-	          <li data-target="#carousel-example-generic" data-slide-to="0" class=""></li>
-	          <li data-target="#carousel-example-generic" data-slide-to="1" class=""></li>
-	          <li data-target="#carousel-example-generic" data-slide-to="2" class="active"></li>
+	          <li data-target="#carousel-example-generic" data-slide-to="{{i.id}}" ng-repeat="i in imagenes.img"></li>
 	        </ol>
 	        <div class="carousel-inner">
-	          <div class="item">
-	            <img src="http://placehold.it/900x500/39CCCC/ffffff&amp;text=I+Love+Bootstrap" alt="First slide">
+	          <div class="item {{activar(i.id)}}" ng-repeat="i in imagenes.img">
+	            <img ng-src="app/galeria/{{i.src}}" alt="First slide">
 
 	            <div class="carousel-caption">
-	              First Slide
-	            </div>
-	          </div>
-	          <div class="item">
-	            <img src="http://placehold.it/900x500/3c8dbc/ffffff&amp;text=I+Love+Bootstrap" alt="Second slide">
-
-	            <div class="carousel-caption">
-	              Second Slide
-	            </div>
-	          </div>
-	          <div class="item active">
-	            <img src="http://placehold.it/900x500/f39c12/ffffff&amp;text=I+Love+Bootstrap" alt="Third slide">
-
-	            <div class="carousel-caption">
-	              Third Slide
+	              {{i.description}}
 	            </div>
 	          </div>
 	        </div>
@@ -51,31 +36,10 @@
 </div>
 
 <div class="row" >
-	<div class="col-md-3">
-		<img src="http://placehold.it/150x100" class="img-responsive galeria" alt="img">
-		<div class="desplegar"></div>
-	</div>
-	<div class="col-md-3">
-		<img src="http://placehold.it/150x100" class="img-responsive galeria" alt="img">
-	</div>
-	<div class="col-md-3">
-		<img src="http://placehold.it/150x100" class="img-responsive galeria" alt="img">
-	</div>
-	<div class="col-md-3">
-		<img src="http://placehold.it/150x100" class="img-responsive galeria" alt="img">
+	<div class="col-md-3" ng-repeat="i in imagenes.img">
+		<img ng-src="app/galeria/{{i.src}}" class="img-responsive galeria" alt="img">
+		<!--<div class="desplegar"></div>-->
 	</div>
 
-	<div class="col-md-3">
-		<img src="http://placehold.it/150x100" class="img-responsive galeria" alt="img">
-	</div>
-	<div class="col-md-3">
-		<img src="http://placehold.it/150x100" class="img-responsive galeria" alt="img">
-	</div>
-	<div class="col-md-3">
-		<img src="http://placehold.it/150x100" class="img-responsive galeria" alt="img">
-	</div>
-	<div class="col-md-3">
-		<img src="http://placehold.it/150x100" class="img-responsive galeria" alt="img">
-	</div>
-
+</div>
 </div>

@@ -82,10 +82,10 @@ if( !isset( $_SESSION['uid'] ) ){
 
 
 			  
-			  <li class="dropdown notifications-menu"
+			  <!--<li class="dropdown notifications-menu"
 	              ng-include="'public/cumple/views/notification.view.html'"
 	          	  ng-controller="cumpleCtrl" ng-init="find();">
-	          </li>
+	          </li>-->
 
 
 	          <!-- Messages: style can be found in dropdown.less-->
@@ -255,7 +255,7 @@ if( !isset( $_SESSION['uid'] ) ){
                 </a>
               </li>
               <li>
-                <a ng-href="/tribunal/galeria">
+                <a ng-click="mostrarModalGaleria();" class="mano">
                   <i class="menu-icon fa fa-picture-o bg-light-blue"></i>
                   <div class="menu-info">
                     <h4 class="control-sidebar-subheading">Fotos</h4>
@@ -273,6 +273,7 @@ if( !isset( $_SESSION['uid'] ) ){
 	       immediately after the control sidebar -->
 	  <div class="control-sidebar-bg"></div>
 	  <div ng-include="'public/main/views/userModal.view.html'"></div>
+	  <div ng-include="'public/galeria/views/modal.view.html'"></div>
 
 	</div>
 	<!-- ./wrapper -->
@@ -322,7 +323,7 @@ if( !isset( $_SESSION['uid'] ) ){
 	<script src="public/publication/service.js"></script>
 	<script src="public/communicate/service.js"></script>
 	<script src="public/cumple/service.js"></script>
-	<!--<script src="public/galeria/service.js"></script>-->
+	<script src="public/galeria/service.js"></script>
 	<!-- Fin Service -->
 	
 	<!-- Controllers -->

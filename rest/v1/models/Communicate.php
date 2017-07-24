@@ -36,7 +36,7 @@ $app->post("/communicate/cumple/",function() use($app) {
 					'". $request['id_use'] . "',
 					'". $request['id_usr'] . "',
 					'". $request['message'] . "',
-					'2' );";
+					'0' );";
 
 		$hecho = $conex->prepare( $sql );
 		$hecho->execute();
@@ -84,7 +84,7 @@ $app->get('/messages/:ide/:idr',function($ide,$idr) use($app) {
 
 		$result = $conex->prepare("UPDATE communicate SET viewed='1' WHERE id_usr='$idr' AND id_use='$ide';");
 		$result->execute();
-		$sql = "SELECT c.id,c.message,c.fec,u.src,c.id_use,c.id_usr,per.sex,per.name,per.last_name,u.last_connection FROM communicate c,user u,person per WHERE c.id_use=u.id AND u.id_person=per.id AND (c.viewed='0' OR c.viewed='1') AND (c.id_use='$ide' AND c.id_usr='$idr' OR c.id_use='$idr' AND c.id_usr='$ide');";
+		$sql = "SELECT c.id,c.message,c.fec,u.src,c.id_use,c.id_usr,per.sex,per.name,per.last_name,u.last_connection FROM communicate c,user u,person per WHERE c.id_use=u.id AND u.id_person=per.id AND (c.viewed='0' OR c.viewed='1' OR c.viewed='2') AND ((c.id_use='$ide' AND c.id_usr='$idr') OR (c.id_use='$idr' AND c.id_usr='$ide'));";
 		$result = $conex->prepare( $sql );
 
 		$result->execute();

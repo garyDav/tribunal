@@ -22,6 +22,7 @@ require 'models/Communicate.php';
 require 'models/JAgroambiental.php';
 require 'models/Publication.php';
 require 'models/Reporte.php';
+require 'models/Img.php';
 //end EntidadesRESTFULL
 
 $app->run();

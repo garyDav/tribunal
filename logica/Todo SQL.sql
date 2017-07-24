@@ -257,6 +257,17 @@ BEGIN
 	SELECT @@identity AS id, 'not' AS error,'Municipio registrado correctamente.' AS msj;
 END //
 
+DROP PROCEDURE IF EXISTS pInsertImg;
+CREATE PROCEDURE pInsertImg (
+	IN v_title varchar(255),
+	IN v_description text,
+	IN v_src varchar(255)
+)
+BEGIN
+	INSERT INTO img VALUES(null,v_title,v_description,v_src);
+	SELECT @@identity AS id, 'not' AS error,'guardada correctamente.' AS msj;
+END //
+
 DROP PROCEDURE IF EXISTS pInsertJAgroambiental;
 CREATE PROCEDURE pInsertJAgroambiental (
 	IN v_id_municipality int,

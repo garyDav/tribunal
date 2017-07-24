@@ -344,6 +344,7 @@
 			$scope.mComunicado = '';
 			$scope.mNormativa  = '';
 			$scope.mReglamento = '';
+			$scope.mGaleria = '';
 
 			$scope[menu] = 'active';
 			$scope[submenu] = 'active';
@@ -359,6 +360,10 @@
 
 		$scope.salir = function() {
 			mainService.logout();
+		};
+
+		$scope.mostrarModalGaleria = function(){
+			$('#modal_galeria').modal();
 		};
 
 	}]);
@@ -510,6 +515,25 @@
 				var formData = new FormData();
 				formData.append('img',img);
 				$http.post('php/server.php',formData,{
+					headers: { 'Content-Type': undefined }
+				}).success(function( data ) {
+					d.resolve( data );
+				}).error(function(msj, code) {
+					d.reject( msj );
+				});
+				return d.promise;
+			}
+		};
+		return self;
+	}]);
+
+	app.service('uploadGaleria',['$http','$q',function($http,$q) {
+		var self = {
+			saveImg : function(img) {
+				var d = $q.defer();
+				var formData = new FormData();
+				formData.append('img',img);
+				$http.post('php/galeria.php',formData,{
 					headers: { 'Content-Type': undefined }
 				}).success(function( data ) {
 					d.resolve( data );
