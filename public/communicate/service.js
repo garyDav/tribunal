@@ -75,18 +75,18 @@
 					.success(function( data ){
 						if(data) {
 							if(data.error == 'not') {
-								$http.get('rest/v1/communicate/'+ data.userID+ '/' + pag )
+								$http.get('rest/v1/communicate/'+ data.userID + '/' + pag )
 								.success(function( response ){
 
 									var conteo = 0;
 									if(response) {
 										//console.log(response);
 										response.communicate.forEach(function(element,index,array) {
-											console.log(element);
+											//console.log(element);
 											element.fec = self.timeVerbal(element.fec);
 											element.last_connection = new Date(element.last_connection);
 											//element.last_connection = self.timeVerbal(element.last_connection);
-											if( element.viewed == '0' || element.viewed == '2' )
+											if( element.id_usr == data.userID && (element.viewed == '0' || element.viewed == '2') )
 												conteo ++;
 										});
 
@@ -121,19 +121,17 @@
 					$http.get('rest/v1/messages/'+id+'/'+$rootScope.userID).success(function( response ){
 						if(response) {
 							self.cargarPagina(1);
-							response.forEach(function(element,index,array) {
-								if(element.id_use != $rootScope.userID) {
-									self.userDate.name = element.name;
-									self.userDate.last_name = element.last_name;
-									self.userDate.last_connection = new Date(element.last_connection);
-								}
+							self.userDate.name = response.res0.name;
+							self.userDate.last_name = response.res0.last_name;
+							self.userDate.last_connection = new Date(response.res0.last_connection);
+							response.res1.forEach(function(element,index,array) {
 								element.fec = new Date(element.fec);
 							});
 							console.log(response);
-							d.resolve(response);
+							d.resolve(response.res1);
 						}
 					}).error(function( err ){
-						d.reject(err);
+						d.reject(err.res1);
 						console.error(err);
 					});
 

@@ -14,14 +14,18 @@
 				'pag_anterior'  : 1,
 				'total_paginas' : 1,
 				'paginas'	    : [],
+				'idUltimo'		: 0,
 
 				cargarPagina: function(pag) {
 					var d = $q.defer();
 
 					$http.get('rest/v1/img/' + pag )
 						.success(function( data ){
+							console.log(data.img.length);
 
 							if(data) {
+
+								self.idUltimo = data.img[0].id;
 
 								self.err           = data.err;
 								self.conteo        = data.conteo;
@@ -39,6 +43,7 @@
 					return d.promise;
 				},
 				guardar: function(data) {
+					//console.log(data);
 					var d = $q.defer();
 
 					$http.post('rest/v1/img/' , data )

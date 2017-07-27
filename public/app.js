@@ -179,6 +179,7 @@
 	app.factory('mainService', ['$http','$location','$q','$rootScope', function( $http,$location,$q,$rootScope ){
 		var self = {
 			logout: function() {
+				$http.put('rest/v1/user/connection/'+$rootScope.userID);
 				$http.post('php/destroy_session.php');
 				//$location.path('login/#/');
 				window.location="login/";

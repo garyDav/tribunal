@@ -225,3 +225,28 @@ $app->post("/login/",function() use($app) {
 		echo "Error: ".$e->getMessage();
 	}
 });
+
+
+
+
+
+
+$app->put("/user/connection/:id",function($id) use($app) {
+	try {
+		$conex = getConex();
+		$fec_actual = date("Y-m-d H:i:s");
+		$sql = "UPDATE user SET last_connection='$fec_actual' WHERE id='$id';";
+		$result = $conex->prepare($sql);
+
+		$result->execute();
+		$conex = null;
+		$res = array('error'=>'not','msj'=>'ultima conexion actualizado');
+
+		$app->response->headers->set('Content-type','application/json');
+		$app->response->status(200);
+		$app->response->body(json_encode($res));
+
+	}catch(PDOException $e) {
+		echo "Error: ".$e->getMessage();
+	}
+})->conditions(array('id'=>'[0-9]{1,11}'));

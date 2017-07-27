@@ -41,7 +41,7 @@ function get_todo_paginado( $tabla, $pagina = 1, $por_pagina = 10 ){
 	}
 
 
-	$sql = "SELECT * from $tabla limit $desde, $por_pagina";
+	$sql = "SELECT * from $tabla ORDER BY id DESC limit $desde, $por_pagina";
 	$result = $conex->prepare($sql);
 	$result->execute();
 	$datos = $result->fetchAll(PDO::FETCH_OBJ);
@@ -71,8 +71,9 @@ function get_todo_paginado( $tabla, $pagina = 1, $por_pagina = 10 ){
 function get_paginado_communicate( $id, $pagina = 1, $por_pagina = 8 ){
 
 	$conex = getConex();
+	$mesDia = date("m-d");
 
-	$sql = "SELECT count(*) as cuantos FROM communicate c,user u,person per WHERE c.id_use=u.id AND u.id_person=per.id AND c.id_usr='$id' AND (c.viewed='0' OR c.viewed='1' OR c.viewed='2') GROUP BY u.id DESC;";
+	$sql = "SELECT count(*) as cuantos FROM communicate c,user u,person per,user us,person pers WHERE us.id_person=pers.id AND us.id='$id' AND u.id_person=per.id AND ((c.id_use=u.id AND c.id_usr='$id') OR (c.id_use='$id' AND c.id_usr=u.id)) AND (c.viewed='0' OR c.viewed='1' OR c.viewed='2') AND (c.type='0' OR (c.type='1' AND ('$mesDia' >= SUBSTRING(pers.fec_nac,6,5) OR c.id_use = '$id') )) GROUP BY u.id DESC;";
 
 	$result = $conex->prepare($sql);
 	$result->execute();
@@ -108,13 +109,23 @@ function get_paginado_communicate( $id, $pagina = 1, $por_pagina = 8 ){
 	}
 
 
-	$sql = "SELECT DISTINCT
+	/*$sql = "SELECT DISTINCT
   				u.id,per.name,per.last_name,per.sex,u.src,u.last_connection,
   				(SELECT message FROM communicate WHERE id_use=u.id AND id_usr='$id' ORDER BY id DESC LIMIT 1) message,
   				(SELECT fec FROM communicate WHERE id_use=u.id AND id_usr='$id' ORDER BY id DESC LIMIT 1) fec,
   				(SELECT viewed FROM communicate WHERE id_use=u.id AND id_usr='$id' ORDER BY id DESC LIMIT 1) viewed
 			FROM communicate c,user u,person per 
- 				WHERE c.id_use=u.id AND u.id_person=per.id AND c.id_use<>'$id' AND id_usr='$id' AND (c.viewed='0' OR c.viewed='1' OR c.viewed='2') ORDER BY c.id DESC limit $desde, $por_pagina;";
+ 				WHERE u.id_person=per.id AND c.id_use=u.id AND c.id_use<>'$id' AND c.id_usr='$id' AND (c.viewed='0' OR c.viewed='1' OR c.viewed='2') ORDER BY c.id DESC limit $desde, $por_pagina;";*/
+
+ 	$sql = "SELECT DISTINCT
+  				u.id,per.name,per.last_name,per.sex,u.src,u.last_connection,
+  				(SELECT id_usr FROM communicate WHERE (id_use=u.id AND id_usr='$id') OR (id_use='$id' AND id_usr=u.id) ORDER BY id DESC LIMIT 1) id_usr,
+  				(SELECT message FROM communicate WHERE (id_use=u.id AND id_usr='$id') OR (id_use='$id' AND id_usr=u.id) ORDER BY id DESC LIMIT 1) message,
+  				(SELECT fec FROM communicate WHERE (id_use=u.id AND id_usr='$id') OR (id_use='$id' AND id_usr=u.id) ORDER BY id DESC LIMIT 1) fec,
+  				(SELECT viewed FROM communicate WHERE (id_use=u.id AND id_usr='$id') OR (id_use='$id' AND id_usr=u.id) ORDER BY id DESC LIMIT 1) viewed
+			FROM communicate c,user u,person per,user us,person pers 
+ 				WHERE us.id_person=pers.id AND us.id='$id' AND u.id_person=per.id AND ((c.id_use=u.id AND c.id_usr='$id') OR (c.id_use='$id' AND c.id_usr=u.id)) AND (c.viewed='0' OR c.viewed='1' OR c.viewed='2') AND (c.type='0' OR (c.type='1' AND ('$mesDia' >= SUBSTRING(pers.fec_nac,6,5) OR c.id_use = '$id') )) ORDER BY c.id DESC limit $desde, $por_pagina;";
+
 	$result = $conex->prepare($sql);
 	$result->execute();
 	$datos = $result->fetchAll(PDO::FETCH_OBJ);

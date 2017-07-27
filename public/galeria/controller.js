@@ -19,7 +19,7 @@
 				$scope.moverA(1);
 
 				$scope.activar = function(id) {
-					if(id == 1)
+					if(id == $scope.imagenes.idUltimo)
 						return 'active';
 				};
 

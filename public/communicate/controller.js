@@ -12,6 +12,7 @@
 					communicateService.cargarPagina(pag).then(function(){
 						$scope.load = false;
 						$scope.listMessages = communicateService;
+						console.log($scope.listMessages);
 						if( $scope.listMessages.mNoLeidos == 1 )
 							$scope.mensajes = 'mensaje no leido';
 						else
@@ -56,11 +57,15 @@
 				};
 				$scope.moverMen(1);
 
+				/*$scope.bajarChat = function() {
+					$("#chat").animate({ scrollTop: $('#chat')[0].scrollHeight}, 300);
+				};*/
 				$scope.loadAllMessage = function(id) {
 					$scope.loadMessage = true;
 					$scope.myMessage.id_usr = id;
 					$scope.myMessage.message = '';
 					communicateService.loadAllMessages(id).then(function( response ) {
+						console.log(response);
 						if(response[0]) {
 							$scope.loadMessage = false;
 							$scope.listMessagesId = {
@@ -68,20 +73,27 @@
 								last_connection: communicateService.userDate.last_connection,
 								messages: response
 							};
-							//console.log($scope.listMessagesId);
+							console.log($scope.listMessagesId);
 						}
+						window.setTimeout('$("#chat").animate({ scrollTop: $("#chat")[0].scrollHeight}, 100);',0);
+						
 					});
 					//communicateService.loadAllMessages(id);
 				};
 
+
 				$scope.loadAllMessage(pag);
 
 				$scope.sendMessage = function(form,myMessage) {
-					myMessage.id_use = $rootScope.userID;
-					communicateService.saveMessage(myMessage).then(function(response) {
-						$scope.loadAllMessage(myMessage.id_usr);
-						myMessage.message = '';
-					});
+					//console.log(myMessage.message);
+					if(myMessage.message) {
+						myMessage.id_use = $rootScope.userID;
+						communicateService.saveMessage(myMessage).then(function(response) {
+							$scope.loadAllMessage(myMessage.id_usr);
+							myMessage.message = '';
+						});
+					} else
+						swal("ERROR", "¡Ingresa el mensaje!", "error");
 				};
 
 				$scope.sendMessageNew = function(form,myMessage) {

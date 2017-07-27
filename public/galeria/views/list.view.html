@@ -9,7 +9,7 @@
 	    <div class="box-body">
 	      <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
 	        <ol class="carousel-indicators">
-	          <li data-target="#carousel-example-generic" data-slide-to="{{i.id}}" ng-repeat="i in imagenes.img"></li>
+	          <li data-target="#carousel-example-generic" data-slide-to="{{i.id}}" ng-repeat="i in imagenes.img" class="{{activar(i.id)}}"></li>
 	        </ol>
 	        <div class="carousel-inner">
 	          <div class="item {{activar(i.id)}}" ng-repeat="i in imagenes.img">

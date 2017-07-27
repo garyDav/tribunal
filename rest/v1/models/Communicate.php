@@ -36,7 +36,7 @@ $app->post("/communicate/cumple/",function() use($app) {
 					'". $request['id_use'] . "',
 					'". $request['id_usr'] . "',
 					'". $request['message'] . "',
-					'0' );";
+					'0','1' );";
 
 		$hecho = $conex->prepare( $sql );
 		$hecho->execute();
@@ -84,6 +84,12 @@ $app->get('/messages/:ide/:idr',function($ide,$idr) use($app) {
 
 		$result = $conex->prepare("UPDATE communicate SET viewed='1' WHERE id_usr='$idr' AND id_use='$ide';");
 		$result->execute();
+
+		$sql = "SELECT per.name,per.last_name,u.last_connection FROM user u,person per WHERE u.id_person=per.id AND u.id='$ide'; ";
+		$result = $conex->prepare( $sql );
+		$result->execute();
+		$res0 = $result->fetchObject();
+
 		$sql = "SELECT c.id,c.message,c.fec,u.src,c.id_use,c.id_usr,per.sex,per.name,per.last_name,u.last_connection FROM communicate c,user u,person per WHERE c.id_use=u.id AND u.id_person=per.id AND (c.viewed='0' OR c.viewed='1' OR c.viewed='2') AND ((c.id_use='$ide' AND c.id_usr='$idr') OR (c.id_use='$idr' AND c.id_usr='$ide'));";
 		$result = $conex->prepare( $sql );
 
@@ -92,10 +98,12 @@ $app->get('/messages/:ide/:idr',function($ide,$idr) use($app) {
 
 		$res = $result->fetchAll(PDO::FETCH_OBJ);
 
+		$respuesta = array('res0'=>$res0,'res1'=>$res);
+
 		$app->response->headers->set('Content-type','application/json');
 		$app->response->headers->set('Access-Control-Allow-Origin','*');
 		$app->response->status(200);
-		$app->response->body(json_encode($res));
+		$app->response->body(json_encode($respuesta));
 	}catch(PDOException $e) {
 		echo 'Error: '.$e->getMessage();
 	}
@@ -136,7 +144,7 @@ $app->post("/communicate/",function() use($app) {
 					'". $request['id_use'] . "',
 					'". $request['id_usr'] . "',
 					'". $request['message'] . "',
-					'0' );";
+					'0','0' );";
 
 		$hecho = $conex->prepare( $sql );
 		$hecho->execute();
